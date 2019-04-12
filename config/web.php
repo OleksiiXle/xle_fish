@@ -14,7 +14,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '',
+            'cookieValidationKey' => 'sdfgasdfgsdfgfdg63456#$@#$%xcbdfgb',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -22,6 +22,10 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+            'cache' => 'cache' //Включаем кеширование
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

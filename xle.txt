@@ -1,0 +1,5 @@
+1. 'cookieValidationKey' =>
+2. Создать БД и прописать в db.php
+3. Инициализировать таблицы RBAC
+     php yii migrate --migrationPath=@yii/rbac/migrations
+
