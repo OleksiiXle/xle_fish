@@ -11,6 +11,10 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'controllerMap' => [
+        'wcontroller' => 'app\components\widgets\controllers\WidgetController',
+    ],
+
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -23,10 +27,12 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+        /*
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
             'cache' => 'cache' //Включаем кеширование
         ],
+        */
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -47,15 +53,22 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'conservation' => [
+            'class' => 'app\components\conservation\ConservationComponent',
+        ],
     ],
+    'modules' => [
+        'adminx' => [
+            'class' => 'app\modules\adminx\Adminx',
+        ],
+    ],
+
     'params' => $params,
 ];
 

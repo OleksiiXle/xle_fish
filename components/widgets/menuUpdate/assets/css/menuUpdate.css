@@ -1,0 +1,14 @@
+.node{
+    font-weight: bold;
+    font-size: medium;
+    color: black;
+    cursor: pointer;
+}
+
+.route {
+    cursor: pointer;
+    color: black;
+    font-size: medium;
+
+}
+
