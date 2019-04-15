@@ -128,6 +128,6 @@ class SiteController extends Controller
 
     public function actionMenu()
     {
-        return $this->render('menuUpdate');
+        return $this->render('menuEdit');
     }
 }

@@ -4,11 +4,14 @@
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" style="background-color: aliceblue">
             <b>
                 <?php
                 echo \app\components\widgets\menuUpdate\MenuUpdateWidget::widget([
-                    'menu_id' => 'NumberOne'
+                    'menu_id' => 'NumberOne',
+                    'params' => [
+                            'mode' => 'update'
+                    ]
                 ])
                 ?>;
             </b>
@@ -17,7 +20,11 @@
             <b>
                 <?php
                 echo \app\components\widgets\menuUpdate\MenuUpdateWidget::widget([
-                    'menu_id' => 'NumberTwo'
+                    'menu_id' => 'NumberTwo',
+                    'params' => [
+                        'mode' => 'view'
+                    ]
+
                 ])
                 ?>;
             </b>
@@ -28,7 +35,6 @@
 
 <script>
     $(document).ready ( function(){
-        alert('lokoko');
         initTrees();
     });
 

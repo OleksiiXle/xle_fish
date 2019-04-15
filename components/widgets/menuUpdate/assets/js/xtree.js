@@ -9,14 +9,18 @@ const ICON_CLOSE = '<span class="glyphicon glyphicon-folder-close"></span>';
 
 var MENU_TREE = {
     tree_id: null,
+    params: null,
     item_id : null,
     icon_id : null,
     li_id : null,
     ul_id : null,
     selected_id : 0,
 
-    init: function(menu_id){
+    init: function(menu_id, params){
         this.tree_id = menu_id;
+        this.params = params;
+        console.log(this.tree_id);
+        console.log(this.params);
 
         this.item_id = menu_id + '_item_';
         this.icon_id = menu_id + '_icon_';
@@ -171,16 +175,7 @@ var MENU_TREE = {
         var new_selected_id = new_id;
         var oldNode =$("#" + that.item_id + old_selected_id);
         var newNode =$("#" + that.item_id + new_selected_id);
-        //  console.log(that.selected_id);
-        //   console.log(new_id);
-        //  console.log("#" + that.item_id + old_selected_id);
-        //   console.log("#" + that.item_id + new_selected_id);
-        //  console.log(oldNode);
-        //   console.log(newNode);
 
-
-//   oldNode.css("font-weight",'normal' );
-        //   newNode.css("font-weight",'600');
         oldNode.removeClass(ITEM_ACTIVE_CSS).addClass(ITEM_CSS);
         newNode.removeClass(ITEM_CSS).addClass(ITEM_ACTIVE_CSS);
         that.selected_id = new_selected_id;
@@ -196,11 +191,23 @@ var MENU_TREE = {
                 container.scrollTop() - 200
             });
         }
-        //  console.log(_treeParams[tree_id]);
-
         return true;
+    },
+    //************************************************************************************** редактирование дерева
+    //-- открытие модального окна для редактирования
+    modalOpenDepartmentUpdate : function () {
+        var url = '/wcontroller/modal-open-menu-update?id=' + this.selected_id;
+        var title = 'Зміна даних';
+        $('#main-modal-lg').modal('show')
+            .find('#modalContent_lg')
+            .load(url, function(response, status, xhr) {
+                errorHandlerModal(xhr['status'], xhr, status);
+            });
+        document.getElementById('modalHeader_lg').innerHTML = '<b>' + title + '</b>';
 
     }
+
+
 };
 /*
 $(document).ready ( function(){

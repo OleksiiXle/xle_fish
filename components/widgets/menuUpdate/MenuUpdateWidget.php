@@ -8,12 +8,11 @@ use yii\base\Widget;
 class MenuUpdateWidget extends Widget
 {
     public $menu_id;
+    public $params;
 
 
     public function init()
     {
-      //  MenuUpdateAssets::register($this->getView());
-
         parent::init();
     }
 
@@ -21,17 +20,11 @@ class MenuUpdateWidget extends Widget
     {
         $view = $this->getView();
         MenuUpdateAssets::register($view);
-    //    $view->registerJs("jQuery('#$this->menu_id').initg();");
-
-
-        $menuData = MenuX::find()
-            ->asArray()
-            ->all();
 
         return $this->render('menuUpdate',
             [
                 'menu_id' => $this->menu_id,
-                'menuData' => $menuData,
+                'params' => $this->params,
             ]);
     }
 
