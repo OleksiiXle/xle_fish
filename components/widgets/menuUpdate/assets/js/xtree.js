@@ -1,12 +1,3 @@
-//*****************************************
-
-/*
-$(document).ready ( function(){
-    $("#start").html('S T A R T');
-
-});
-*/
-//-- todo слелать инициализацию переменных,если их еще нет
 const ITEM_CSS = 'item_css';
 const ITEM_ACTIVE_CSS = 'item_active_css';
 const ICON_CSS = 'icon_css';
@@ -58,7 +49,7 @@ var MENU_TREE = {
                 ' data-tree_id="' + this.tree_id + '"' +
                 ' data-id="' + data['id'] + '" ' +
                 ' data-parent_id="' + data['parent_id'] + '"' +
-               // ' onClick="' + that.drawChildren(this.dataset.id)+ ';"'
+                // ' onClick="' + that.drawChildren(this.dataset.id)+ ';"'
                 '>' +
                 ICON_CLOSE  +
                 '</a>  ';
@@ -69,7 +60,7 @@ var MENU_TREE = {
             ' data-tree_id="' + this.tree_id + '" ' +
             ' data-id="' + data['id'] + '" ' +
             ' data-parent_id="' + data['parent_id'] +'" ' +
-           // ' onClick="' + that.clickItem(this) + ';"'  +
+            // ' onClick="' + that.clickItem(this) + ';"'  +
             '> ' +
             data['name'] +
             '</a></li>' ;
@@ -92,7 +83,7 @@ var MENU_TREE = {
             },
             success: function(response){
                 if (response['status']) {
-               //     console.log(response);
+                    //     console.log(response);
                     var firstDiv = $("#" + tree_id);
                     $.each(response['data'], function(index, value){
                         $(firstDiv).append(that.getItem(value))
@@ -108,7 +99,7 @@ var MENU_TREE = {
 
     //-- рисует потомков первого уровня узлу parent_id
     clickIcon: function (parent) {
-     //   console.log(parent.innerHTML);
+        //   console.log(parent.innerHTML);
         var parent_id = parent.dataset.id;
         var that = this;
         switch (parent.innerHTML){
@@ -166,30 +157,30 @@ var MENU_TREE = {
     },
 
     clickItem: function (item) {
-       // alert('item');
-      //  console.log(item.dataset);
+        // alert('item');
+        //  console.log(item.dataset);
         this.selectedIdChange(item.dataset.id);
     },
 
     //-- изменение текущего выбранного элемента
     selectedIdChange: function (new_id) {
         var that = this;
-      //  $.post(_urlSetConserve, {'id' : new_id, 'type' : type, 'staffOrder_id': _treeParams[tree_id]['staffOrder_id'], 'tree_id' : tree_id});
+        //  $.post(_urlSetConserve, {'id' : new_id, 'type' : type, 'staffOrder_id': _treeParams[tree_id]['staffOrder_id'], 'tree_id' : tree_id});
 
         var old_selected_id = that.selected_id;
         var new_selected_id = new_id;
         var oldNode =$("#" + that.item_id + old_selected_id);
         var newNode =$("#" + that.item_id + new_selected_id);
-      //  console.log(that.selected_id);
-     //   console.log(new_id);
-      //  console.log("#" + that.item_id + old_selected_id);
-     //   console.log("#" + that.item_id + new_selected_id);
-      //  console.log(oldNode);
-     //   console.log(newNode);
+        //  console.log(that.selected_id);
+        //   console.log(new_id);
+        //  console.log("#" + that.item_id + old_selected_id);
+        //   console.log("#" + that.item_id + new_selected_id);
+        //  console.log(oldNode);
+        //   console.log(newNode);
 
 
 //   oldNode.css("font-weight",'normal' );
-     //   newNode.css("font-weight",'600');
+        //   newNode.css("font-weight",'600');
         oldNode.removeClass(ITEM_ACTIVE_CSS).addClass(ITEM_CSS);
         newNode.removeClass(ITEM_CSS).addClass(ITEM_ACTIVE_CSS);
         that.selected_id = new_selected_id;
@@ -211,84 +202,10 @@ var MENU_TREE = {
 
     }
 };
-
-
-
 /*
-jQuery(document).ready(function(){
-    MENU_TREE.init();
+$(document).ready ( function(){
+    var tree1 = Object.create(MENU_TREE);
+    tree1.init(_menu_id);
 });
 */
-//console.log(_menu_id);
-//console.log(_menuData);
-//MENU_TREE.init(_menu_id ,_menuData);
-
-
-
-
-
-var tree1 = Object.create(MENU_TREE);
-tree1.init(_menu_id ,_menuData);
-
-
-function errorHandler(jqXHR, error, errorThrown){
-    console.log('Помилка:');
-    console.log(error);
-    console.log(errorThrown);
-    console.log(jqXHR);
-    /*
-    if (jqXHR['status']==403){
-        //   alert('accessDeny');
-        var flashMessage = '';
-        flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Дія заборонена' +'</div>';
-        $("#flashMessage").show('slow');
-        $("#flashMessage").html(flashMessage);
-        setTimeout(function() {
-            $("#flashMessage").hide('slow');
-        }, 5000);
-        $("#main-modal-lg").modal("hide");
-        $("#main-modal-md").modal("hide");
-    }
-    */
-}
-
-//-- обработка ошибок после аякс запроса
-//-- если 403 - в #flashMessage /views/layouts/commonLayout выводится соответствующее сообщение
-function errorHandlerModal(xhrStatus, xhr, status){
-    var flashMessage = '';
-    switch (xhrStatus){
-        case 200:
-            return true;
-            break;
-        case 403:
-            flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Дія заборонена' +'</div>';
-            break;
-        default:
-            flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Системна помилка ' + xhrStatus +  status +'</div>';
-            break;
-    }
-    $("#flashMessage").show();
-    $("#flashMessage").html(flashMessage);
-    setTimeout(function() {
-        $("#flashMessage").hide();
-    }, 5000);
-    $("#main-modal-lg").modal("hide");
-    $("#main-modal-md").modal("hide");
-    console.log('Помилка:');
-    console.log(status);
-    console.log(xhr);
-}
-
-function objDump(object) {
-    var out = "";
-    if(object && typeof(object) == "object"){
-        for (var i in object) {
-            out += i + ": " + object[i] + "\n";
-        }
-    } else {
-        out = object;
-    }
-    alert(out);
-}
-
 

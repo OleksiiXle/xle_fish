@@ -12,13 +12,18 @@ class MenuUpdateWidget extends Widget
 
     public function init()
     {
-        MenuUpdateAssets::register($this->getView());
+      //  MenuUpdateAssets::register($this->getView());
 
         parent::init();
     }
 
     public function run()
     {
+        $view = $this->getView();
+        MenuUpdateAssets::register($view);
+    //    $view->registerJs("jQuery('#$this->menu_id').initg();");
+
+
         $menuData = MenuX::find()
             ->asArray()
             ->all();

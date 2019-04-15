@@ -13,7 +13,10 @@ class MenuUpdateAssets extends AssetBundle
         'css/menuUpdate.css',
     ];
     public $js = [
-        'js/menuUpdate.js',
+       // 'js/menuUpdate.js',
+        'js/funcs.js',
+        'js/initg.js',
+        'js/xtree.js',
     ];
 
     public $depends = [
