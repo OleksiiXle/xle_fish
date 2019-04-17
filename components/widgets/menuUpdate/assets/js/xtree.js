@@ -33,6 +33,12 @@ var MENU_TREE = {
         });
         //-- обработчики событий на кнопки редактирования, если они есть
         if ($("#actionButtons_" + this.tree_id).length > 0){
+            $(document)
+                .on("click", "#btn_" + that.tree_id + '_updateForm', function () {
+                    that.menuUpdate();
+                });
+
+
             $("#btn_" + this.tree_id + '_modalOpenMenuUpdate').on("click", function () {
                 that.modalOpenMenuUpdate('update');
             });
@@ -184,6 +190,7 @@ var MENU_TREE = {
                                 $.each(children, function(index, value){
                                     $(parent_ul).append(that.getItem(value))
                                 });
+
                             }
                             that.selectedIdChange(parent_id);
                         } else {
@@ -210,6 +217,10 @@ var MENU_TREE = {
 
     //-- изменение текущего выбранного элемента
     selectedIdChange: function (new_id) {
+        if (typeof clickItemFunction == 'function'){
+            clickItemFunction(this.tree_id, new_id);
+        }
+
         var that = this;
         //  $.post(_urlSetConserve, {'id' : new_id, 'type' : type, 'staffOrder_id': _treeParams[tree_id]['staffOrder_id'], 'tree_id' : tree_id});
 
@@ -247,10 +258,13 @@ var MENU_TREE = {
             .find('#modalContent_md')
             .load(url, function(response, status, xhr) {
                 errorHandlerModal(xhr['status'], xhr, status);
-            })
+            });
+        /*
+        $('#main-modal-md')
             .on("click", "#btn_" + that.tree_id + '_updateForm', function () {
                 that.menuUpdate();
-            })
+            });
+            */
     },
 
     //-- редактирование, добавление потомка, добавление соседа снизу
@@ -355,8 +369,8 @@ sort: 2
         var that = this;
         node1_id = this.selected_id;
         node1_li = $("#" + that.li_id + node1_id);
-        console.log('node1_li:');
-        console.log(node1_li);
+       // console.log('node1_li:');
+      //  console.log(node1_li);
         switch (nodeAction){
             case 'moveUp':
                 //--- move up
@@ -371,6 +385,8 @@ sort: 2
             case 'moveDown':
                 //--- move down
             case 'levelDown':
+                //-- сделать меня ($node1_id) первым сыном моего младшего брата ($node2_id)
+
                 //-- сделать $node1_id из соседа сверху $node2_id - его первым потомком
                 node2_li = node1_li.next("." + LI_CSS);
                 if (node2_li.length > 0 ) {
@@ -418,14 +434,18 @@ sort: 2
                             $(node1_li).before(node2_li);
                             break;
                         case 'levelDown':
+                            //-- сделать меня ($node1_id) первым сыном моего младшего брата ($node2_id)
                             //-- сделать $node1_id из соседа сверху $node2_id - его первым потомком
                             var new_parent_icon = $("#" + that.icon_id + node2_id);
+
+                            node1_li[0].dataset.parent_id = node2_li[0].dataset.id;
+
                             if (new_parent_icon.length > 0){
                                 //-- у нового родителя node2_id уже есть иконка
                                 if (new_parent_icon[0].innerHTML == ICON_OPEN){
                                     //-- иконка открыта и потомки показаны
                                     //-- найти первого ли потомка и перед ним нарисовать ли $node1_id
-                                    var parent_ul = $("#" + UL_CSS + node2_id);
+                                    var parent_ul = $("#" + that.ul_id + node2_id);
                                     var first_child_li = parent_ul.find("li");
                                     first_child_li.before(node1_li);
 
@@ -437,6 +457,7 @@ sort: 2
                                 }
 
                             } else {
+                                //++++
                                 //-- у нового родителя node2_id еще нет иконки и нет потомков
                                 //-- вставить закрытую иконку в ли перед итемом
                                 //-- имитировать нажатие на иконку
@@ -450,6 +471,7 @@ sort: 2
                         case 'levelUp':
                             //-- сделать $node1_id из потомка $node2_id - его соседом сверху
                             $(node2_li).before(node1_li);
+                            node1_li[0].dataset.parent_id = node2_li[0].dataset.parent_id;
                             if (!response['data']['node2']['hasChildren']){
                                 $("#" + that.icon_id + node2_id).remove();
                             }
@@ -488,10 +510,26 @@ sort: 2
                 },
                 success: function(response){
                     if (response['status']) {
-                        $("#" + that.li_id + that.selected_id).remove();
-                        if (response['data']['node2'].length > 0 && !response['data']['node2']['hasChildren']){
+                        var removed_item_li = $("#" + that.li_id + that.selected_id);
+                        var prev_item_li = removed_item_li.prev('LI');
+                        var parent_id = removed_item_li[0].dataset.parent_id;
+                        var new_selected_id = 0;
+
+                        removed_item_li.remove();
+
+                        if ((typeof response['data']['node2'] === 'object') && !response['data']['node2']['hasChildren']){
+
                             $("#" + that.icon_id + response['data']['node2']['id'] ).remove();
                         }
+
+                        if (prev_item_li.length > 0){
+                            new_selected_id = prev_item_li[0].dataset.id;
+                        } else {
+                            if (parent_id != 0){
+                                new_selected_id = parent_id;
+                            }
+                        }
+                        that.selectedIdChange(new_selected_id);
                     } else {
                         objDump(response['data']);
                     }

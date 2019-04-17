@@ -23,6 +23,8 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/menux.js',
+
     ];
     public $jsOptions = array(
         'position' => \yii\web\View::POS_HEAD

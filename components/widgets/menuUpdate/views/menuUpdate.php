@@ -37,12 +37,12 @@ $this->registerJs("
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-thumbs-up"></span>', [
-                'title' => 'Поднять на уровень выше',
+                'title' => 'Поднять на уровень выше - сделать меня старшим братом моего родителя',
                 'id' => 'btn_' . $menu_id . '_levelUp',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-thumbs-down"></span>', [
-                'title' => 'Опустить на уровень вниз',
+                'title' => 'Опустить на уровень вниз - сделать меня первым сыном моего младшего брата',
                 'id' => 'btn_' . $menu_id . '_levelDown',
                 'class' => 'actionBtn ',
             ]);

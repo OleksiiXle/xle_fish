@@ -171,7 +171,7 @@ class WidgetController extends Controller
     }
 
     /**
-     * !!! AJAX Удаление с потомками
+     *  AJAX Удаление с потомками
      */
     public function actionMenuxDelete()
     {
