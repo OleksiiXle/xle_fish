@@ -9,32 +9,56 @@ const ICON_CLOSE = '<span class="glyphicon glyphicon-folder-close"></span>';
 
 var MENU_TREE = {
     tree_id: null,
-    params: null,
     item_id : null,
     icon_id : null,
     li_id : null,
     ul_id : null,
     selected_id : 0,
 
-    init: function(menu_id, params){
+    init: function(menu_id){
         this.tree_id = menu_id;
-        this.params = params;
-        console.log(this.tree_id);
-        console.log(this.params);
-
         this.item_id = menu_id + '_item_';
         this.icon_id = menu_id + '_icon_';
         this.li_id   = menu_id + '_li_';
         this.ul_id   = menu_id + '_ul_';
 
         this.drawDefaultTree(this.tree_id);
-        var what = this;
+        //-- обработчики кликов на иконки и листья
+        var that = this;
         $("#" + this.tree_id).on("click", "." + ICON_CSS, function () {
-            what.clickIcon(this);
+            that.clickIcon(this);
         });
         $("#" + this.tree_id).on("click", "." + ITEM_CSS, function () {
-            what.clickItem(this);
+            that.clickItem(this);
         });
+        //-- обработчики событий на кнопки редактирования, если они есть
+        if ($("#actionButtons_" + this.tree_id).length > 0){
+            $("#btn_" + this.tree_id + '_modalOpenMenuUpdate').on("click", function () {
+                that.modalOpenMenuUpdate('update');
+            });
+            $("#btn_" + this.tree_id + '_appendChild').on("click", function () {
+                that.modalOpenMenuUpdate('appendChild');
+            });
+            $("#btn_" + this.tree_id + '_appendBrother').on("click", function () {
+                that.modalOpenMenuUpdate('appendBrother');
+            });
+            $("#btn_" + this.tree_id + '_levelUp').on("click", function () {
+                that.treeModifyAuto('levelUp');
+            });
+            $("#btn_" + this.tree_id + '_levelDown').on("click", function () {
+                that.treeModifyAuto('levelDown');
+            });
+            $("#btn_" + this.tree_id + '_moveUp').on("click", function () {
+                that.treeModifyAuto('moveUp');
+            });
+            $("#btn_" + this.tree_id + '_moveDown').on("click", function () {
+                that.treeModifyAuto('moveDown');
+            });
+            $("#btn_" + this.tree_id + '_deleteItem').on("click", function () {
+                that.deleteItem();
+            });
+
+        }
     },
 
     //-- возвращает строку для рисования наименования с закрытой иконкой, если есть потомки, если нет - без иконки
@@ -68,6 +92,24 @@ var MENU_TREE = {
             '> ' +
             data['name'] +
             '</a></li>' ;
+        return result;
+    },
+
+    //-- возвращает строку для рисования иконки
+    getIcon: function (data, state) {
+        var picture = (state === 'open') ? ICON_OPEN : ICON_CLOSE;
+        var result = '';
+        if (data['hasChildren']){
+            result = result +
+                '<a class="' + ICON_CSS + '"' +
+                ' id="' + this.icon_id + data['id'] +  '"' +
+                ' data-tree_id="' + this.tree_id + '"' +
+                ' data-id="' + data['id'] + '" ' +
+                ' data-parent_id="' + data['parent_id'] + '"' +
+                '>' +
+                picture  +
+                '</a>  ';
+        }
         return result;
     },
 
@@ -161,8 +203,8 @@ var MENU_TREE = {
     },
 
     clickItem: function (item) {
-        // alert('item');
-        //  console.log(item.dataset);
+      //  console.log(item);
+     //   alert('item ' + item.dataset.id);
         this.selectedIdChange(item.dataset.id);
     },
 
@@ -193,19 +235,276 @@ var MENU_TREE = {
         }
         return true;
     },
+
     //************************************************************************************** редактирование дерева
-    //-- открытие модального окна для редактирования
-    modalOpenDepartmentUpdate : function () {
-        var url = '/wcontroller/modal-open-menu-update?id=' + this.selected_id;
-        var title = 'Зміна даних';
-        $('#main-modal-lg').modal('show')
-            .find('#modalContent_lg')
+
+    //-- открытие модального окна для редактирования, добавления потомка, добавления соседа
+    modalOpenMenuUpdate : function (nodeAction) {
+    //    alert(this.tree_id + ' modalOpenMenuUpdate ' + this.selected_id);
+        var that = this;
+        var url = '/wcontroller/menux-modal-open-menu-update?id=' + that.selected_id + '&menu_id=' + that.tree_id + '&nodeAction=' + nodeAction;
+        $('#main-modal-md').modal('show')
+            .find('#modalContent_md')
             .load(url, function(response, status, xhr) {
                 errorHandlerModal(xhr['status'], xhr, status);
-            });
-        document.getElementById('modalHeader_lg').innerHTML = '<b>' + title + '</b>';
+            })
+            .on("click", "#btn_" + that.tree_id + '_updateForm', function () {
+                that.menuUpdate();
+            })
+    },
 
-    }
+    //-- редактирование, добавление потомка, добавление соседа снизу
+    menuUpdate: function () {
+        var that = this;
+        var node_action = $("#menux-nodeaction").val();
+        var start_node = $("#menux-node1").val();
+        var data = $("#menuMmodifyForm").serialize();
+        var new_item;
+        $.ajax({
+            url: '/wcontroller/menux-menu-update',
+            type: "POST",
+            data: data,
+            dataType: 'json',
+            beforeSend: function() {
+                // preloader('show', 'mainContainer', 0);
+            },
+            complete: function(){
+                //  preloader('hide', 'mainContainer', 0);
+            },
+            success: function(response){
+                if (response['status']) {
+                    console.log(response['data']);
+                    /*
+hasChildren: false
+id: 22
+name: "2234234"
+parent_id: "11"
+sort: 2
+                     */
+                    switch (node_action){
+                        case 'update':
+                            new_item = $("#" + that.item_id + response['data']['id'])[0];
+                            new_item.innerHTML = response['data']['name'];
+                            that.clickItem(new_item);
+                            break;
+                        case 'appendChild':
+                            var new_node_data = response['data']['newNode'];
+                            var parent_node_data = response['data']['parentNode'];
+                            var new_parent_icon = $("#" + that.icon_id + parent_node_data['id']);
+                           // console.log("#" + that.icon_id + parent_node_data['id']);
+                          //  console.log(new_parent_icon);
+                            var new_node_li = that.getItem(new_node_data);
+                            if (new_parent_icon.length > 0){
+                                //-- у нового родителя node2_id уже есть иконка
+                                if (new_parent_icon[0].innerHTML == ICON_OPEN){
+                                    //-- иконка открыта и потомки показаны
+                                    //-- найти первого ли потомка и перед ним нарисовать ли $node1_id
+                                    var parent_ul = $("#" + that.ul_id + parent_node_data['id']);
+                                    var children_li = parent_ul.find("li");
+                                    var last_li_id = children_li[children_li.length - 1].dataset.id;
+                                    $("#" + that.li_id + last_li_id).after(new_node_li);
+                                    //console.log(first_child_li);
+
+                                } else {
+                                    //-- иконка закрыта и потомки скрыты
+                                    //-- имитировать нажатие на иконку
+                                    that.clickIcon(new_parent_icon[0]);
+                                }
+
+                            } else {
+                                //-- у нового родителя node2_id еще нет иконки и нет потомков
+                                //-- вставить закрытую иконку в ли перед итемом
+                                //-- имитировать нажатие на иконку
+                                var new_parent_item = $("#" + that.item_id + parent_node_data['id']);
+                                new_parent_item.before(that.getIcon(parent_node_data, 'close'));
+                                new_parent_icon = $("#" + that.icon_id + parent_node_data['id'])[0];
+                                console.log("#" + that.icon_id + parent_node_data['id']);
+
+                                that.clickIcon(new_parent_icon);
+                            }
+
+
+
+
+
+                            break;
+                        case 'appendBrother':
+                            var brother = $("#" + that.li_id + start_node);
+                            var new_item_li = that.getItem(response['data']['newNode']);
+                            brother.after(new_item_li)  ;
+                            new_item = $("#" + that.item_id + response['data']['newNode']['id'])[0];
+                            that.clickItem(new_item);
+                            break;
+                    }
+                    $("#main-modal-md").modal("hide");
+                } else {
+                    console.log(response);
+                    objDump(response['data']);
+                }
+            },
+            error: function (jqXHR, error, errorThrown) {
+                errorHandler(jqXHR, error, errorThrown)            }
+        });
+
+    },
+
+    //-- операции без создания нового наименования
+    treeModifyAuto : function (nodeAction) {
+       // alert(this.tree_id + ' treeModifyAuto ' + nodeAction + ' ' + this.selected_id);
+        var node1_id, node2_id, node1_li, node2_li;
+        var that = this;
+        node1_id = this.selected_id;
+        node1_li = $("#" + that.li_id + node1_id);
+        console.log('node1_li:');
+        console.log(node1_li);
+        switch (nodeAction){
+            case 'moveUp':
+                //--- move up
+                node2_li = node1_li.prev("." + LI_CSS);
+                if (node2_li.length > 0 ) {
+                    node2_id = node2_li[0].dataset['id'];//-- сосед сверху
+                } else {
+                    alert('Операция не возможна');
+                    return;
+                }
+                break;
+            case 'moveDown':
+                //--- move down
+            case 'levelDown':
+                //-- сделать $node1_id из соседа сверху $node2_id - его первым потомком
+                node2_li = node1_li.next("." + LI_CSS);
+                if (node2_li.length > 0 ) {
+                    node2_id = node2_li[0].dataset['id'];//-- сосед сверху
+                } else {
+                    alert('Операция не возможна');
+                    return;
+                }
+                break;
+            case 'levelUp':
+                //-- сделать $node1_id из потомка $node2_id - его соседом сверху
+                node2_li = $("#" + that.li_id + node1_li[0].dataset['parent_id']);
+                if (node2_li.length > 0 ) {
+                    node2_id = node2_li[0].dataset['id'];//-- сосед сверху
+                } else {
+                    alert('Операция не возможна');
+                    return;
+                }
+                break;
+        }
+        $.ajax({
+            url: '/wcontroller/menux-tree-modify-auto',
+            type: "POST",
+            data: {
+                'node1_id' : node1_id,
+                'node2_id' : node2_id,
+                'nodeAction' : nodeAction,
+                '_csrf':_csrfT
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                // preloader('show', 'mainContainer', 0);
+            },
+            complete: function(){
+                //  preloader('hide', 'mainContainer', 0);
+            },
+            success: function(response){
+                if (response['status']) {
+                    console.log(response['data']);
+                    switch (nodeAction){
+                        case 'moveUp':
+                            $(node2_li).before(node1_li);
+                            break;
+                        case 'moveDown':
+                            $(node1_li).before(node2_li);
+                            break;
+                        case 'levelDown':
+                            //-- сделать $node1_id из соседа сверху $node2_id - его первым потомком
+                            var new_parent_icon = $("#" + that.icon_id + node2_id);
+                            if (new_parent_icon.length > 0){
+                                //-- у нового родителя node2_id уже есть иконка
+                                if (new_parent_icon[0].innerHTML == ICON_OPEN){
+                                    //-- иконка открыта и потомки показаны
+                                    //-- найти первого ли потомка и перед ним нарисовать ли $node1_id
+                                    var parent_ul = $("#" + UL_CSS + node2_id);
+                                    var first_child_li = parent_ul.find("li");
+                                    first_child_li.before(node1_li);
+
+                                } else {
+                                    //-- иконка закрыта и потомки скрыты
+                                    //-- имитировать нажатие на иконку
+                                    node1_li.remove();
+                                    that.clickIcon(new_parent_icon[0]);
+                                }
+
+                            } else {
+                                //-- у нового родителя node2_id еще нет иконки и нет потомков
+                                //-- вставить закрытую иконку в ли перед итемом
+                                //-- имитировать нажатие на иконку
+                                var new_parent_item = $("#" + that.item_id + node2_id);
+                                new_parent_item.before(that.getIcon(response['data']['node2']));
+                                new_parent_icon = $("#" + that.icon_id + node2_id)[0];
+                                node1_li.remove();
+                                that.clickIcon(new_parent_icon);
+                            }
+                            break;
+                        case 'levelUp':
+                            //-- сделать $node1_id из потомка $node2_id - его соседом сверху
+                            $(node2_li).before(node1_li);
+                            if (!response['data']['node2']['hasChildren']){
+                                $("#" + that.icon_id + node2_id).remove();
+                            }
+
+                            break;
+                    }
+                } else {
+                    console.log(response['data']);
+                    objDump(response['data']);
+                }
+            },
+            error: function (jqXHR, error, errorThrown) {
+                errorHandler(jqXHR, error, errorThrown)            }
+        });
+
+    },
+
+    //--удаление наименования вместе с потомками
+    deleteItem : function () {
+    //  alert(this.tree_id + ' deleteItem ' + this.selected_id);
+        if (confirm('Подтвердите удаление')){
+            var that = this;
+            $.ajax({
+                url: '/wcontroller/menux-delete',
+                type: "POST",
+                data: {
+                    '_csrf':_csrfT,
+                    'node1_id' : that.selected_id
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    // preloader('show', 'mainContainer', 0);
+                },
+                complete: function(){
+                    //  preloader('hide', 'mainContainer', 0);
+                },
+                success: function(response){
+                    if (response['status']) {
+                        $("#" + that.li_id + that.selected_id).remove();
+                        if (response['data']['node2'].length > 0 && !response['data']['node2']['hasChildren']){
+                            $("#" + that.icon_id + response['data']['node2']['id'] ).remove();
+                        }
+                    } else {
+                        objDump(response['data']);
+                    }
+                },
+                error: function (jqXHR, error, errorThrown) {
+                    errorHandler(jqXHR, error, errorThrown)            }
+            });
+
+        }
+
+    },
+
+
 
 
 };

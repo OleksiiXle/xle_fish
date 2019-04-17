@@ -4,6 +4,8 @@ namespace app\components\widgets\menuUpdate;
 
 use app\components\widgets\menuUpdate\models\MenuX;
 use yii\base\Widget;
+use yii\helpers\Url;
+use yii\web\View;
 
 class MenuUpdateWidget extends Widget
 {
@@ -20,6 +22,8 @@ class MenuUpdateWidget extends Widget
     {
         $view = $this->getView();
         MenuUpdateAssets::register($view);
+       // $url = Url::toRoute('@app/components/widgets/menuUpdate/assets/js/xtree.js');
+    //    $view->registerJsFile($url, [], $this->menu_id);
 
         return $this->render('menuUpdate',
             [

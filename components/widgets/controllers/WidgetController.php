@@ -55,10 +55,23 @@ class WidgetController extends Controller
      * @param  $id
      * @return string
      */
-    public function actionModalOpenMenuUpdate($id){
-        $model = MenuX::findOne($id);
+    public function actionMenuxModalOpenMenuUpdate($id, $menu_id, $nodeAction){
+        $r=1;
+        switch ($nodeAction){
+            case 'update':
+                $model = MenuX::findOne($id);
+                break;
+            case 'appendChild':
+            case 'appendBrother':
+                $model = new MenuX();
+                $model->node1 = $id; //-- кому добавлять потомка или брата
+                break;
+                break;
+        }
         if (isset($model)){
-            return $this->renderAjax('_form_menu', [
+            $model->menu_id = $menu_id;
+            $model->nodeAction = $nodeAction;
+            return $this->renderAjax('@app/components/widgets/menuUpdate/views/_form_menu', [
                 'model' => $model,
             ]);
         } else {
@@ -69,138 +82,43 @@ class WidgetController extends Controller
     /**
      * AJAX Сoхранение изменений после редактирования
      */
-    public function actionMenuUpdate()
+    public function actionMenuxMenuUpdate()
     {
-        $departmentData = \Yii::$app->request->post('OrderProjectDepartment');
-        $department = OrderProjectDepartment::findOne($departmentData['id']);
-        if (isset($department)){
-            // $department->checkAccessToAdiition();
-            $department->scenario = OrderProjectDepartment::SCENARIO_UPDATE_B;
-            $department->setAttributes($departmentData);
-            if ($department->saveDepartment()){ //--Behavior
-                $this->result['status'] = true;
-                $this->result['data'] = [
-                    'currentDepartment_id'       => $departmentData['id'],
-                    'departmentDataForRefresh'   => $department->departmentDataForRefresh,
-                    //             'departmentDataForRefresh'   => $department->getDataForTree(),
-                    'parentsToRefresh'           => $department->parentsToRefresh,
-                ];
-            } else {
-                $this->result['data'] = $department->getErrors();
-            }
-        }
-        return $this->asJson($this->result);
-    }
-
-    /**
-     * AJAX Клонирование делается соседом снизу текущего
-     * @param $department_id
-     * @return string
-     */
-    public function actionMenuClone()
-    {
-        $department_id = \Yii::$app->request->post('department_id');
-        if (isset($department_id)){
-            $node = OrderProjectDepartment::findOne($department_id);
-            if (isset($node)){
-                //    $node->checkAccessToAdiition();
-                $this->result = $node->cloneDepartment(); //--Behavior
-            }
-        }
-        return $this->asJson($this->result);
-    }
-
-    /**
-     * AJAX Открытие модального окна для удаления
-     * @param  $id
-     * @return string
-     */
-    public function actionModalMenuOpenDelete($department_id)
-    {
-        $model = OrderProjectDepartment::findOne($department_id);
-        if (isset($model)){
-            //        $model->checkAccessToAdiition();
-            $model->scenario = OrderProjectDepartment::SCENARIO_DELETE;
-            return $this->renderAjax('_form_department_delete_confirm', [
-                'model' => $model,
-                //  'department_id' => $department_id,
-            ]);
-        } else {
-            return 'Iнформацію не знайдено';
-        }
-    }
-
-    /**
-     * !!! AJAX Удаление с потомками
-     */
-    public function actionMenuDelete()
-    {
-        $department_id = \Yii::$app->request->post('department_id');
-        $staff_order_end_delay_str = \Yii::$app->request->post('staff_order_end_delay_str');
-        $additionalMode = \Yii::$app->request->post('additionalMode');
-        if (isset($department_id)  && isset($staff_order_end_delay_str) && isset($additionalMode)){
-            $node = OrderProjectDepartment::findOne($department_id);
-            if (isset($node)){
-                //     $node->checkAccessToAdiition();
-                $node->staff_order_end_delay_str = $staff_order_end_delay_str;
-                if (!empty($node->staff_order_end_delay_str)) {
-                    $node->staff_order_end_delay = Functions::dateToInt($node->staff_order_end_delay_str);
-                }
-                if (!$node->validate('staff_order_end_delay_str')){
-                    $this->result['data'] = $node->getErrors('staff_order_end_delay_str');
-                }  else{
-                    $this->result = $node->deleteWithChildren('delete', $additionalMode); //-- Behavior
-                }
-            }
-        }
-        return $this->asJson($this->result);
-    }
-
-    //********************************************************************* ОПЕРАЦИИ с ДЕРЕВОМ
-    /**
-     * AJAX Открытие модального окна для создания нового
-     * @param  $id
-     * @return string
-     */
-    public function actionModalOpenMenuCreate($parent_id, $mode, $staffOrder_id)
-    {
-        $model = new OrderProjectDepartment();
-        if (isset($model)){
-            $model->scenario = OrderProjectDepartment::SCENARIO_UPDATE_B;
-            $model->nodeAction = $mode;
-            $model->staff_order_id = $staffOrder_id;
-            $model->parent_id = $parent_id;
-            $model->node1 = $parent_id;
-            //       $model->checkAccessToAdiition();
-            return $this->renderAjax('_form_department', [
-                'model' => $model,
-                'id' => $parent_id,
-            ]);
-        } else {
-            return 'Iнформацію не знайдено';
-        }
-    }
-
-    /**
-     * AJAX Создание нового
-     */
-    public function actionMenuCreate()
-    {
-        $departmentData = \Yii::$app->request->post('OrderProjectDepartment');
-        if (isset($departmentData)){
-            switch ($departmentData['nodeAction']){
-                case '"appendChild"':
-                    $node = OrderProjectDepartment::findOne($departmentData['parent_id']);
-                    if (isset($node)){
-                        //     $node->checkAccessToAdiition();
-                        $this->result = $node->appendChild($departmentData); //-- Behavior
+        $r=2;
+        if ($menuData = \Yii::$app->request->post('MenuX')){
+            switch ($menuData['nodeAction']){
+                case 'update':
+                    $model = MenuX::findOne($menuData['id']);
+                    if (isset($model)){
+                        $model->setAttributes($menuData);
+                        if ($model->save()){
+                            $this->result = [
+                              'status' => true,
+                              'data' => $model->getAttributes(),
+                            ];
+                        } else {
+                            $this->result['data'] = $model->getErrors();
+                        }
                     }
                     break;
-                case '"appendBrother"':
-                    $node = OrderProjectDepartment::findOne($departmentData['node1']);
-                    if (isset($node)){
-                        //       $node->checkAccessToAdiition();
-                        $this->result = $node->appendBrother($departmentData); //-- Behavior
+                case 'appendChild':
+                    $model = MenuX::findOne($menuData['node1']);
+                    if (isset($model)){
+                        if ($model->appendChild($menuData)){
+                            $this->result = $model->result;
+                        } else {
+                            $this->result['data'] = $model->result['data'];
+                        }
+                    }
+                    break;
+                case 'appendBrother':
+                    $model = MenuX::findOne($menuData['node1']);
+                    if (isset($model)){
+                        if ($model->appendBrother($menuData)){
+                            $this->result = $model->result;
+                        } else {
+                            $this->result['data'] = $model->result['data'];
+                        }
                     }
                     break;
             }
@@ -212,45 +130,58 @@ class WidgetController extends Controller
      * AJAX Операции с деревом , не требующие ввода данных
      *
      */
-    public function actionTreeModifyAuto(){
-        $data = \Yii::$app->request->post();
-        switch ($data['mode']){
-            case 'moveUp':  //--- move up
-            case 'moveDown':  //--- move down
-                $node = OrderProjectDepartment::findOne($data['node1']);
-                if (isset($node)){
-                    //    $node->checkAccessToAdiition();
-                    $this->result = $node->exchangeSort($data['node2']); //-- Behavior
+    public function actionMenuxTreeModifyAuto(){
+        $_post = \Yii::$app->request->post();
+        $node1_id = $_post['node1_id'];
+        $node2_id = $_post['node2_id'];
+        $nodeAction = $_post['nodeAction'];
+        $node1 = MenuX::findOne($node1_id);
+        if(isset($node1)){
+            switch ($nodeAction){
+                case 'moveUp':  //--- move up
+                case 'moveDown':  //--- move down
+                    //-- поменять сортировку у $node1_id и $node2_id
+                if ($node1->exchangeSort($node2_id)){
+                    $this->result = $node1->result;
+                } else {
+                    $this->result['data'] = $node1->result['data'];
                 }
-                break;
-            case 'moveUpAdditional':  //--- move up additional
-            case 'moveDownAdditional':  //--- move down additional
-                $node = OrderProjectPosition::findOne($data['position_id']);
-                if (isset($node)){
-                    //        $node->checkAccessToAdiition();
-                    $this->result = $node->exchangeSort($data['position_id2']); //-- Behavior
-                }
-                break;
-            case 'levelUp':
-                $node = OrderProjectDepartment::findOne($data['node1']);
-                if (isset($node)){
-                    //       $node->checkAccessToAdiition();
-                    $this->result = $node->levelUp($data['node2']); //-- Behavior
-                }
-                break;
-            case 'levelDown':
-                $node = OrderProjectDepartment::findOne($data['node1']);
-                if (isset($node)){
-                    //      $node->checkAccessToAdiition();
-                    $this->result = $node->levelDown($data['node2']); //-- Behavior
-                }
-                break;
-            default:
-                $this->result['data'] = 'Щось незрозуміле прийшльо до actionTreeOperationsAuto';
-                break;
+                    break;
+                case 'levelUp':
+                    //-- сделать $node1_id из потомка $node2_id - его соседом сверху
+                    if ($node1->levelUp($node2_id)){
+                        $this->result = $node1->result;
+                    } else {
+                        $this->result['data'] = $node1->result['data'];
+                    }
+
+                    break;
+                case 'levelDown':
+                    //-- сделать $node1_id из соседа сверху $node2_id - его первым потомком
+                    if ($node1->levelDown($node2_id)){
+                        $this->result = $node1->result;
+                    } else {
+                        $this->result['data'] = $node1->result['data'];
+                    }
+                    break;
+            }
         }
+
         return $this->asJson($this->result);
     }
+
+    /**
+     * !!! AJAX Удаление с потомками
+     */
+    public function actionMenuxDelete()
+    {
+        $_post = \Yii::$app->request->post();
+        $node1_id = $_post['node1_id'];
+        $this->result = MenuX::deleteWithChildren($node1_id);
+        return $this->asJson($this->result);
+    }
+
+
 
 
 

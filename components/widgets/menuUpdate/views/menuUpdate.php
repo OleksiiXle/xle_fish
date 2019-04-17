@@ -24,44 +24,60 @@ $this->registerJs("
         </div>
     </div>
     <?php if ($params['mode'] === 'update'):?>
-        <div class="row" align="center">
+        <div id="actionButtons_<?=$menu_id;?>" class="row" align="center">
             <?php
             echo Html::button('<span class="glyphicon glyphicon-plus"></span>', [
                 'title' => 'Добавить потомка',
-                'class' => '',
-                'onclick' => 'modalOpenDepartmentCreate("appendChild");'
+                'id' => 'btn_' . $menu_id . '_appendChild',
+                'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-download-alt"></span>', [
                 'title' => 'Добавить брата вниз',
-                'class' => '',
-                'onclick' => 'modalOpenDepartmentCreate("appendBrother");'
+                'id' => 'btn_' . $menu_id . '_appendBrother',
+                'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-thumbs-up"></span>', [
                 'title' => 'Поднять на уровень выше',
-                'class' => '',
-                'onclick' => 'treeModifyAuto("levelUp");'
+                'id' => 'btn_' . $menu_id . '_levelUp',
+                'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-thumbs-down"></span>', [
                 'title' => 'Опустить на уровень вниз',
-                'class' => 'noRootAction noProjectRootAction',
-                'onclick' => 'treeModifyAuto("levelDown", 1);'
+                'id' => 'btn_' . $menu_id . '_levelDown',
+                'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-menu-up"></span>', [
                 'title' => 'Поднять в своем уровне',
-                'class' => '',
-                'onclick' => 'treeModifyAuto("moveUp");'
+                'id' => 'btn_' . $menu_id . '_moveUp',
+                'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-menu-down"></span>', [
                 'title' => 'Опустить в своем уровне',
-                'class' => '',
-                'onclick' => 'treeModifyAuto("moveDown");'
+                'id' => 'btn_' . $menu_id . '_moveDown',
+                'class' => 'actionBtn ',
             ]);
-            echo Html::button('<span class="glyphicon glyphicon-refresh"></span>', [
+            echo Html::button('<span class="glyphicon glyphicon-pencil"></span>', [
+                'title' => 'Изменить',
+                'id' => 'btn_' . $menu_id . '_modalOpenMenuUpdate',
+                'class' => 'actionBtn ',
+            ]);
+            echo Html::button('<span class="glyphicon glyphicon-trash"></span>', [
                 'title' => 'Удалить вместе с потомками',
-                'class' => '',
-                'onclick' => 'recalcDepartment(1);'
+                'id' => 'btn_' . $menu_id . '_deleteItem',
+                'class' => 'actionBtn ',
             ]);
             ?>
         </div>
+        <?php //***********************************  заготовки под модальные окна
+        yii\bootstrap\Modal::begin([
+            'headerOptions' => ['id' => 'modalHeader_md','class'=>'text-center'],
+            'id' => 'main-modal-md',
+            'size' => 'modal-md',
+            'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE],
+        ]);?>
+        <div id='modalContent_md'></div>
+        <?php yii\bootstrap\Modal::end();?>
+
+
     <?php endif;?>
 </div>

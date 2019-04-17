@@ -6,10 +6,12 @@ use \dosamigos\datepicker\DatePicker;
 
 ?>
 <?//**********************************************************************************************?>
-<?php $form = ActiveForm::begin(['id' => 'tree-modify-form']); ?>
-            <?= $form->field($model, 'node1')->hiddenInput(['value' => $id])->label(false) ?>
-            <?= $form->field($model, 'nodeAction')->textInput(['value' => $mode])->label(false) ?>
-            <?= $form->field($model, 'id')->hiddenInput()->label(false); ?>
+<?php $form = ActiveForm::begin(['id' => 'menuMmodifyForm']); ?>
+            <?= $form->field($model, 'node1')->textInput()->label('node1') ?>
+            <?= $form->field($model, 'nodeAction')->textInput()->label('nodeAction') ?>
+            <?= $form->field($model, 'menu_id')->textInput()->label('menu_id') ?>
+            <?= $form->field($model, 'id')->textInput()->label('id'); ?>
+            <?= $form->field($model, 'sort')->textInput()->label('sort'); ?>
 
 <div class="row">
     <div class="col-md-12">
@@ -24,17 +26,14 @@ use \dosamigos\datepicker\DatePicker;
     </div>
 </div>
         <div class="row" align="center">
-            <?= Html::button($model->isNewRecord ? 'Створити' : 'Зберігти зміни',
+            <?= Html::button($model->isNewRecord ? 'Создать' : 'Сохранить',
                 [
-                   'id' => 'tree-modify',
+                   'id' => 'btn_' . $model->menu_id . '_updateForm',
                    'class' => 'btn btn-primary',
-                   'onclick' =>
-                    'treeModify("menux");
-                    '
             ]); ?>
-            <?= Html::button( 'Відміна',
-                ['class' =>  'btn btn-success',
-                    'onclick' => '$("#main-modal-lg").modal("hide");'
+            <?= Html::button( 'Отмена',
+                ['class' =>  'btn btn-danger',
+                    'onclick' => '$("#main-modal-md").modal("hide");'
                 ]) ?>
 
         </div>
