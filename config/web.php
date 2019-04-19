@@ -24,15 +24,15 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+           // 'identityClass' => 'app\models\User',
+            'identityClass' => 'app\modules\adminx\models\User',
+            'loginUrl' => ['adminx/user/login'],
             'enableAutoLogin' => true,
         ],
-        /*
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
             'cache' => 'cache' //Включаем кеширование
         ],
-        */
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

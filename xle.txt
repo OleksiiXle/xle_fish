@@ -2,4 +2,7 @@
 2. Создать БД и прописать в db.php
 3. Инициализировать таблицы RBAC
      php yii migrate --migrationPath=@yii/rbac/migrations
+4. Инициализировать таблицу меню
+5. Начальные роли и разрешения
+     php yii rbac/init
 

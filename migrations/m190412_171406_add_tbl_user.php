@@ -37,6 +37,8 @@ class m190412_171406_add_tbl_user extends Migration
             'first_name' => $this->string(50)->defaultValue('')->comment('Имя'),
             'middle_name' => $this->string(50)->defaultValue('')->comment('Отчество'),
             'last_name' => $this->string(50)->defaultValue('')->comment('Фамилия'),
+            'last_rout' => $this->string(250)->defaultValue(null)->comment(''),
+            'last_rout_time' => $this->integer(11)->defaultValue(null)->comment(''),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

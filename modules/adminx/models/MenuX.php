@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components\widgets\menuUpdate\models;
+namespace app\modules\adminx\models;
 
 use yii\base\Exception;
 use yii\helpers\Html;
@@ -39,8 +39,7 @@ class MenuX extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        //    [['parent_id', 'name', 'route', 'role'], 'required'],
-            [['parent_id', 'name',], 'required'],
+            [['parent_id', 'name', 'route', 'role'], 'required'],
             [['name', 'route', 'role', ], 'string', 'min' => 3, 'max' => 255],
             [['parent_id', 'sort', ], 'integer'],
 
@@ -161,13 +160,12 @@ class MenuX extends \yii\db\ActiveRecord
             $node->setAttributes($data);
             $node->parent_id = $this->parent_id;
             $node->sort = $this->sort + 1;
-            $parentInfo = (isset($node->parent)) ? $node->parent->nodeInfo : [];
             if ($node->save()){
                 $this->result = [
                     'status' => true,
                     'data' => [
                         'newNode' => $node->nodeInfo,
-                        'parentNode' => $parentInfo,
+                        'parentNode' => $node->parent->nodeInfo,
                     ]
                 ];
                 $transaction->commit();
@@ -233,19 +231,14 @@ class MenuX extends \yii\db\ActiveRecord
     {
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            //-- найти старого родителя
-            $node2 = self::findOne($node2_id);
             //-- уменьшить сортировку у своих младших братьев
             $nodesLower = self::updateAllCounters(['sort' => -1],
-                'parent_id = ' . $this->parent_id . ' AND sort > ' . $this->sort );
-
-            //-- увеличить сортировку у младших братьев своего бывшего родителя- будующего младшего брата
-            $nodesLower = self::updateAllCounters(['sort' => 1],
-                'parent_id = ' . $node2->parent_id . ' AND sort > ' . $node2->sort );
-
+                'parent_id = ' . $this->parent_id . ' AND id <> ' . $this->id );
+            //-- найти старого родителя
+            $node2 = self::findOne($node2_id);
             $this->parent_id = $node2->parent_id;
             $this->sort = $node2->sort;
-            $node2->sort++;
+            $node2->sort = $this->getOldAttribute('sort');
             if (!$this->save()) {
                 $transaction->rollBack();
                 $this->result['data']=$this->getErrors();
@@ -282,17 +275,16 @@ class MenuX extends \yii\db\ActiveRecord
     {
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            //-- найти младшего брата - нового родителя
-            $node2 = self::findOne($node2_id);
-
-            //-- уменьшить  сортировку у своих бывших младших братьев
+            //-- увеличить сортировку у своих бывших младших братьев
             $nodesLower = self::updateAllCounters(['sort' => -1],
-                'parent_id = ' . $this->parent_id . ' AND sort > ' . $this->sort  );
+                'parent_id = ' . $this->parent_id  );
 
-            //--  увеличить сортировку у своих будующих младших братьев
-            $nodesLower = self::updateAllCounters(['sort' => 1],
-                'parent_id = ' . $node2_id );
+            //-- уменьшить сортировку у своих будующих младших братьев
+            $nodesLower = self::updateAllCounters(['sort' => -1],
+                'parent_id = ' . $node2_id  );
 
+            //-- найти старого брата - нового родителя
+            $node2 = self::findOne($node2_id);
 
             $this->parent_id = $node2_id;
             $this->sort = 1;
@@ -332,35 +324,15 @@ class MenuX extends \yii\db\ActiveRecord
             $nodeDel = self::findOne($node1_id);
             //-- увеличить сортировку у своих бывших младших братьев
             $nodesLower = self::updateAllCounters(['sort' => -1],
-                'parent_id = ' . $nodeDel->parent_id . ' AND sort > ' . $nodeDel->sort);
+                'parent_id = ' . $nodeDel->parent_id);
 
-            //-- запомнить иди родителя для обновления данных о нем в дереве
-            $parent_id = $nodeDel->parent_id;
-
-            //-- определить потомков
-            $childrenIds = [];
-            self::getChildrenIds($nodeDel->id, $childrenIds);
-            if (count($childrenIds) > 0){
-                //-- удаляем потомков
-                $childrenDelCount = self::deleteAll(['IN', 'id', $childrenIds]);
-                if ($childrenDelCount <> count($childrenIds)){
-                    $transaction->rollBack();
-                    $result['data'] = 'Не удалось удалить потомков';
-                    return $result;
-
-                }
-            }
-
-            //-- удаляем узел
+            //-- найти родителя
+            $node2 = self::findOne($nodeDel->parent_id);
             if ($nodeDel->delete() === 0) {
                 $transaction->rollBack();
-                $result['data'] = 'Не удалось удалить';
                 return $result;
             }
             $transaction->commit();
-
-            //-- если был предок - возвращаем информацию о нем
-            $node2 = self::findOne($parent_id);
             if (isset($node2)){
                 $result = [
                     'status' => true,
@@ -389,6 +361,11 @@ class MenuX extends \yii\db\ActiveRecord
     }
 
 
+
+
+
+
+
     //*****************************************************************************    ДРУГИЕ МЕТОДЫ
 
     public static function getDefaultTree()
@@ -403,42 +380,6 @@ class MenuX extends \yii\db\ActiveRecord
         }
         return $ret;
     }
-
-    /**
-     * Записывает в массив $target идентификаторы всех потомков
-     * @param $parent_id
-     * @param $target
-     * @return bool
-     */
-    public static function getChildrenIds($parent_id, &$target)
-    {
-        $children = (new \yii\db\Query)
-            ->select(['id', 'parent_id'])
-            ->from(self::tableName())
-            ->where(['parent_id' => $parent_id])
-            ->all();
-        if (count($children) > 0) {
-            foreach ($children as $child) {
-                $target[] = $child['id'];
-                self::getChildrenIds($child['id'], $target);
-            }
-            return true;
-        }
-    }
-
-    public static function getPermissionsDict() {
-        $manager = \Yii::$app->getAuthManager();
-        $result['']='';
-        $avaliableAll = array_keys($manager->getPermissions());
-        foreach ($avaliableAll as $name) {
-            if (substr($name, 0, 4) == 'menu') {
-                $result[$name] = $name;
-            }
-        }
-        return $result;
-    }
-
-
 
 
 
@@ -625,7 +566,7 @@ class MenuX extends \yii\db\ActiveRecord
      * @param $target
      * @return bool
      */
-    public static function getIds____($parent_id, &$target)
+    public static function getIds($parent_id, &$target)
     {
         //--
         $children = self::find()

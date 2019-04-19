@@ -3,6 +3,7 @@
 namespace app\components\widgets\controllers;
 
 use app\components\widgets\menuUpdate\models\MenuX;
+use app\modules\adminx\models\Route;
 use yii\web\Controller;
 
 
@@ -56,7 +57,9 @@ class WidgetController extends Controller
      * @return string
      */
     public function actionMenuxModalOpenMenuUpdate($id, $menu_id, $nodeAction){
-        $r=1;
+        $rout = new Route();
+        $routes = $rout->getAppRoutes();
+        $permissions = MenuX::getPermissionsDict();
         switch ($nodeAction){
             case 'update':
                 $model = MenuX::findOne($id);
@@ -73,6 +76,9 @@ class WidgetController extends Controller
             $model->nodeAction = $nodeAction;
             return $this->renderAjax('@app/components/widgets/menuUpdate/views/_form_menu', [
                 'model' => $model,
+                'routes' => $routes,
+                'permissions' => $permissions,
+
             ]);
         } else {
             return 'Iнформацію не знайдено';

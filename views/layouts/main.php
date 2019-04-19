@@ -40,10 +40,11 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Menu', 'url' => ['/menux/menu']],
+            ['label' => 'Menu', 'url' => ['/adminx/menux/menu']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+              //  ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => 'Login', 'url' => ['adminx/user/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')

@@ -7,21 +7,21 @@ use \dosamigos\datepicker\DatePicker;
 ?>
 <?//**********************************************************************************************?>
 <?php $form = ActiveForm::begin(['id' => 'menuMmodifyForm']); ?>
-            <?= $form->field($model, 'node1')->textInput()->label('node1') ?>
-            <?= $form->field($model, 'nodeAction')->textInput()->label('nodeAction') ?>
-            <?= $form->field($model, 'menu_id')->textInput()->label('menu_id') ?>
-            <?= $form->field($model, 'id')->textInput()->label('id'); ?>
-            <?= $form->field($model, 'sort')->textInput()->label('sort'); ?>
+            <?= $form->field($model, 'node1')->hiddenInput()->label(false) ?>
+            <?= $form->field($model, 'nodeAction')->hiddenInput()->label(false) ?>
+            <?= $form->field($model, 'menu_id')->hiddenInput()->label(false) ?>
+            <?= $form->field($model, 'id')->hiddenInput()->label(false); ?>
+            <?= $form->field($model, 'sort')->hiddenInput()->label(false); ?>
 
 <div class="row">
     <div class="col-md-12">
         <?php
-        echo $form->field($model, 'name', ['inputOptions' =>
-                    ['class' => 'form-control', 'tabindex' => '1']]);
-        echo $form->field($model, 'route', ['inputOptions' =>
-            ['class' => 'form-control', 'tabindex' => '2']]);
-        echo $form->field($model, 'role', ['inputOptions' =>
-            ['class' => 'form-control', 'tabindex' => '3']]);
+        echo $form->field($model, 'name', ['inputOptions' => ['class' => 'form-control', 'tabindex' => '1']]);
+        echo $form->field($model, 'route', ['inputOptions' => ['class' => 'form-control', 'tabindex' => '3']])
+            ->dropDownList($routes, ['options' => [ $model->route => ['Selected' => true]],]);
+        echo $form->field($model, 'role')
+            ->dropDownList($permissions,
+                ['options' => [ $model->role => ['Selected' => true]],]);
         ?>
     </div>
 </div>
