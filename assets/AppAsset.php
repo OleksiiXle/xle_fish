@@ -21,9 +21,11 @@ class AppAsset extends AssetBundle
     public $publishOptions = ['forceCopy' => true];
     public $css = [
         'css/site.css',
+        'css/xle.css',
     ];
     public $js = [
-        'js/menux.js',
+       // 'js/menux.js',
+        'js/common.js',
 
     ];
     public $jsOptions = array(

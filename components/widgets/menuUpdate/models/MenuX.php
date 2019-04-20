@@ -2,6 +2,7 @@
 
 namespace app\components\widgets\menuUpdate\models;
 
+use app\modules\adminx\models\Route;
 use yii\base\Exception;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -436,6 +437,14 @@ class MenuX extends \yii\db\ActiveRecord
             }
         }
         return $result;
+    }
+
+    public static function getRoutesDict()
+    {
+        $rout = new Route();
+        $routes = $rout->getAppRoutes();
+        return $routes;
+
     }
 
 

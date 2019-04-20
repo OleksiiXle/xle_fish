@@ -1,0 +1,40 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+?>
+
+<div class="auth-item-form">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+
+    <?= $form->field($model, 'className', ['inputOptions' =>
+             ['class' => 'form-control', 'tabindex' => '2']])
+                     ->dropDownList($rulesClasses);?>
+
+
+
+    <div class="form-group" align="center">
+        <?php
+        echo Html::submitButton($model->isNewRecord ? 'Створити' :'Зберігти', [
+            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+            'name' => 'doAction',
+            'value' => '1',
+            'style' => 'margin: 15px'
+        ]);
+
+        echo Html::submitButton('Отмена', [
+            'class' => 'btn btn-danger',
+            'name' => 'goBack',
+            'value' => '1',
+            'style' => 'margin: 15px'
+
+
+        ])
+        ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+</div>

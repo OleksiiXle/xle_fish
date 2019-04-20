@@ -1,6 +1,7 @@
 <?php
 return [
     'permissions' => [
+        'menuAll' => 'Общее меню',
         'menuAdmin' => 'Меню администрирования',
         'login' => 'Вход в систему',
         'logout' => 'Выход из системы',

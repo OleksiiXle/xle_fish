@@ -10,7 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-class SiteController extends Controller
+class SiteController extends MainController
 {
     /**
      * {@inheritdoc}
@@ -61,7 +61,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+      //  $this->layout = '@app/views/layouts/commonLayout.php';
+
         return $this->render('index');
+      //  return $this->render('index_yii');
     }
 
     /**

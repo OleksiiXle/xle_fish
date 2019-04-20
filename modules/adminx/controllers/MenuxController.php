@@ -2,20 +2,13 @@
 
 namespace app\modules\adminx\controllers;
 
+use app\controllers\MainController;
 use app\modules\adminx\models\MenuX;
 use app\modules\adminx\models\Route;
 use yii\web\Controller;
 
-class MenuxController extends Controller
+class MenuxController extends MainController
 {
-    /**
-     * Ответ, который будет возвращаться на AJAX-запросы
-     * @var array
-     */
-    public $result = [
-        'status' => false,
-        'data' => 'Информация не найдена'
-    ];
 
     public function actionMenu()
     {

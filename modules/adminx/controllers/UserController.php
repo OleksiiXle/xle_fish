@@ -3,15 +3,18 @@
 namespace app\modules\adminx\controllers;
 
 use app\components\conservation\ActiveDataProviderConserve;
+use app\controllers\MainController;
+use app\modules\adminx\models\Assignment;
 use app\modules\adminx\models\filters\UserFilter;
 use app\modules\adminx\models\form\Login;
 use app\modules\adminx\models\form\Signup;
+use app\modules\adminx\models\form\Update;
 use app\modules\adminx\models\MenuX;
 use app\modules\adminx\models\Route;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class UserController extends Controller
+class UserController extends MainController
 {
     /**
      * @inheritdoc
@@ -130,6 +133,41 @@ class UserController extends Controller
         return $this->redirect('/site/index');
     }
 
+    /**
+     * +++ Редактирование профиля пользователя
+     * @return string
+     */
+    public function actionUpdate($id)
+    {
+        $model = Update::findOne($id);
+        //  $model->scenario = User::SCENARIO_UPDATE;
+        $model->first_name = $model->userDatas->first_name;
+        $model->middle_name = $model->userDatas->middle_name;
+        $model->last_name = $model->userDatas->last_name;
 
+        $ass = new Assignment($id);
+        $assigments = $ass->getItemsXle();
+
+
+        //  if ($model->load(Yii::$app->getRequest()->post())) {
+        if (\Yii::$app->getRequest()->isPost) {
+            $data = \Yii::$app->getRequest()->post('Update');
+            $model->setAttributes($data);
+            $model->first_name = $data['first_name'];
+            $model->middle_name =  $data['middle_name'];
+            $model->last_name =  $data['last_name'];
+
+            if ($user = $model->updateUser()) {
+                return $this->redirect('/adminx/user');
+            }
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'user_id' => $id,
+            'assigments' => $assigments,
+
+        ]);
+    }
 
 }

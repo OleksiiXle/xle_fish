@@ -57,8 +57,7 @@ class WidgetController extends Controller
      * @return string
      */
     public function actionMenuxModalOpenMenuUpdate($id, $menu_id, $nodeAction){
-        $rout = new Route();
-        $routes = $rout->getAppRoutes();
+        $routes = MenuX::getRoutesDict();
         $permissions = MenuX::getPermissionsDict();
         switch ($nodeAction){
             case 'update':

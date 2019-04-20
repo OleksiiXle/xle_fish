@@ -19,7 +19,9 @@ class Route extends \yii\base\BaseObject
         } elseif (is_string($module)) {
             $module = Yii::$app->getModule($module);
         }
-        $result = [];
+        $result  = [
+            '' => 'Без роута',
+        ];
         $this->getRouteRecrusive($module, $result);
         return $result;
     }
