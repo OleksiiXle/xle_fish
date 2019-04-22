@@ -25,12 +25,15 @@ $config = [
         ],
         'user' => [
            // 'identityClass' => 'app\models\User',
+
+            'class' => 'app\components\UserX',
             'identityClass' => 'app\modules\adminx\models\User',
             'loginUrl' => ['adminx/user/login'],
             'enableAutoLogin' => true,
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+            'class' => 'app\modules\adminx\components\DbManager', // or use 'yii\rbac\DbManager'
+          //  'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
             'cache' => 'cache' //Включаем кеширование
         ],
         'errorHandler' => [

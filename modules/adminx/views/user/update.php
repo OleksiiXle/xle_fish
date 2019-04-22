@@ -84,15 +84,15 @@ $this->registerJs("
                         <div class="col-md-1 userSelect">
                             <br><br>
                             <?= Html::a('&gt;&gt;' . $animateIcon, false, [
-                                'class' => 'btn btn-success btn-assign',
-                                'data-rout' => '/adminx/assignment/assign',
+                                'class' => 'btn btn-success btn-assign actionAssign',
+                              //  'data-rout' => '/adminx/assignment/assign',
                                 'data-user_id' => $user_id,
                                 'data-target' => 'avaliablePermissions',
                                 'title' => Yii::t('rbac-admin', 'Assign')
                             ]) ?><br><br>
                             <?= Html::a('&lt;&lt;' . $animateIcon, false, [
-                                'class' => 'btn btn-danger btn-assign',
-                                'data-rout' => '/adminx/assignment/revoke',
+                                'class' => 'btn btn-danger btn-assign actionRevoke',
+                               // 'data-rout' => '/adminx/assignment/revoke',
                                 'data-user_id' => $user_id,
                                 'data-target' => 'assignedPermissions',
                                 'title' => Yii::t('rbac-admin', 'Remove')

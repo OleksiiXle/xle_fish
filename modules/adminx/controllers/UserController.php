@@ -4,22 +4,20 @@ namespace app\modules\adminx\controllers;
 
 use app\components\conservation\ActiveDataProviderConserve;
 use app\controllers\MainController;
+use app\modules\adminx\components\AccessControl;
 use app\modules\adminx\models\Assignment;
 use app\modules\adminx\models\filters\UserFilter;
 use app\modules\adminx\models\form\Login;
 use app\modules\adminx\models\form\Signup;
 use app\modules\adminx\models\form\Update;
-use app\modules\adminx\models\MenuX;
-use app\modules\adminx\models\Route;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
 
 class UserController extends MainController
 {
     /**
      * @inheritdoc
      */
-    public function behaviors(){
+    public function behaviors__(){
         return [
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -31,6 +29,52 @@ class UserController extends MainController
             ],
         ];
     }
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        /*
+        $behaviors['access'] = [
+            'class' => AccessControl::class,
+            'rules' => [
+                [
+                    'allow' => true,
+                    'actions' => ['login', 'signup'],
+                    'roles' => ['?'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['logout'],
+                    'roles' => ['@'],
+                ],
+                [
+                    'allow'      => true,
+                    'actions'    => [
+                        'index',
+                    ],
+                    'roles'      => ['adminCRUD', ],
+                ],
+            ],
+            'denyCallback' => function ($rule, $action) {
+                \yii::$app->getSession()->addFlash("warning","Действие не разрешено.");
+                return $this->redirect(\Yii::$app->request->referrer);
+
+        }
+        ];
+        */
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'delete' => ['post'],
+                'logout' => ['post'],
+                'activate' => ['post'],
+            ],
+
+        ];
+        return $behaviors;
+    }
+
 
     /**
      * +++ Список всех пользователей
@@ -168,6 +212,11 @@ class UserController extends MainController
             'assigments' => $assigments,
 
         ]);
+    }
+
+    public function actionTest()
+    {
+        return $this->render('test');
     }
 
 }

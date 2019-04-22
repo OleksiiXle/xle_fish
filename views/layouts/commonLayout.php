@@ -52,8 +52,9 @@ if (Yii::$app->session->getAllFlashes()){
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<div class="wrap___">
     <div class="container-fluid" id="mainContainer">
+
         <div class="menuX menuXleActive">
             <div class ="img-rounded">
                 <img  src="<?=\yii\helpers\Url::to('@web/images/np_logo.png');?>" height="50px" width="50px;">

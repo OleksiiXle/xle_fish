@@ -447,7 +447,7 @@ sort: 2
                                     //-- найти первого ли потомка и перед ним нарисовать ли $node1_id
                                     var parent_ul = $("#" + that.ul_id + node2_id);
                                     var first_child_li = parent_ul.find("li");
-                                    first_child_li.before(node1_li);
+                                    $(first_child_li[0]).before(node1_li);
 
                                 } else {
                                     //-- иконка закрыта и потомки скрыты

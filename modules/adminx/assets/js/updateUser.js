@@ -1,4 +1,3 @@
-$('i.glyphicon-refresh-animate').hide();
 function updateItems(r) {
     _assigments = r;
     refreshItemsX('avaliable', 'Roles');

@@ -129,8 +129,4 @@ class SiteController extends MainController
         return $this->render('about');
     }
 
-    public function actionMenu()
-    {
-        return $this->render('menuEdit');
-    }
 }

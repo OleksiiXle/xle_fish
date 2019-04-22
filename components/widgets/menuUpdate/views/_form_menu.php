@@ -16,6 +16,7 @@ use \dosamigos\datepicker\DatePicker;
 <div class="row">
     <div class="col-md-12">
         <?php
+        echo $form->field($model, 'sort', ['inputOptions' => ['class' => 'form-control', 'tabindex' => '1']]);
         echo $form->field($model, 'name', ['inputOptions' => ['class' => 'form-control', 'tabindex' => '1']]);
         echo $form->field($model, 'route', ['inputOptions' => ['class' => 'form-control', 'tabindex' => '3']])
             ->dropDownList($routes, ['options' => [ $model->route => ['Selected' => true]],]);
