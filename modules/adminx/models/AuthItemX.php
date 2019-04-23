@@ -26,7 +26,7 @@ class AuthItemX extends \yii\db\ActiveRecord
     const TYPE_All = 0;
 
     const NAME_PATTERN       = '/^[a-zA-Z0-9_\-]+$/ui'; //--маска для пароля
-    const NAME_ERROR_MESSAGE = 'Припустимі символи - латиниця, цифри - та _'; //--сообщение об ошибке
+    const NAME_ERROR_MESSAGE = 'Допустимые символы - латиница, цифры - и _'; //--сообщение об ошибке
 
     const DESCRIPTION_PATTERN       = '/^[a-zA-Z а-яА-ЯёЁЇїІіЄєҐґ0-9\-:"().,№\'_]+$/ui'; //--маска для названия компании
     const DESCRIPTION_ERROR_MESSAGE = 'Допустимые символы - буквы, цифры, пробел, кавычки, " : . , ( ) _ №" '; //--сообщение об ошибке
@@ -34,10 +34,10 @@ class AuthItemX extends \yii\db\ActiveRecord
 
 
     public static $typeDict = [
-       self::TYPE_ROLE => 'Ролі',
-       self::TYPE_PERMISSION => 'Дозвіли',
-       self::TYPE_ROUTE => 'Маршрути',
-       self::TYPE_All => 'Всі типи',
+       self::TYPE_ROLE => 'Роли',
+       self::TYPE_PERMISSION => 'Разрешения',
+      // self::TYPE_ROUTE => 'Маршрути',
+       self::TYPE_All => 'Все типы',
 
     ];
 
@@ -72,13 +72,13 @@ class AuthItemX extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => 'Найменування',
+            'name' => 'Название',
             'type' => 'Тип',
-            'description' => 'Опис',
+            'description' => 'Описание',
             'rule_name' => 'Правило',
             'data' => 'Data',
-            'created_at' => 'Створено',
-            'updated_at' => 'Змінено',
+            'created_at' => 'Создано',
+            'updated_at' => 'Изменено',
         ];
     }
 

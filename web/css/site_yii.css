@@ -1,17 +1,17 @@
 html,
-body, .wrap {
+body {
     height: 100%;
-    background: linear-gradient(to top left, lightblue, white, lightyellow) no-repeat;
 }
 
 .wrap {
+    min-height: 100%;
     height: auto;
     margin: 0 auto -60px;
+    padding: 0 0 60px;
 }
 
 .wrap > .container {
     padding: 70px 15px 20px;
-    overflow: scroll;
 }
 
 .footer {
@@ -112,13 +112,4 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
-}
-
-.top, .footer-bottom {
-    background: linear-gradient(to right, #272f33, #47565e, #272f33);
-}
-
-.footer-bottom{
-    height: 50px;
-    padding-top: 15px;
 }

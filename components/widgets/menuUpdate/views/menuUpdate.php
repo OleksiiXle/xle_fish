@@ -24,7 +24,7 @@ $this->registerJs("
         </div>
     </div>
     <?php if ($params['mode'] === 'update'):?>
-        <div id="actionButtons_<?=$menu_id;?>" class="row" align="center">
+        <div id="actionButtons_<?=$menu_id;?>" class="row" align="center" style="padding: 15px">
             <?php
             echo Html::button('<span class="glyphicon glyphicon-plus"></span>', [
                 'title' => 'Добавить потомка',

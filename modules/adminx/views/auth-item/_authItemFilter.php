@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\DictionarySearch */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="auth-item-search" >
@@ -27,7 +24,7 @@ use yii\bootstrap\ActiveForm;
         </div>
         <div class="col-md-4">
             <?php
-            echo $form->field($filter, 'name')->label('Найменування');
+            echo $form->field($filter, 'name');
             ?>
         </div>
         <div class="col-md-4">
@@ -40,7 +37,7 @@ use yii\bootstrap\ActiveForm;
     </div>
     <div class="row">
         <div class="form-group" align="center">
-            <?= Html::submitButton('Переключитися', ['class' => 'btn btn-danger']) ?>
+            <?= Html::submitButton('Переключиться', ['class' => 'btn btn-danger']) ?>
 
         </div>
     </div>

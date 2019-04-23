@@ -5,17 +5,16 @@ use \yii\widgets\Pjax;
 use \app\components\widgets\xlegrid\Xlegrid;
 
 
-$this->title = 'Користувачі';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Пользователи';
 ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6" align="left">
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h3><?= Html::encode($this->title) ?></h3>
         </div>
         <div class="col-md-6" align="right" style="padding-top: 20px">
             <?php
-            echo Html::a('Рєєстрація нового користувача', '/adminx/user/signup', [
+            echo Html::a('Новый пользователь', '/adminx/user/signup', [
                 'class' =>'btn btn-primary',
             ]);
             ?>
@@ -26,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php Pjax::begin(['id' => 'gridUsers']);
         echo Xlegrid::widget([
             'dataProvider' => $dataProvider,
-            'gridTitle' => 'Працівники',
+            'gridTitle' => 'Пользователи',
             'additionalTitle' => 'qq',
             'filterView' => '@app/modules/adminx/views/user/_filterUser',
             //-------------------------------------------
@@ -41,7 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'nameFam',
                 'nameNam',
                 'nameFat',
-                'userDirection',
                 'userRoles',
                 'lastRoutTime',
                 'lastRout',
@@ -50,7 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'delete'=>function($url, $data) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/adminx/user/delete', 'id' => $data['id'] ],
                                 [
-                                    'title' => 'Видалити',
+                                    'title' => 'Удалить',
+                                    'data-confirm' => 'Подтвердите удаление',
+                                    'data-method' => 'post',
                                 ]);
 
                         },

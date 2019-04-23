@@ -1,9 +1,9 @@
 <?php
-
 namespace app\modules\adminx\controllers;
 
 use app\components\conservation\ActiveDataProviderConserve;
 use app\controllers\MainController;
+use app\modules\adminx\components\AccessControl;
 use app\modules\adminx\models\AuthItem;
 use app\modules\adminx\models\AuthItemX;
 use app\modules\adminx\models\filters\AuthItemFilter;
@@ -14,11 +14,40 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\rbac\Item;
 
-
-
 class AuthItemController extends MainController
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['access'] = [
+            'class' => AccessControl::class,
+            'rules' => [
+                [
+                    'allow'      => true,
+                    'actions'    => [
+                        'index',
+                    ],
+                    'roles'      => ['adminView', 'adminCRUD', ],
+                ],
+                [
+                    'allow'      => true,
+                    'actions'    => [
+                        'create', 'update',  'delete', 'assign', 'revoke'
+                    ],
+                    'roles'      => ['adminCRUD', ],
+                ],
+            ],
+            'denyCallback' => function ($rule, $action) {
+                \yii::$app->getSession()->addFlash("warning","Действие запрещено.");
+                return $this->redirect(\Yii::$app->request->referrer);
 
+            }
+        ];
+        return $behaviors;
+    }
 
     public function actionIndex(){
         $dataProvider = new ActiveDataProviderConserve([

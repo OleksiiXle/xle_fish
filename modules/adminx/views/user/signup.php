@@ -4,12 +4,12 @@ use yii\bootstrap\ActiveForm;
 use \yii\helpers\Url;
 use \app\widgets\changePosDep\ChangePosDepWidget;
 
-$this->title = 'Рєєстрація нового користувача';
+$this->title = 'Регистрация';
 
 ?>
 
 <div class="container-fluid">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
     <?php $form = ActiveForm::begin([
         'id' => 'form-update',
     ]); ?>

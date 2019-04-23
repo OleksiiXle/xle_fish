@@ -31,10 +31,10 @@ $('.btn-assign').click(function () {
             data: data,
             dataType: 'json',
             beforeSend: function() {
-                // preloader('show', 'mainContainer', 0);
+                 preloader('show', 'mainContainer', 0);
             },
             complete: function(){
-                //  preloader('hide', 'mainContainer', 0);
+                  preloader('hide', 'mainContainer', 0);
             },
             success: function(response){
                 console.log(response);
@@ -55,9 +55,9 @@ function refreshItemsX() {
     var $list = $('select.list[data-target="avaliable"]');
     $list.html('');
     var groups = {
-        role: [$('<optgroup label="Ролі" class="roles">'), false],
-        permission: [$('<optgroup label="Дозвіли">'), false],
-        route: [$('<optgroup label="Маршрути">'), false],
+        role: [$('<optgroup label="Роли" class="roles">'), false],
+        permission: [$('<optgroup label="Разрешения">'), false],
+        route: [$('<optgroup label="Маршруты">'), false],
     };
     $.each(_assigments['avaliable']['Roles'], function (key, name) {
         if (_name !== name){
@@ -84,9 +84,9 @@ function refreshItemsX() {
     $list = $('select.list[data-target="assigned"]');
     $list.html('');
     var groups = {
-        role: [$('<optgroup label="Ролі">'), false],
-        permission: [$('<optgroup label="Дозвіли">'), false],
-        route: [$('<optgroup label="Маршрути">'), false],
+        role: [$('<optgroup label="Роли">'), false],
+        permission: [$('<optgroup label="Разрешения">'), false],
+        route: [$('<optgroup label="Маршруты">'), false],
     };
     $.each(_assigments['assigned']['Roles'], function (key, name) {
         if (_name !== name){

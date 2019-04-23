@@ -8,12 +8,10 @@ function clickItemFunction(tree_id, selected_id) {
             'id' : selected_id
         },
         beforeSend: function() {
-            // preloader('show', 'mainContainer', 0);
-          //  preloader('show', 'mainContainer', 0);
+             preloader('show', 'mainContainer', 0);
         },
         complete: function(){
-            // $("#preloader" + _id).hide();
-          //  preloader('hide', 'mainContainer', 0);
+            preloader('hide', 'mainContainer', 0);
         },
         success: function(response){
             $("#menuInfo").html(response);

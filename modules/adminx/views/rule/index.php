@@ -6,11 +6,10 @@ use yii\widgets\Pjax;
 
 
 $this->title = 'Правила';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="role-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
 
     <p>
         <?= Html::a('Новое правило', ['create'], ['class' => 'btn btn-success']) ?>
@@ -23,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'name',
-                'label' => 'Найменування',
+                'label' => 'Название',
             ],
             ['class' => 'yii\grid\ActionColumn',
                 'template'=>'{delete}',

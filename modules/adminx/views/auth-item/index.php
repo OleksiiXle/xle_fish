@@ -16,29 +16,25 @@ $this->registerJs("
 ");
 */
 
-$this->title = 'Дозвіли';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Разрешения';
 
 ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6" align="left">
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h3><?= Html::encode($this->title) ?></h3>
         </div>
         <div class="col-md-6" align="right" style="padding: 20px">
             <?php
-            echo Html::a('Нова роль', ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_ROLE],
+            echo Html::a('Новая роль', ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_ROLE],
                 [
                 'class' =>'btn btn-primary',
             ]);
             echo '  ';
-            echo Html::a('Новий дозвіл', ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_PERMISSION], [
+            echo Html::a('Новое разрешение', ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_PERMISSION], [
                 'class' =>'btn btn-primary',
             ]);
             echo '  ';
-            echo Html::a('Додати маршрути', '/adminx/route', [
-                'class' =>'btn btn-primary',
-            ]);
             ?>
         </div>
 
@@ -47,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php Pjax::begin(['id' => 'gridPermission']);
         echo \app\components\widgets\xlegrid\Xlegrid::widget([
             'dataProvider' => $dataProvider,
-            'gridTitle' => 'Дозвіли',
+            'gridTitle' => 'Разрешения и роли',
             'additionalTitle' => 'qq',
             'filterView' => '@app/modules/adminx/views/auth-item/_authItemFilter',
             //-------------------------------------------
@@ -57,10 +53,26 @@ $this->params['breadcrumbs'][] = $this->title;
             //-------------------------------------------
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'label'=>'Тип',
+                    'content'=>function($data){
+                        $ret = '';
+                        switch ($data->type){
+                            case AuthItemX::TYPE_ROLE:
+                                $ret = 'Роль';
+                                break;
+                            case AuthItemX::TYPE_PERMISSION:
+                                $ret = 'Разрешение';
+                                break;
+                        }
+                        return $ret;
+                    },
+                ],
+
                 'name',
                 [
                     'attribute'=>'description',
-                    'label'=>'Описання',
+                    'label'=>'Описание',
                 ],
                 [
                     'attribute'=>'rule_name',

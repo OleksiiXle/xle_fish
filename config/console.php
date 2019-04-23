@@ -18,7 +18,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+           // 'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+            'class' => 'app\modules\adminx\components\DbManager', // or use 'yii\rbac\DbManager'
             'cache' => 'cache' //Включаем кеширование
         ],
 

@@ -4,64 +4,56 @@ namespace app\modules\adminx\controllers;
 
 use app\components\conservation\ActiveDataProviderConserve;
 use app\controllers\MainController;
+use app\models\User;
 use app\modules\adminx\components\AccessControl;
 use app\modules\adminx\models\Assignment;
 use app\modules\adminx\models\filters\UserFilter;
 use app\modules\adminx\models\form\Login;
 use app\modules\adminx\models\form\Signup;
 use app\modules\adminx\models\form\Update;
+use app\modules\adminx\models\UserM;
 use yii\filters\VerbFilter;
 
 class UserController extends MainController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors__(){
-        return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['post'],
-                    'logout' => ['post'],
-                    'activate' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        /*
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['login', 'signup'],
+                    'actions' => ['login', 'signup', 'test'],
                     'roles' => ['?'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['logout'],
+                    'actions' => ['logout', ['test']],
                     'roles' => ['@'],
                 ],
                 [
                     'allow'      => true,
                     'actions'    => [
-                        'index',
+                        'index', 'php-info', 'test'
                     ],
-                    'roles'      => ['adminCRUD', ],
+                    'roles'      => ['adminView','adminCRUD' ],
+                ],
+                [
+                    'allow'      => true,
+                    'actions'    => [
+                         'signup', 'update', 'delete'
+                    ],
+                    'roles'      => ['adminView','adminCRUD' ],
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
-                \yii::$app->getSession()->addFlash("warning","Действие не разрешено.");
+                \yii::$app->getSession()->addFlash("warning","Действие запрещено");
                 return $this->redirect(\Yii::$app->request->referrer);
 
         }
         ];
-        */
 
         $behaviors['verbs'] = [
             'class' => VerbFilter::class,
@@ -214,8 +206,36 @@ class UserController extends MainController
         ]);
     }
 
+    /**
+     * +++ Удаление профиля пользователя
+     * @return string
+     */
+    public function actionDelete($id)
+    {
+        if (\Yii::$app->request->isPost){
+            $userDel = UserM::deleteAll($id);
+            if ($userDel === 0){
+                \yii::$app->getSession()->addFlash("warning","Ошибка при удалении.");
+            }
+        }
+        return $this->redirect('index');
+
+    }
+
+    public function actionPhpInfo()
+    {
+        return $this->render('phpinfo');
+    }
+
+
+
+
+
+
     public function actionTest()
     {
+        $menager = \Yii::$app->authManager;
+        $menager->invalidateCache();
         return $this->render('test');
     }
 

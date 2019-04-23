@@ -10,13 +10,15 @@ switch ($model->type){
         $this->title = 'Роль';
         break;
     case AuthItemX::TYPE_PERMISSION:
-        $this->title = 'Дозвіл';
+        $this->title = 'Разрешение';
         break;
     case AuthItemX::TYPE_ROUTE:
         $this->title = 'Маршрут';
         break;
 
 }
+$this->title .= ' ' . $model->name;
+
 
 $_assigments = \yii\helpers\Json::htmlEncode($assigments);
 $this->registerJs("
@@ -29,7 +31,7 @@ $this->registerJs("
 
 ?>
 <div class="container-fluid">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
     <?php
     $showSelects = (substr($model->name, 0,1) == '/') ? 'style= display:none;' : '';
    // echo var_dump($assigments);
@@ -43,7 +45,6 @@ $this->registerJs("
             <?= Html::errorSummary($model)?>
             <?php
             echo $form->field($model, 'type')->hiddenInput()->label(false);
-            echo $form->field($model, 'name')->textInput(['disabled' => true]);
             echo $form->field($model, 'description');
             echo $form->field($model, 'rule_name')
                 ->dropDownList(\app\modules\adminx\models\AuthItemX::getRulesList(),
@@ -51,15 +52,15 @@ $this->registerJs("
 
             ?>
             <div class="form-group" align="center">
-                <?= Html::submitButton('Зберігти', ['class' => 'btn btn-primary', 'name' => 'update-button']) ?>
-                <?= Html::a('Повернутися', '/adminx/auth-item',[
+                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'update-button']) ?>
+                <?= Html::a('Отмена', '/adminx/auth-item',[
                     'class' => 'btn btn-success', 'name' => 'reset-button'
                 ]);?>
-                <?= Html::submitButton('Видалити', [
+                <?= Html::submitButton('Удалить', [
                         'class' => 'btn btn-danger',
                          'name' => 'delete-button',
                          'value' => 'delete',
-                         'data' => ['confirm' => 'Видалити?']
+                         'data' => ['confirm' => 'Удалить?']
                 ]) ?>
 
             </div>
@@ -69,23 +70,20 @@ $this->registerJs("
             <div class="row" >
                     <h4><b>Дозвіли</b></h4>
                         <div id="authItems" <?=$showSelects;?>>
-                            <?php
-                            $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>';
-                            ?>
                             <div class="col-md-5 userSelect">
-                                <h5>Доступні</h5>
+                                <h5>Доступные</h5>
                                 <select multiple size="40" class="form-control list" data-target="avaliable"></select>
                             </div>
                             <div class="col-md-2 userSelect" align="center">
                                 <br><br>
-                                <?= Html::a('&gt;&gt;' . $animateIcon, false, [
+                                <?= Html::a('&gt;&gt;' , false, [
                                     'class' => 'btn btn-success btn-assign actionAssign',
                                     'data-rout' => '/adminx/auth-item/assign',
                                     'data-name' => $model->name,
                                     'data-target' => 'avaliable',
                                     'title' => Yii::t('rbac-admin', 'Assign')
                                 ]) ?><br><br>
-                                <?= Html::a('&lt;&lt;' . $animateIcon, false, [
+                                <?= Html::a('&lt;&lt;', false, [
                                     'class' => 'btn btn-danger btn-assign actionRevoke',
                                     'data-rout' => '/adminx/auth-item/revoke',
                                     'data-name' => $model->name,
@@ -94,7 +92,7 @@ $this->registerJs("
                                 ]) ?>
                             </div>
                             <div class="col-md-5 userSelect">
-                                <h5><b>Назначені</b></h5>
+                                <h5><b>Назначенные</b></h5>
                                 <select multiple size="40" class="form-control list" data-target="assigned"></select>
                             </div>
                         </div>

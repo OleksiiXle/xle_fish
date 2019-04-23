@@ -128,10 +128,10 @@ var MENU_TREE = {
             data: {'_csrf':_csrfT},
             dataType: 'json',
             beforeSend: function() {
-                // preloader('show', 'mainContainer', 0);
+                 preloader('show', 'mainContainer', 0);
             },
             complete: function(){
-                //  preloader('hide', 'mainContainer', 0);
+                 preloader('hide', 'mainContainer', 0);
             },
             success: function(response){
                 if (response['status']) {
@@ -166,10 +166,10 @@ var MENU_TREE = {
                     },
                     dataType: 'json',
                     beforeSend: function() {
-                        // preloader('show', 'mainContainer', 0);
+                         preloader('show', 'mainContainer', 0);
                     },
                     complete: function(){
-                        //  preloader('hide', 'mainContainer', 0);
+                          preloader('hide', 'mainContainer', 0);
                     },
                     success: function(response){
                         if (response['status']) {
@@ -280,14 +280,14 @@ var MENU_TREE = {
             data: data,
             dataType: 'json',
             beforeSend: function() {
-                // preloader('show', 'mainContainer', 0);
+                 preloader('show', 'mainContainer', 0);
             },
             complete: function(){
-                //  preloader('hide', 'mainContainer', 0);
+                  preloader('hide', 'mainContainer', 0);
             },
             success: function(response){
                 if (response['status']) {
-                    console.log(response['data']);
+                 //   console.log(response['data']);
                     /*
 hasChildren: false
 id: 22
@@ -418,10 +418,10 @@ sort: 2
             },
             dataType: 'json',
             beforeSend: function() {
-                // preloader('show', 'mainContainer', 0);
+                 preloader('show', 'mainContainer', 0);
             },
             complete: function(){
-                //  preloader('hide', 'mainContainer', 0);
+                 preloader('hide', 'mainContainer', 0);
             },
             success: function(response){
                 if (response['status']) {
@@ -503,10 +503,10 @@ sort: 2
                 },
                 dataType: 'json',
                 beforeSend: function() {
-                    // preloader('show', 'mainContainer', 0);
+                    preloader('show', 'mainContainer', 0);
                 },
                 complete: function(){
-                    //  preloader('hide', 'mainContainer', 0);
+                    preloader('hide', 'mainContainer', 0);
                 },
                 success: function(response){
                     if (response['status']) {

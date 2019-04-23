@@ -62,8 +62,7 @@ class UserM extends ActiveRecord
             ['username', 'filter', 'filter' => 'trim'],
             ['email', 'filter', 'filter' => 'trim'],
             //----------------------------------------------------------------------- ТИПЫ ДАННЫХ, РАЗМЕР
-            [['status', 'created_at', 'updated_at', 'personal_id', 'direction',
-                'time_login', 'time_logout', 'time_session_expire'], 'integer'],
+            [['status', 'created_at', 'updated_at',], 'integer'],
 
             ['rememberMe', 'boolean'],
             ['email', 'email'],

@@ -87,10 +87,10 @@ function displayFlashMessage(msg) {
     var flashMessageContent = '';
     if (flashMessage.length > 0){
         flashMessageContent += '<div class="alert alert-danger alert-dismissible">' + msg +'</div>';
-        flashMessage.show();
+        flashMessage.show('slow');
         flashMessage.html(flashMessageContent);
         setTimeout(function() {
-            flashMessage.hide();
+            flashMessage.hide('slow');
         }, 3000);
     }
 
@@ -103,11 +103,14 @@ function preloader(mode, parent, id) {
     var preloader_id = 'preloaderXle' + id;
     switch (mode) {
         case 'show':
+          //  console.log('show');
             parentDiv.append('<div id="' + preloader_id + '" class="loaderXle"></div>');
             parentDiv.removeClass('LockOff').addClass('LockOn');
             $("#" + preloader_id).removeClass('LockOn').addClass('LockOff');
             break;
         case 'hide':
+        //    console.log('hide');
+
             $("#" + preloader_id).remove();
             parentDiv.removeClass('LockOn').addClass('LockOff');
             break;

@@ -30,9 +30,9 @@ class AuthItemFilter extends Model
     {
         return [
             'type' => 'Тип',
-            'name' => 'Найменування ',
+            'name' => 'Название',
             'rule_name' => 'Правило',
-            'description' => 'Описання',
+            'description' => 'Описание',
         ];
     }
 

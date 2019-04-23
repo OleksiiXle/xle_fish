@@ -39,7 +39,7 @@ class MenuX extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'name', 'route', 'role'], 'required'],
+            [['parent_id', 'name'], 'required'],
             [['name', 'route', 'role', ], 'string', 'min' => 3, 'max' => 255],
             [['parent_id', 'sort', ], 'integer'],
 

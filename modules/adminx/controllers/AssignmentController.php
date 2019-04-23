@@ -1,53 +1,48 @@
 <?php
-
 namespace app\modules\adminx\controllers;
 
-use app\controllers\MainController;
+use app\modules\adminx\components\AccessControl;
 use Yii;
+use app\controllers\MainController;
 use app\modules\adminx\models\Assignment;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 
 class AssignmentController extends MainController
 {
-    public $userClassName;
-    public $idField = 'id';
-    public $usernameField = 'username';
-    public $fullnameField;
-    public $searchClass;
-    public $extraColumns = [];
-
-
-
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-        if ($this->userClassName === null) {
-            $this->userClassName = Yii::$app->getUser()->identityClass;
-            $this->userClassName = $this->userClassName ? : 'app\modules\adminx\models\User';
-        }
-    }
 
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'assign' => ['POST'],
-                    'revoke' => ['POST'],
+        $behaviors = parent::behaviors();
+        $behaviors['access'] = [
+            'class' => AccessControl::class,
+            'rules' => [
+                [
+                    'allow'      => true,
+                    'actions'    => [
+                        'assign', 'revoke'
+                    ],
+                    'roles'      => ['adminCRUD', ],
                 ],
             ],
+            'denyCallback' => function ($rule, $action) {
+                \yii::$app->getSession()->addFlash("warning","Действие запрещено.");
+                return $this->redirect(\Yii::$app->request->referrer);
+
+            }
         ];
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'assign' => ['POST'],
+                'revoke' => ['POST'],
+            ],
+
+        ];
+        return $behaviors;
     }
 
 
@@ -56,7 +51,7 @@ class AssignmentController extends MainController
      * @param string $id
      * @param string $type (roles, permissions, routs)
      * @param array $items
-     * @return array
+     * @return string
      */
     public function actionAssign(){
         try {
@@ -64,7 +59,6 @@ class AssignmentController extends MainController
             $items = Yii::$app->getRequest()->post('items', []);
             $model = new Assignment($id);
             $success = $model->assign($items);
-            $result = $model->getItemsXle();
 
             $this->result =[
                 'status' => true,
@@ -74,16 +68,6 @@ class AssignmentController extends MainController
             $this->result['data'] = $e->getMessage();
         }
         return $this->asJson($this->result);
-
-
-        $id    = Yii::$app->getRequest()->post('user_id', []);
-        $items = Yii::$app->getRequest()->post('items', []);
-        $model = new Assignment($id);
-        $success = $model->assign($items);
-        Yii::$app->getResponse()->format = 'json';
-        $result = $model->getItemsXle();
-        return $result;
-
     }
 
     /**
@@ -91,7 +75,7 @@ class AssignmentController extends MainController
      * @param string $id
      * @param string $type (roles, permissions, routs)
      * @param array $items
-     * @return array
+     * @return string
      */
     public function actionRevoke() {
         try {
@@ -99,7 +83,6 @@ class AssignmentController extends MainController
             $items = Yii::$app->getRequest()->post('items', []);
             $model = new Assignment($id);
             $success = $model->revoke($items);
-            $result = $model->getItemsXle();
 
             $this->result =[
                 'status' => true,
@@ -109,17 +92,6 @@ class AssignmentController extends MainController
             $this->result['data'] = $e->getMessage();
         }
         return $this->asJson($this->result);
-
-
-
-        $id    = Yii::$app->getRequest()->post('user_id', []);
-        $items = Yii::$app->getRequest()->post('items', []);
-        $model = new Assignment($id);
-        $success = $model->revoke($items);
-        Yii::$app->getResponse()->format = 'json';
-        $result = $model->getItemsXle();
-
-        return $result;
     }
 
 }

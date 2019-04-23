@@ -52,7 +52,7 @@ if (Yii::$app->session->getAllFlashes()){
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap___">
+<div class="wrap">
     <div class="container-fluid" id="mainContainer">
 
         <div class="menuX menuXleActive">
@@ -93,9 +93,6 @@ if (Yii::$app->session->getAllFlashes()){
             </div>
         </div>
     </div>
-</div>
-<div class="footerX">
-    <p class="pull-left">&copy; Lokoko inc. LTD 2019 - <?= date('Y') ?></p>
 </div>
 
 

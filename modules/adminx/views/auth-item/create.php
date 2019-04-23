@@ -10,7 +10,7 @@ switch ($model->type){
         $this->title = 'Роль';
         break;
     case AuthItemX::TYPE_PERMISSION:
-        $this->title = 'Дозвіл';
+        $this->title = 'Разрешение';
         break;
     case AuthItemX::TYPE_ROUTE:
         $this->title = 'Маршрут';
@@ -29,7 +29,7 @@ $this->registerJs($this->render('_scriptUpdate.js'));
 ?>
 
 <div class="container-fluid">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
     <?php
   //  echo var_dump($availableRoles);
    // echo var_dump($allRoles);
@@ -49,8 +49,8 @@ $this->registerJs($this->render('_scriptUpdate.js'));
 
         ?>
         <div class="form-group" align="center">
-            <?= Html::submitButton('Створити', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-            <?= Html::a('Відміна', '/adminx/auth-item',[
+            <?= Html::submitButton('Создать', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            <?= Html::a('Отмена', '/adminx/auth-item',[
                 'class' => 'btn btn-danger', 'name' => 'reset-button'
             ]);?>
         </div>

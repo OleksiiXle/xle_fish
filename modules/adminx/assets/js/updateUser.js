@@ -59,10 +59,10 @@ $(document).ready ( function(){
                 data: data,
                 dataType: 'json',
                 beforeSend: function() {
-                    // preloader('show', 'mainContainer', 0);
+                     preloader('show', 'mainContainer', 0);
                 },
                 complete: function(){
-                    //  preloader('hide', 'mainContainer', 0);
+                      preloader('hide', 'mainContainer', 0);
                 },
                 success: function(response){
                     if (response['status']) {
