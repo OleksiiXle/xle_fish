@@ -40,7 +40,6 @@ class UserM extends ActiveRecord
     private $_time_login_str;
     private $_time_logout_str;
     private $_time_session_expire_str;
-    private $_userDirection;
     private $_userRoles;
     private $_lastRout;
     private $_lastRoutTime;
@@ -98,31 +97,26 @@ class UserM extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Логін',
-            'first_name' => 'Імя',
-            'middle_name' => 'По батькові',
-            'last_name' => 'Прізвище',
-            'auth_key' => 'Ключ авторізації',
+            'username' => 'Логин',
+            'first_name' => 'Имя',
+            'middle_name' => 'Отчество',
+            'last_name' => 'Фамилия',
+            'auth_key' => 'Ключ авторизации',
             'password' => 'Пароль',
             'password_hash' => 'Пароль',
             'oldPassword' => 'Старий пароль',
-            'retypePassword' => 'Підтвердждення паролю',
-            'password_reset_token' => 'Токен збросу паролю',
+            'retypePassword' => 'Подтверждение пароля',
+            'password_reset_token' => 'Токен зброса пароля',
             'email' => 'Email',
             'status' => 'Status',
-            'created_at_str' => 'Створений',
-            'updated_at_str' => 'Змінений',
-            'time_login_str' => 'Увійшов',
-            'time_logout_str' => 'Вийшов',
-            'time_session_expire_str' => 'Час останньої дії',
-            'direction' => 'Напрямок діяльності',
-            'lastRoutTime' => 'Остання активність',
-            'lastRout' => 'Останній роут',
-            'nameFam' => 'Прізвище',
-            'nameNam' => 'Імя',
-            'nameFat' => 'По батькові',
-            'userDirection' => 'Напрямок діяльності',
-            'userRoles' => 'Ролі',
+            'created_at_str' => 'Создан',
+            'updated_at_str' => 'Изменен',
+            'lastRoutTime' => 'Последняя активность',
+            'lastRout' => 'Последний роут',
+            'nameFam' => 'Фамилия',
+            'nameNam' => 'Имя',
+            'nameFat' => 'Отчество',
+            'userRoles' => 'Роли',
         ];
     }
 
@@ -215,14 +209,6 @@ class UserM extends ActiveRecord
         return $this->_time_session_expire_str;
     }
 
-    public function getUserDirection()
-    {
-        $this->_userDirection = 'Не визначено';
-        if (isset($this->userDatas->userDirection)){
-            return $this->_userDirection = $this->userDatas->userDirection;
-        }
-        return $this->_userDirection;
-    }
 
     public function getUserRoles()
     {
@@ -237,57 +223,7 @@ class UserM extends ActiveRecord
     }
 
 
-    //---------------------------------------------------------------------------------------- TODO переделать
-    /**
-     * Корневые подразделения,которые доступны пользователю
-     * @return mixed
-     */
-    public function getRootDepartments()
-    {
-        $rootDepartments = [];
-        if (isset($this->userDepartments)){
-            foreach ($this->userDepartments as $department){
-                // $rootDepartments[] = $department['department_id'];
-                $rootDepartments[$department['department_id']] = [
-                    'can_department' => $department['can_department'],
-                    'can_position' => $department['can_position'],
-                    'can_personal' => $department['can_personal'],
-                ];
-            }
-        }
-        return $rootDepartments;
-    }
 
-    /**
-     * Подразделения,которые доступны пользователю (все)
-     * @return mixed
-     */
-    public function getDepartmentsAvailable()
-    {
-        $departmentsAvailable = [];
-        if (isset($this->userDepartments)){
-            foreach ($this->userDepartments as $department){
-                $departmentsAvailable[] = $department['department_id'];
-                DepartmentCommon::getIds($department['department_id'],$departmentsAvailable);
-                //--TODO ******** КОСТЫЛЬ - надо подумать
-
-                $node = Yii::$app->db->createCommand("SELECT id, parent_id FROM department WHERE id=" . $department['department_id'] . ";")
-                    ->queryOne();
-                if ($node){
-                    $pid = $node['parent_id'];
-                    do{
-                        $parent = Yii::$app->db->createCommand("SELECT id, parent_id FROM department WHERE id=$pid;")
-                            ->queryOne();
-                        if ($parent){
-                            $departmentsAvailable[] = $parent['id'];
-                            $pid = $parent['parent_id'];
-                        }
-                    } while($parent);
-                }
-            }
-        }
-        return $departmentsAvailable;
-    }
 
 //********************************************************************************* МЕДОТЫ АВТОРИЗАЦИИ И АУТЕНТИФИКАЦИИ
     /**
@@ -371,7 +307,7 @@ class UserM extends ActiveRecord
     }
 
     /**
-     * Finds user for reset password
+     * +++ Finds user for reset password
      *
      * @param string $data
      * @return static|null

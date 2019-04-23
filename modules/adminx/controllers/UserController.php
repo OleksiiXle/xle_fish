@@ -8,11 +8,17 @@ use app\models\User;
 use app\modules\adminx\components\AccessControl;
 use app\modules\adminx\models\Assignment;
 use app\modules\adminx\models\filters\UserFilter;
+use app\modules\adminx\models\form\ChangePassword;
+use app\modules\adminx\models\form\ForgetPassword;
 use app\modules\adminx\models\form\Login;
+use app\modules\adminx\models\form\PasswordResetRequestForm;
+use app\modules\adminx\models\form\ResetPasswordForm;
 use app\modules\adminx\models\form\Signup;
 use app\modules\adminx\models\form\Update;
 use app\modules\adminx\models\UserM;
+use yii\base\InvalidParamException;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 
 class UserController extends MainController
 {
@@ -25,12 +31,12 @@ class UserController extends MainController
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['login', 'signup', 'test'],
+                    'actions' => ['login', 'signup', 'test', 'request-password-reset', 'reset-password'],
                     'roles' => ['?'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['logout', ['test']],
+                    'actions' => ['logout', 'test', 'change-password', 'update-profile'],
                     'roles' => ['@'],
                 ],
                 [
@@ -170,7 +176,7 @@ class UserController extends MainController
     }
 
     /**
-     * +++ Редактирование профиля пользователя
+     * +++ Редактирование профиля пользователя администратором
      * @return string
      */
     public function actionUpdate($id)
@@ -207,6 +213,44 @@ class UserController extends MainController
     }
 
     /**
+     * +++ Редактирование профиля пользователя пользователем
+     * @return string
+     */
+    public function actionUpdateProfile()
+    {
+        $id = \Yii::$app->user->getId();
+        if (!empty($id)){
+            $model = Update::findOne($id);
+            //  $model->scenario = User::SCENARIO_UPDATE;
+            $model->first_name = $model->userDatas->first_name;
+            $model->middle_name = $model->userDatas->middle_name;
+            $model->last_name = $model->userDatas->last_name;
+
+            if (\Yii::$app->getRequest()->isPost) {
+                $data = \Yii::$app->getRequest()->post('Update');
+                $model->setAttributes($data);
+                $model->first_name = $data['first_name'];
+                $model->middle_name =  $data['middle_name'];
+                $model->last_name =  $data['last_name'];
+
+                if ($user = $model->updateUser()) {
+                    return $this->goHome();
+                }
+            }
+
+            return $this->render('updateProfile', [
+                'model' => $model,
+                'user_id' => $id,
+
+            ]);
+        } else {
+            \yii::$app->getSession()->addFlash("warning","Неверный ИД пользователя");
+            return $this->redirect(\Yii::$app->request->referrer);
+
+        }
+    }
+
+    /**
      * +++ Удаление профиля пользователя
      * @return string
      */
@@ -221,6 +265,110 @@ class UserController extends MainController
         return $this->redirect('index');
 
     }
+
+    /**
+     * Change password
+     * @return string
+     */
+    public function actionChangePassword()
+    {
+        $model = new ChangePassword();
+        if ($model->load(\Yii::$app->getRequest()->post()) && $model->change()) {
+            return $this->goHome();
+        }
+        return $this->render('changePassword', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * ----- Set new password
+     * @return string
+     */
+    public function actionForgetPassword()
+    {
+
+        $model = new ForgetPassword();
+
+        if ($model->load(\Yii::$app->getRequest()->post()) && $model->validate()) {// && $model->forgetPassword()
+            $res = $model->forgetPassword();
+
+            if(!$res){
+                \Yii::$app->getSession()->setFlash('warning', 'Ошибка');
+                return $this->goHome();
+            }elseif($res){
+                \Yii::$app->getSession()->setFlash('success', 'Новый пароль отправлен Вам электронной почтой');
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('forgetPassword', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     */
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                \Yii::$app->session->setFlash('success', 'Вам отправлено сообщение');
+            } else {
+                \Yii::$app->session->setFlash('error', 'Не удалось сбросить пароль с помощью Email.');
+            }
+            return $this->goHome();
+        }
+
+        return $this->render('passwordResetRequest', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            \Yii::$app->session->setFlash('success', 'New password was saved.');
+            return $this->goHome();
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,]);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function actionPhpInfo()
     {
