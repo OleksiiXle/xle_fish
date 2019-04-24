@@ -14,7 +14,7 @@ $this->title = 'Пользователи';
         </div>
         <div class="col-md-6" align="right" style="padding-top: 20px">
             <?php
-            echo Html::a('Новый пользователь', '/adminx/user/signup', [
+            echo Html::a('Новый пользователь', '/adminx/user/signup-by-admin', [
                 'class' =>'btn btn-primary',
             ]);
             ?>

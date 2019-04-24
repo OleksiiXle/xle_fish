@@ -14,6 +14,7 @@ use app\modules\adminx\models\form\Login;
 use app\modules\adminx\models\form\PasswordResetRequestForm;
 use app\modules\adminx\models\form\ResetPasswordForm;
 use app\modules\adminx\models\form\Signup;
+use app\modules\adminx\models\form\SignupService;
 use app\modules\adminx\models\form\Update;
 use app\modules\adminx\models\UserM;
 use yii\base\InvalidParamException;
@@ -31,7 +32,7 @@ class UserController extends MainController
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['login', 'signup', 'test', 'request-password-reset', 'reset-password'],
+                    'actions' => ['login', 'signup', 'signup-confirm', 'test', 'request-password-reset', 'reset-password'],
                     'roles' => ['?'],
                 ],
                 [
@@ -49,9 +50,9 @@ class UserController extends MainController
                 [
                     'allow'      => true,
                     'actions'    => [
-                         'signup', 'update', 'delete'
+                         'signup-by-admin', 'update', 'delete'
                     ],
-                    'roles'      => ['adminView','adminCRUD' ],
+                    'roles'      => ['adminCRUD' ],
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
@@ -124,7 +125,7 @@ class UserController extends MainController
      * +++ Регистрация нового пользователя Администратором
      * @return string
      */
-    public function actionSignup()
+    public function actionSignupByAdmin()
     {
         $model = new Signup();
         //  $model = new User();
@@ -137,7 +138,7 @@ class UserController extends MainController
             $model->middle_name =  $data['middle_name'];
             $model->last_name =  $data['last_name'];
 
-            if ($user = $model->signup()) {
+            if ($model->signup(false)) {
                 return $this->redirect(['/site/index']);
             }
         }
@@ -145,6 +146,50 @@ class UserController extends MainController
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * +++ Регистрация нового пользователя с подтверждением Емейла
+     * @return string
+     */
+    public function actionSignup()
+    {
+        $model = new Signup();
+        if (\Yii::$app->getRequest()->isPost) {
+            $data = \Yii::$app->getRequest()->post('Signup');
+            $model->setAttributes($data);
+            $model->first_name = $data['first_name'];
+            $model->middle_name =  $data['middle_name'];
+            $model->last_name =  $data['last_name'];
+
+            if ($user = $model->signup(true)) {
+                \Yii::$app->session->setFlash('success', 'Check your email to confirm the registration.');
+                return $this->goHome();
+            } else {
+                \Yii::$app->session->setFlash('error', 'Ошибка отправки токена');
+            }
+        }
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * +++ Подтверждение регистрации по токену
+     * @return string
+     */
+    public function actionSignupConfirm($token)
+    {
+        $signupService = new Signup();
+
+        try{
+            $signupService->confirmation($token);
+            \Yii::$app->session->setFlash('success', 'You have successfully confirmed your registration.');
+        } catch (\Exception $e){
+            \Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        return $this->goHome();
     }
 
     /**
@@ -302,7 +347,7 @@ class UserController extends MainController
     }
 
     /**
-     * Requests password reset.
+     * Запрос на смену пароля через Емейл
      *
      * @return mixed
      */
@@ -325,7 +370,7 @@ class UserController extends MainController
     }
 
     /**
-     * Resets password.
+     * Смена пароля по токену из Емейла
      *
      * @param string $token
      * @return mixed

@@ -14,6 +14,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
     const STATUS_WAIT = 5;
     const PASSWORD_RESET_TOKEN_EXPIRE = 3600;
+    const DEFAULT_ROLE = 'user';
 
     private $_user = false;
 
@@ -36,7 +37,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_WAIT]],
         ];
     }
 

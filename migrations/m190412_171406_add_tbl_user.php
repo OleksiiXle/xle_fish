@@ -23,7 +23,8 @@ class m190412_171406_add_tbl_user extends Migration
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string(),
             'email' => $this->string()->notNull(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'email_confirm_token' => $this->string()->unique(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
