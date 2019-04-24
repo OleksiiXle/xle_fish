@@ -45,6 +45,7 @@ class Login extends UserM
      */
     public function login()
     {
+        $r=1;
         if ($this->validate()) {
             $ret = Yii::$app->getUser()->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
             //-- запись в сессию корневых подразделений, доступных пользователю и их потомков с предварительной их очисткой

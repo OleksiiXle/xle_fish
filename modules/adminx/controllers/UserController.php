@@ -181,11 +181,8 @@ class UserController extends MainController
      */
     public function actionUpdate($id)
     {
-        $model = Update::findOne($id);
+        $model = UserM::findOne($id);
         //  $model->scenario = User::SCENARIO_UPDATE;
-        $model->first_name = $model->userDatas->first_name;
-        $model->middle_name = $model->userDatas->middle_name;
-        $model->last_name = $model->userDatas->last_name;
 
         $ass = new Assignment($id);
         $assigments = $ass->getItemsXle();
@@ -193,13 +190,10 @@ class UserController extends MainController
 
         //  if ($model->load(Yii::$app->getRequest()->post())) {
         if (\Yii::$app->getRequest()->isPost) {
-            $data = \Yii::$app->getRequest()->post('Update');
+            $data = \Yii::$app->getRequest()->post('UserM');
             $model->setAttributes($data);
-            $model->first_name = $data['first_name'];
-            $model->middle_name =  $data['middle_name'];
-            $model->last_name =  $data['last_name'];
 
-            if ($user = $model->updateUser()) {
+            if ($model->save()) {
                 return $this->redirect('/adminx/user');
             }
         }
@@ -353,6 +347,8 @@ class UserController extends MainController
         return $this->render('resetPassword', [
             'model' => $model,]);
       }
+
+
 
 
 

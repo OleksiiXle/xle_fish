@@ -6,6 +6,7 @@ use app\modules\adminx\models\UserData;
 
 
 /**
+ * @deprecated
  * Update form
  */
 class Update extends UserM
@@ -20,11 +21,14 @@ class Update extends UserM
     public function rules()
     {
         return [
+            [['status', ], 'integer'],
+/*
             [['username' , 'email'], 'required'],
             [['first_name', 'middle_name', 'last_name',
                 'email', ], 'string', 'max' => 255],
             [['first_name', 'middle_name', 'last_name'],  'match', 'pattern' => self::USER_NAME_PATTERN,
                 'message' => self::USER_NAME_ERROR_MESSAGE],
+*/
 
         ];
     }
@@ -36,10 +40,7 @@ class Update extends UserM
     {
         if ($this->validate()) {
             $user = self::findOne($this->id);
-            $user->email = $this->email;
-            $user->first_name = $this->first_name;
-            $user->middle_name = $this->middle_name;
-            $user->last_name = $this->last_name;
+            $user->status = $this->status;
 
             if ($user->save()) {
                 $userData = UserData::findOne(['user_id' => $this->id]);

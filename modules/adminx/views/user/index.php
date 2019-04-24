@@ -41,6 +41,14 @@ $this->title = 'Пользователи';
                 'nameNam',
                 'nameFat',
                 'userRoles',
+                'email',
+                [
+                    'label'=>'Статус',
+                    'content'=>function($data){
+                        return \app\modules\adminx\models\UserM::STATUS_DICT[$data->status];
+                    },
+                ],
+
                 'lastRoutTime',
                 'lastRout',
                 ['class' => 'yii\grid\ActionColumn',

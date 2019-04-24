@@ -12,6 +12,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
+    const STATUS_WAIT = 5;
     const PASSWORD_RESET_TOKEN_EXPIRE = 3600;
 
     private $_user = false;
@@ -80,7 +81,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username]);
+      //  return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**

@@ -22,9 +22,12 @@ $this->registerJs("
             ]); ?>
             <?= Html::errorSummary($model)?>
             <?php
-            echo $form->field($model, 'last_name');
-            echo $form->field($model, 'first_name');
-            echo $form->field($model, 'middle_name');
+            echo $form->field($model, 'status', ['inputOptions' =>
+                ['class' => 'form-control', 'tabindex' => '1']])
+                ->dropDownList(\app\modules\adminx\models\UserM::STATUS_DICT,
+                    ['options' => [ $model->status => ['Selected' => true]],])->label('Статус') ;
+           // echo $form->field($model, 'first_name');
+           // echo $form->field($model, 'middle_name');
             ?>
             <div class="form-group" align="center">
                 <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

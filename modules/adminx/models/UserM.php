@@ -13,7 +13,15 @@ use yii\db\ActiveRecord;
 class UserM extends ActiveRecord
 {
     const STATUS_INACTIVE = 0;
+    const STATUS_WAIT = 5;
     const STATUS_ACTIVE = 10;
+
+    const STATUS_DICT = [
+      self::STATUS_INACTIVE => 'Не активный',
+      self::STATUS_WAIT => 'Ожидает подтверждения',
+      self::STATUS_ACTIVE => 'Активный',
+    ];
+
 
     const USER_NAME_PATTERN           = '/^[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+([-]?[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+)?$/u'; //--маска для нимени
     const USER_NAME_ERROR_MESSAGE     = 'Використовуйте українські літери, починаючи із великої. 
@@ -86,7 +94,7 @@ class UserM extends ActiveRecord
 
 
             [['status'], 'default', 'value' => self::STATUS_ACTIVE],
-            [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
+            [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_WAIT]],
         ];
     }
 
@@ -238,7 +246,9 @@ class UserM extends ActiveRecord
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Неверный логин или пароль');
+            } elseif ($user->status != self::STATUS_ACTIVE) {
+                $this->addError($attribute, 'Ваш статус - ' . self::STATUS_DICT[$user->status]);
             }
         }
     }
