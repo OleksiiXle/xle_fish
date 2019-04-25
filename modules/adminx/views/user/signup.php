@@ -36,6 +36,10 @@ $this->title = 'Регистрация';
                     echo $form->field($model, 'username');
                     echo $form->field($model, 'password');//->passwordInput();
                     echo $form->field($model, 'retypePassword');//->passwordInput();
+                    echo $form->field($model, 'reCaptcha')->widget(
+                        \himiklab\yii2\recaptcha\ReCaptcha::className(),
+                        ['siteKey' => '6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp']
+                    )->label(false);
                     ?>
                 </div>
             </div>

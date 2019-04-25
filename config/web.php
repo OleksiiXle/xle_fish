@@ -79,6 +79,12 @@ $config = [
         'conservation' => [
             'class' => 'app\components\conservation\ConservationComponent',
         ],
+        'reCaptcha' => [
+            'name' => 'reCaptcha',
+            'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
+            'siteKey' => '6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp',
+            'secret' => '6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49-',
+        ],
     ],
     'modules' => [
         'adminx' => [

@@ -5,3 +5,7 @@
 5. Начальные роли и разрешения Инициализировать таблицу меню
      php yii rbac/init
 
+recapcha
+6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp  ключ сайта
+
+6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49- секретный ключ

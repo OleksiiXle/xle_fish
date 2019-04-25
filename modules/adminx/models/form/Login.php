@@ -17,7 +17,8 @@ class Login extends UserM
     public $username;
     public $password;
     public $rememberMe = true;
-    
+    public $reCaptcha;
+
 
     /**
      * @inheritdoc
@@ -34,6 +35,7 @@ class Login extends UserM
 
             ['rememberMe', 'boolean'],
             ['password', 'validatePassword'],
+            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(), 'secret' => '6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49-']
         ];
     }
 
