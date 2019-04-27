@@ -29,7 +29,7 @@ $config = [
             'class' => 'app\components\UserX',
             'identityClass' => 'app\modules\adminx\models\User',
             'loginUrl' => ['adminx/user/login'],
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
         ],
         'authManager' => [
             'class' => 'app\modules\adminx\components\DbManager', // or use 'yii\rbac\DbManager'

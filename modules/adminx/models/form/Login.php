@@ -16,7 +16,7 @@ class Login extends UserM
 
     public $username;
     public $password;
-    public $rememberMe = true;
+    public $rememberMe = false;
     public $reCaptcha;
 
 

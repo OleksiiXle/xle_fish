@@ -11,7 +11,7 @@ use yii\bootstrap\ActiveForm;
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
                 <?= $form->field($model, 'username')->label('Логин') ?>
                 <?= $form->field($model, 'password')->passwordInput()->label('Пароль') ?>
-                <?= $form->field($model, 'rememberMe')->checkbox()->label(false)->hiddenInput() ?>
+                <?= $form->field($model, 'rememberMe')->checkbox()->label('Запомнить меня') ?>
             <?= $form->field($model, 'reCaptcha')->widget(
                 \himiklab\yii2\recaptcha\ReCaptcha::className(),
                 ['siteKey' => '6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp']

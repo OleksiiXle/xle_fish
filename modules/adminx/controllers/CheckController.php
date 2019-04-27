@@ -7,6 +7,8 @@ use app\controllers\MainController;
 use app\models\User;
 use app\modules\adminx\components\AccessControl;
 use app\modules\adminx\models\Assignment;
+use app\modules\adminx\models\filters\UControlFilter;
+use app\modules\adminx\models\filters\UserActivityFilter;
 use app\modules\adminx\models\filters\UserFilter;
 use app\modules\adminx\models\form\ChangePassword;
 use app\modules\adminx\models\form\ForgetPassword;
@@ -21,7 +23,7 @@ use yii\base\InvalidParamException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 
-class UserController extends MainController
+class CheckController extends MainController
 {
 
     public function behaviors()
@@ -31,48 +33,54 @@ class UserController extends MainController
             'class' => AccessControl::class,
             'rules' => [
                 [
-                    'allow' => true,
-                    'actions' => ['login', 'signup', 'signup-confirm', 'test', 'request-password-reset', 'reset-password'],
-                    'roles' => ['?'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['logout', 'test', 'change-password', 'update-profile'],
-                    'roles' => ['@'],
-                ],
-                [
                     'allow'      => true,
                     'actions'    => [
-                        'index', 'php-info', 'test'
-                    ],
-                    'roles'      => ['adminView','adminCRUD' ],
-                ],
-                [
-                    'allow'      => true,
-                    'actions'    => [
-                         'signup-by-admin', 'update', 'delete'
+                        'guest-control', 'user-control',
                     ],
                     'roles'      => ['adminCRUD' ],
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
-                \yii::$app->getSession()->addFlash("warning","Действие запрещено");
+                \yii::$app->getSession()->addFlash("warning","Действие запрещено " . $action->id);
                 return $this->redirect(\Yii::$app->request->referrer);
 
         }
         ];
-
-        $behaviors['verbs'] = [
-            'class' => VerbFilter::class,
-            'actions' => [
-                'delete' => ['post'],
-                'logout' => ['post'],
-                'activate' => ['post'],
-            ],
-
-        ];
         return $behaviors;
     }
+
+    public function actionUserControl()
+    {
+        $dataProvider = new ActiveDataProviderConserve([
+            'filterModelClass' => UserActivityFilter::class,
+            'conserveName' => 'userActivityGrid',
+            'pageSize' => 20,
+        ]);
+
+        return $this->render('usersGrid',[
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    public function actionGuestControl()
+    {
+        $dataProvider = new ActiveDataProviderConserve([
+            'filterModelClass' => UControlFilter::class,
+            'conserveName' => 'userAdminGrid',
+            'pageSize' => 15,
+        ]);
+        return $this->render('guestsGrid',[
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
+
+
+
+
+
 
 
     /**
@@ -200,6 +208,8 @@ class UserController extends MainController
     {
         $model = new Login();
         if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
+            $query = 'SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode, "ONLY_FULL_GROUP_BY,", ""))';
+            \Yii::$app->db->createCommand($query)->execute();
             return $this->goBack();
         } else {
             return $this->render('login', [
