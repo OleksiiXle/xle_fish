@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-$this->title = 'Изменение профиля';
+$this->title = \Yii::t('app', 'Профиль');
 ?>
 
 <div class="container-fluid">
@@ -19,8 +19,8 @@ $this->title = 'Изменение профиля';
             echo $form->field($model, 'email');
             ?>
             <div class="form-group" align="center">
-                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                <?= Html::a('Отмена', '/site/index',[
+                <?= Html::submitButton(\Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <?= Html::a(\Yii::t('app', 'Отмена'), '/site/index',[
                     'class' => 'btn btn-danger', 'name' => 'reset-button'
                 ]);?>
             </div>

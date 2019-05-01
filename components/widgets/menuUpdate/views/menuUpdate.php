@@ -27,42 +27,42 @@ $this->registerJs("
         <div id="actionButtons_<?=$menu_id;?>" class="row" align="center" style="padding: 15px">
             <?php
             echo Html::button('<span class="glyphicon glyphicon-plus"></span>', [
-                'title' => 'Добавить потомка',
+                'title' => \Yii::t('app', 'Добавить потомка'),
                 'id' => 'btn_' . $menu_id . '_appendChild',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-download-alt"></span>', [
-                'title' => 'Добавить брата вниз',
+                'title' => \Yii::t('app', 'Добавить брата вниз'),
                 'id' => 'btn_' . $menu_id . '_appendBrother',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-thumbs-up"></span>', [
-                'title' => 'Поднять на уровень выше - сделать меня старшим братом моего родителя',
+                'title' => \Yii::t('app', 'Поднять на уровень выше - сделать меня старшим братом моего родителя'),
                 'id' => 'btn_' . $menu_id . '_levelUp',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-thumbs-down"></span>', [
-                'title' => 'Опустить на уровень вниз - сделать меня первым сыном моего младшего брата',
+                'title' => \Yii::t('app', 'Опустить на уровень вниз - сделать меня первым сыном моего младшего брата'),
                 'id' => 'btn_' . $menu_id . '_levelDown',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-menu-up"></span>', [
-                'title' => 'Поднять в своем уровне',
+                'title' => \Yii::t('app', 'Поднять в своем уровне'),
                 'id' => 'btn_' . $menu_id . '_moveUp',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-menu-down"></span>', [
-                'title' => 'Опустить в своем уровне',
+                'title' => \Yii::t('app', 'Опустить в своем уровне'),
                 'id' => 'btn_' . $menu_id . '_moveDown',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-pencil"></span>', [
-                'title' => 'Изменить',
+                'title' => \Yii::t('app', 'Изменить'),
                 'id' => 'btn_' . $menu_id . '_modalOpenMenuUpdate',
                 'class' => 'actionBtn ',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-trash"></span>', [
-                'title' => 'Удалить вместе с потомками',
+                'title' => \Yii::t('app', 'Удалить вместе с потомками'),
                 'id' => 'btn_' . $menu_id . '_deleteItem',
                 'class' => 'actionBtn ',
             ]);

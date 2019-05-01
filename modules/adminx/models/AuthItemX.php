@@ -25,13 +25,6 @@ class AuthItemX extends \yii\db\ActiveRecord
     const TYPE_ROUTE = 3;
     const TYPE_All = 0;
 
-    const NAME_PATTERN       = '/^[a-zA-Z0-9_\-]+$/ui'; //--маска для пароля
-    const NAME_ERROR_MESSAGE = 'Допустимые символы - латиница, цифры - и _'; //--сообщение об ошибке
-
-    const DESCRIPTION_PATTERN       = '/^[a-zA-Z а-яА-ЯёЁЇїІіЄєҐґ0-9\-:"().,№\'_]+$/ui'; //--маска для названия компании
-    const DESCRIPTION_ERROR_MESSAGE = 'Допустимые символы - буквы, цифры, пробел, кавычки, " : . , ( ) _ №" '; //--сообщение об ошибке
-
-
 
     public static $typeDict = [
        self::TYPE_ROLE => 'Роли',
@@ -40,6 +33,16 @@ class AuthItemX extends \yii\db\ActiveRecord
        self::TYPE_All => 'Все типы',
 
     ];
+
+    public static function getTypeDict()
+    {
+        return [
+            self::TYPE_ROLE => \Yii::t('app', 'Роли'),
+            self::TYPE_PERMISSION => \Yii::t('app', 'Разрешения'),
+            self::TYPE_All => \Yii::t('app', 'Все типы'),
+
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -57,8 +60,10 @@ class AuthItemX extends \yii\db\ActiveRecord
         return [
             [['name', 'type'], 'required'],
             [['name'], 'unique'],
-            [['name'], 'match', 'pattern' => self::NAME_PATTERN, 'message' => self::NAME_ERROR_MESSAGE,],
-            [['description'], 'match', 'pattern' => self::DESCRIPTION_PATTERN, 'message' => self::DESCRIPTION_ERROR_MESSAGE,],
+            [['name'], 'match', 'pattern' => UserM::USER_PASSWORD_PATTERN,
+                'message' => \Yii::t('app', UserM::USER_PASSWORD_ERROR_MESSAGE)],
+            [['description'], 'match', 'pattern' => UserM::USER_NAME_PATTERN,
+                'message' => \Yii::t('app', UserM::USER_NAME_ERROR_MESSAGE)],
             [['name', 'rule_name'], 'string', 'min' => 5, 'max' => 64],
             [['description'], 'string', 'max' => 255],
             [['type', 'created_at', 'updated_at'], 'integer'],
@@ -72,13 +77,13 @@ class AuthItemX extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => 'Название',
-            'type' => 'Тип',
-            'description' => 'Описание',
-            'rule_name' => 'Правило',
+            'name' => \Yii::t('app', 'Название'),
+            'type' => \Yii::t('app', 'Тип'),
+            'description' => \Yii::t('app', 'Описание'),
+            'rule_name' => \Yii::t('app', 'Правило'),
             'data' => 'Data',
-            'created_at' => 'Создано',
-            'updated_at' => 'Изменено',
+            'created_at' => \Yii::t('app', 'Создано'),
+            'updated_at' => \Yii::t('app', 'Изменено'),
         ];
     }
 
@@ -101,7 +106,7 @@ class AuthItemX extends \yii\db\ActiveRecord
             }
             $item->name = $this->name;
             $item->description = $this->description;
-            $item->ruleName = ($this->rule_name == 'Без правила') ? null : $this->rule_name;
+            $item->ruleName = ($this->rule_name == \Yii::t('app', 'Без правила')) ? null : $this->rule_name;
             //  $item->data = $this->data === null || $this->data === '' ? null : Json::decode($this->data);
 
             if ($this->isNewRecord){
@@ -118,7 +123,7 @@ class AuthItemX extends \yii\db\ActiveRecord
 
     public static function getRulesList(){
         $rules = \Yii::$app->authManager->getRules();
-        $ret['Без правила'] = 'Без правила';
+        $ret[\Yii::t('app', 'Без правила')] = \Yii::t('app', 'Без правила');
         foreach ($rules as $rule){
             $ret[$rule->name] =$rule->name;
         }

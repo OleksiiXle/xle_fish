@@ -7,13 +7,13 @@ use \app\modules\adminx\models\AuthItemX;
 
 switch ($model->type){
     case AuthItemX::TYPE_ROLE:
-        $this->title = 'Роль';
+        $this->title = \Yii::t('app', 'Роль');
         break;
     case AuthItemX::TYPE_PERMISSION:
-        $this->title = 'Разрешение';
+        $this->title = \Yii::t('app', 'Разрешение');
         break;
     case AuthItemX::TYPE_ROUTE:
-        $this->title = 'Маршрут';
+        $this->title = \Yii::t('app', 'Маршрут');
         break;
 
 }
@@ -52,15 +52,15 @@ $this->registerJs("
 
             ?>
             <div class="form-group" align="center">
-                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'update-button']) ?>
-                <?= Html::a('Отмена', '/adminx/auth-item',[
+                <?= Html::submitButton( \Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary', 'name' => 'update-button']) ?>
+                <?= Html::a(\Yii::t('app', 'Отмена'), '/adminx/auth-item',[
                     'class' => 'btn btn-success', 'name' => 'reset-button'
                 ]);?>
-                <?= Html::submitButton('Удалить', [
+                <?= Html::submitButton(\Yii::t('app', 'Удалить'), [
                         'class' => 'btn btn-danger',
                          'name' => 'delete-button',
                          'value' => 'delete',
-                         'data' => ['confirm' => 'Удалить?']
+                         'data' => ['confirm' => \Yii::t('app', 'Удалить')]
                 ]) ?>
 
             </div>
@@ -71,7 +71,7 @@ $this->registerJs("
                     <h4><b>Дозвіли</b></h4>
                         <div id="authItems" <?=$showSelects;?>>
                             <div class="col-md-5 userSelect">
-                                <h5>Доступные</h5>
+                                <h5><?=\Yii::t('app', 'Доступные');?></h5>
                                 <select multiple size="40" class="form-control list" data-target="avaliable"></select>
                             </div>
                             <div class="col-md-2 userSelect" align="center">
@@ -81,18 +81,18 @@ $this->registerJs("
                                     'data-rout' => '/adminx/auth-item/assign',
                                     'data-name' => $model->name,
                                     'data-target' => 'avaliable',
-                                    'title' => Yii::t('rbac-admin', 'Assign')
+                                    'title' => Yii::t('app', 'Добавить')
                                 ]) ?><br><br>
                                 <?= Html::a('&lt;&lt;', false, [
                                     'class' => 'btn btn-danger btn-assign actionRevoke',
                                     'data-rout' => '/adminx/auth-item/revoke',
                                     'data-name' => $model->name,
                                     'data-target' => 'assigned',
-                                    'title' => Yii::t('rbac-admin', 'Remove')
+                                    'title' => Yii::t('app', 'Удалить')
                                 ]) ?>
                             </div>
                             <div class="col-md-5 userSelect">
-                                <h5><b>Назначенные</b></h5>
+                                <h5><b><?=\Yii::t('app', 'Назначенные');?></b></h5>
                                 <select multiple size="40" class="form-control list" data-target="assigned"></select>
                             </div>
                         </div>

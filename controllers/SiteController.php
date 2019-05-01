@@ -62,8 +62,10 @@ class SiteController extends MainController
     public function actionIndex()
     {
       //  $this->layout = '@app/views/layouts/commonLayout.php';
+        $welcome = \Yii::t('app', 'Добро пожаловать');
+        $r=1;
 
-        return $this->render('index');
+        return $this->render('index', ['welcome' => $welcome]);
       //  return $this->render('index_yii');
     }
 
@@ -72,7 +74,7 @@ class SiteController extends MainController
      *
      * @return Response|string
      */
-    public function actionLogin()
+    public function actionLogin_()
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -94,7 +96,7 @@ class SiteController extends MainController
      *
      * @return Response
      */
-    public function actionLogout()
+    public function actionLogout_()
     {
         Yii::$app->user->logout();
 
@@ -106,7 +108,7 @@ class SiteController extends MainController
      *
      * @return Response|string
      */
-    public function actionContact()
+    public function actionContact_()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
@@ -124,7 +126,7 @@ class SiteController extends MainController
      *
      * @return string
      */
-    public function actionAbout()
+    public function actionAbout_()
     {
         return $this->render('about');
     }

@@ -59,6 +59,17 @@ if (Yii::$app->session->getAllFlashes()){
             <div class ="img-rounded">
                 <img  src="<?=\yii\helpers\Url::to('@web/images/np_logo.png');?>" height="50px" width="50px;">
             </div>
+            <div>
+                <?php
+                $us = $this->context->user->id;
+                echo Html::dropDownList('lang', $this->context->language, \app\models\Translation::LIST_LANGUAGES, [
+                     'class' => 'selectLanguage',
+                 //   'onchange' => 'console.log(this);'
+                   'onchange' => "setLanguage(this.value);"
+                ]);
+                ?>
+
+            </div>
 
             <button id="menu-switch-btn" class="btn"
                         style="height: 55px; width: 55px; padding: 2px; background-color: #D0D5D8; outline:none;">
@@ -73,7 +84,7 @@ if (Yii::$app->session->getAllFlashes()){
             </div>
             <div>
                 <?php
-                if (!Yii::$app->user->isGuest){
+                if (!$this->context->user->isGuest){
                     $icon = \yii\helpers\Url::to('@web/images/Gnome-Application-Exit-64.png');
                     echo Html::beginForm(['/adminx/user/logout'], 'post');
                     echo Html::submitButton(

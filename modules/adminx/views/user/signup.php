@@ -4,7 +4,7 @@ use yii\bootstrap\ActiveForm;
 use \yii\helpers\Url;
 use \app\widgets\changePosDep\ChangePosDepWidget;
 
-$this->title = 'Регистрация';
+$this->title = \Yii::t('app', 'Регистрация');
 
 ?>
 
@@ -47,8 +47,8 @@ $this->title = 'Регистрация';
     </div>
     <div class="row">
         <div class="form-group" align="center">
-            <?= Html::submitButton('Зарєєструвати', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-            <?= Html::a('Відміна', '/adminx/user',[
+            <?= Html::submitButton(\Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            <?= Html::a(\Yii::t('app', 'Отмена'), '/adminx/user',[
                 'class' => 'btn btn-danger', 'name' => 'reset-button'
             ]);?>
         </div>

@@ -2,7 +2,7 @@
 
 use \yii\helpers\Html;
 
-$this->title = 'Активность пользователей';
+$this->title = \Yii::t('app', 'Активность пользователей');
 //\app\modules\adminx\assets\AdminxUserActivityAsset::register($this);
 
 
@@ -27,7 +27,7 @@ $timeFix = time() - $interval;
         <?php
         echo \app\components\widgets\xlegrid\Xlegrid::widget([
             'dataProvider' => $dataProvider,
-            'gridTitle' => 'Зарегистрированные пользователи' . \app\modules\adminx\models\UserData::$activityIntervalArray[$interval] ,
+            'gridTitle' => '' . \app\modules\adminx\models\UserData::$activityIntervalArray[$interval] ,
             'additionalTitle' => 'qq',
             'filterView' => '@app/modules/adminx/views/check/_filterUserActivity',
             //-------------------------------------------
@@ -70,10 +70,6 @@ $timeFix = time() - $interval;
     </div>
 
 
-</div>
-<div id="preloader" style="display: none">
-    <div class="page-loader-circle"></div>
-    <div id="preloaderText"></div>
 </div>
 
 

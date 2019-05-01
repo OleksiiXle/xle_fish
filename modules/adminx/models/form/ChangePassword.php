@@ -23,7 +23,7 @@ class ChangePassword extends Model
             [['retypePassword', 'oldPassword' , 'newPassword'],  'string', 'min' => 3, 'max' => 20],
             [['retypePassword'], 'compare', 'compareAttribute' => 'newPassword'],
             [['oldPassword', 'retypePassword',  'newPassword' ], 'match', 'pattern' => UserM::USER_PASSWORD_PATTERN,
-                'message' => UserM::USER_PASSWORD_ERROR_MESSAGE],
+                'message' => \Yii::t('app', UserM::USER_PASSWORD_ERROR_MESSAGE)],
 
         ];
     }
@@ -33,9 +33,9 @@ class ChangePassword extends Model
     public function attributeLabels()
     {
         return [
-            'oldPassword' => 'Старий пароль',
-            'newPassword' => 'Новый пароль',
-            'retypePassword' => 'Подтверждение пароля',
+            'oldPassword' =>  \Yii::t('app', 'Старий пароль'),
+            'newPassword' => \Yii::t('app', 'Новый пароль'),
+            'retypePassword' => \Yii::t('app', 'Подтверждение пароля'),
         ];
     }
 
@@ -48,7 +48,7 @@ class ChangePassword extends Model
         /* @var $user User */
         $user = Yii::$app->user->identity;
         if (!$user || !$user->validatePassword($this->oldPassword)) {
-            $this->addError('oldPassword', 'Не верный старый пароль.');
+            $this->addError('oldPassword', \Yii::t('app', 'Неверный старый пароль'));
         }
     }
 

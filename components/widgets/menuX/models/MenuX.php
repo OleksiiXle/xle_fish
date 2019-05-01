@@ -37,12 +37,12 @@ class MenuX extends \yii\db\ActiveRecord{
     public function attributeLabels()
     {
         return [
-            'id' => 'Идентификатор',
-            'parent_id' => 'Parent ID',
-            'sort' => 'Код черговості',
-            'name' => 'Найменування',
-            'route' => 'Маршрут',
-            'role' => 'Роль',
+            'id' => 'ID',
+            'parent_id' => \Yii::t('app', 'Предок'),
+            'sort' => \Yii::t('app', 'Сортировка'),
+            'name' => \Yii::t('app', 'Название'),
+            'route' => \Yii::t('app', 'Маршрут'),
+            'role' => \Yii::t('app', 'Роль'),
         ];
     }
 
@@ -74,45 +74,11 @@ class MenuX extends \yii\db\ActiveRecord{
             $res[] = [
                 'id'            => $d->id,
                 'parent_id'     => $d->parent_id,
-                'name'          => $d->name,
+                'name'          => \Yii::t('app', $d->name),
                 'hasChildren'   => (count($d->children) > 0),
             ];
         }
         return $res;
-    }
-
-    /**
-     * Возаращает массив прямых предков для вывода их при рисовании дефолтного дерева
-     * @param $id
-     * @return array
-     */
-    public static function getParents($id){
-        $parents=[];
-        $node = self::findOne($id);
-        if (isset($node)){
-            $pid = $node->parent_id;
-            $i=0;
-            do{
-                $parent = self::findOne($pid);
-                if (isset($parent)){
-                    $parents[$i]['id'] = $parent->id;
-                    $branch = Department::find()->andWhere(['parent_id' => $parent->id])->orderBy('sort')->all();
-                    $res = [];
-                    for ($j = 0; $j < count($branch); $j++) {
-                        $res[$j]['id']            = $branch[$j]->id;
-                        $res[$j]['parent_id']     = $branch[$j]->parent_id;
-                        $res[$j]['name']          = $branch[$j]->name;
-                        $res[$j]['hasChildren']   = (count($branch[$j]->children) > 0);
-                        $res[$j]['hasAdditional'] = (count($branch[$j]->positions) > 0);
-                        $res[$j]['amountInfo']    = $branch[$j]->summary_amount;
-                        $res[$j]['additional']    = $branch[$j]->positions;
-                    }
-                    $parents[$i++]['children'] =$res ;
-                    $pid = $parent->parent_id;
-                }
-            } while($parent != null);
-        }
-        return $parents;
     }
 
     /**
@@ -154,7 +120,7 @@ class MenuX extends \yii\db\ActiveRecord{
                 $target[]=  [
                     'id' => $child['id'],
                     'parent_id' => $child['parent_id'],
-                    'name' => $child['name'],
+                    'name' => \Yii::t('app', $child['name']),
                     'hasChildren'   => (count($child->children) > 0),
                 ];
                 self::getChildrenArray($child['id'], $target);
@@ -198,10 +164,10 @@ class MenuX extends \yii\db\ActiveRecord{
                     if ($hasChildren){
                         $content = '<a class="node" '
                             . ' onclick="clickAction(this);"'
-                            . '> ' . $row['name']
+                            . '> ' . \Yii::t('app', $row['name'])
                             . '</a>';
                     } else {
-                        $content = Html::a($row['name'], Url::to($row['route'], true),
+                        $content = Html::a(\Yii::t('app', $row['name']), Url::to($row['route'], true),
                             [
                                 'class' => 'route',
                             ]);

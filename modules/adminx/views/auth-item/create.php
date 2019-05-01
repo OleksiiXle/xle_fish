@@ -1,38 +1,27 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use \yii\helpers\Url;
-use \app\widgets\changePosDep\ChangePosDepWidget;
 use \app\modules\adminx\models\AuthItemX;
 
 switch ($model->type){
     case AuthItemX::TYPE_ROLE:
-        $this->title = 'Роль';
+        $this->title = \Yii::t('app', 'Роль');
         break;
     case AuthItemX::TYPE_PERMISSION:
-        $this->title = 'Разрешение';
+        $this->title = \Yii::t('app', 'Разрешение');
         break;
     case AuthItemX::TYPE_ROUTE:
-        $this->title = 'Маршрут';
+        $this->title = \Yii::t('app', 'Маршрут');
         break;
 
 }
 
-//\app\modules\adminx\assets\AdminxPermissionAsset::register($this);
-/*
-$_assigments = \yii\helpers\Json::htmlEncode($assigments);
-$this->registerJs("
-    var _assigments = {$_assigments};
-");
-$this->registerJs($this->render('_scriptUpdate.js'));
-*/
 ?>
 
 <div class="container-fluid">
     <h3><?= Html::encode($this->title) ?></h3>
     <?php
-  //  echo var_dump($availableRoles);
-   // echo var_dump($allRoles);
     ?>
     <div class="col-md-3">
         <?php $form = ActiveForm::begin([
@@ -49,8 +38,8 @@ $this->registerJs($this->render('_scriptUpdate.js'));
 
         ?>
         <div class="form-group" align="center">
-            <?= Html::submitButton('Создать', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-            <?= Html::a('Отмена', '/adminx/auth-item',[
+            <?= Html::submitButton(\Yii::t('app', 'Создать'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            <?= Html::a(\Yii::t('app', 'Отмена'), '/adminx/auth-item',[
                 'class' => 'btn btn-danger', 'name' => 'reset-button'
             ]);?>
         </div>

@@ -5,7 +5,7 @@ use \yii\widgets\Pjax;
 use \app\components\widgets\xlegrid\Xlegrid;
 
 
-$this->title = 'Посетители';
+$this->title = \Yii::t('app', 'Посетители');
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -17,7 +17,7 @@ $this->title = 'Посетители';
         <?php Pjax::begin(['id' => 'gridGuest']);
         echo Xlegrid::widget([
             'dataProvider' => $dataProvider,
-            'gridTitle' => 'Посетители',
+            'gridTitle' => '',
             'additionalTitle' => 'qq',
             'filterView' => '@app/modules/adminx/views/check/_filterUControl',
             //-------------------------------------------

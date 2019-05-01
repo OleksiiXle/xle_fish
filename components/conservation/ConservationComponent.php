@@ -2,49 +2,34 @@
 namespace app\components\conservation;
 
 use app\components\conservation\models\Conservation;
-use FontLib\Table\Type\name;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\helpers\Html;
 
-class ConservationComponent extends Component{
+class ConservationComponent extends Component
+{
     const LIFE_TIME = 86400 * 15;
 
-    public $urlSaveConserves = '/structure/ajax/save-conserves';
+   // public $urlSaveConserves = '/structure/ajax/save-conserves';
     public $currentUser = 0;
     public $conserves;
     public $content;
 
+    private $language = 0;
+
+    /**
+     * @return int
+     */
+    public function getLanguage()
+    {
+        $this->language = self::getConserveDB('language');
+        return $this->language;
+    }
+
     public function init(){
         parent::init();
         $this->currentUser = \Yii::$app->user->id;
-      // $this->conserves = self::getConservesDB();
-    }
-
-    public function showUser(){
-        return $this->currentUser;
-    }
-
-    /**
-     * Чтение всех консерв юсера из БД - возвращает массив консерв или нул
-     * @return mixed|null
-     * @throws Exception
-     */
-    public static function getConservesDB(){
-        try {
-            if (!(\Yii::$app->user->isGuest)) {
-                $user_id = \Yii::$app->user->id;
-                $conserve = Conservation::findOne($user_id);
-                $currentContent = null;
-                if (isset($conserve)) {
-                    $currentContent = json_decode($conserve->conservation, true);
-                }
-                return $currentContent;
-            }
-        } catch (Exception $e) {
-            throw $e;
-        }
-        return null;
+       // $this->language = static::getConserve('language');
     }
 
     /**
@@ -78,6 +63,78 @@ class ConservationComponent extends Component{
      * @return bool
      */
     public static function setConserveDB($name, $content){
+        try {
+            if (!(\Yii::$app->user->isGuest)){
+                $user_id = \Yii::$app->user->id;
+                $conserve = Conservation::find()
+                    ->where(['user_id' => $user_id])
+                    //   ->asArray()
+                    ->one()
+                ;
+                if (!empty($conserve)){
+                    $newContent = json_decode($conserve['conservation'], true);
+                }
+                if (is_array($content)){
+                    $newContent[$name] = [
+                        'data' => json_encode($content),
+                        'expiries' => time() + self::LIFE_TIME,
+                    ];
+                } else {
+                    $newContent[$name] = [
+                        'data' => $content,
+                        'expiries' => time() + self::LIFE_TIME,
+                    ];
+                }
+                $conserve->conservation = json_encode($newContent);
+                if ($conserve->save()){
+                    return $conserve->conservation;
+                } else {
+                    $errStr = '';
+                    foreach ($conserve->getErrors() as $key => $value) {
+                        $errStr = $errStr . $key . ': ' . $value[0] . '<br>';
+                    }
+                    return $errStr;
+                }
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+
+
+
+
+
+    public function showUser(){
+        return $this->currentUser;
+    }
+
+    /**
+     * Чтение всех консерв юсера из БД - возвращает массив консерв или нул
+     * @return mixed|null
+     * @throws Exception
+     */
+    public static function getConservesDB(){
+        try {
+            if (!(\Yii::$app->user->isGuest)) {
+                $user_id = \Yii::$app->user->id;
+                $conserve = Conservation::findOne($user_id);
+                $currentContent = null;
+                if (isset($conserve)) {
+                    $currentContent = json_decode($conserve->conservation, true);
+                }
+                return $currentContent;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return null;
+    }
+
+
+    public static function setConserveDB_COPY($name, $content){
         try {
             if (!(\Yii::$app->user->isGuest)){
                 $contentEx = ['data' => $content, 'expiries' => time() + self::LIFE_TIME];

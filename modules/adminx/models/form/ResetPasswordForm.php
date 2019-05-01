@@ -52,9 +52,10 @@ class ResetPasswordForm extends Model
         return [
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            [['retypePassword'], 'compare', 'compareAttribute' => 'password', 'message' => 'Новый пароль и подтверждение не совпадают'],
+            [['retypePassword'], 'compare', 'compareAttribute' => 'password',
+                'message' => \Yii::t('app', 'Новый пароль и подтверждение не совпадают')],
             [['password', 'retypePassword',   ], 'match', 'pattern' => UserM::USER_PASSWORD_PATTERN,
-                'message' => UserM::USER_PASSWORD_ERROR_MESSAGE],
+                'message' => \Yii::t('app', UserM::USER_PASSWORD_ERROR_MESSAGE)],
 
         ];
     }
@@ -62,8 +63,8 @@ class ResetPasswordForm extends Model
     public function attributeLabels()
     {
         return [
-            'password' => 'Новый пароль',
-            'retypePassword' => 'Подтверждение пароля',
+            'password' => \Yii::t('app', 'Новый пароль'),
+            'retypePassword' => \Yii::t('app', 'Подтверждение пароля'),
         ];
     }
 

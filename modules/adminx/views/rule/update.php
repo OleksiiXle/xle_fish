@@ -18,14 +18,15 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group" align="center">
         <?php
-        echo Html::submitButton($model->isNewRecord ? 'Создать' :'Отмена', [
+        echo Html::submitButton($model->isNewRecord ? \Yii::t('app', 'Создать')
+                                                            :\Yii::t('app', 'Отмена'), [
             'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
             'name' => 'doAction',
             'value' => '1',
             'style' => 'margin: 15px'
         ]);
 
-        echo Html::submitButton('Отмена', [
+        echo Html::submitButton(\Yii::t('app', 'Отмена'), [
             'class' => 'btn btn-danger',
             'name' => 'goBack',
             'value' => '1',

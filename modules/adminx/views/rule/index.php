@@ -5,14 +5,14 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 
-$this->title = 'Правила';
+$this->title = \Yii::t('app', 'Правила');
 ?>
 <div class="role-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
 
     <p>
-        <?= Html::a('Новое правило', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(\Yii::t('app', 'Создать'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?=
@@ -20,10 +20,7 @@ $this->title = 'Правила';
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'name',
-                'label' => 'Название',
-            ],
+            'name',
             ['class' => 'yii\grid\ActionColumn',
                 'template'=>'{delete}',
 

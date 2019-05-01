@@ -65,14 +65,14 @@ class UserData extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'ІД',
-            'first_name' => 'Імя',
-            'middle_name' => 'По батькові',
-            'last_name' => 'Прізвище',
-            'last_rout' => 'Останній роут',
-            'last_rout_time' => 'Остання активність',
-            'userLogin' => 'Логін',
-            'userFio' => 'П.І.Б.',
+            'user_id' => 'user id',
+            'first_name' => \Yii::t('app', 'Имя'),
+            'middle_name' => \Yii::t('app', 'Отчество'),
+            'last_name' => \Yii::t('app', 'Фамилия'),
+            'last_rout' => \Yii::t('app', 'Последний роут'),
+            'last_rout_time' => \Yii::t('app', 'Последняя активность'),
+            'userLogin' => \Yii::t('app', 'Логин'),
+            'userFio' => \Yii::t('app', 'Ф.И.О.'),
         ];
     }
 

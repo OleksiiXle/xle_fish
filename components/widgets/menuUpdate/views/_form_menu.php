@@ -11,7 +11,6 @@ use \dosamigos\datepicker\DatePicker;
             <?= $form->field($model, 'nodeAction')->hiddenInput()->label(false) ?>
             <?= $form->field($model, 'menu_id')->hiddenInput()->label(false) ?>
             <?= $form->field($model, 'id')->hiddenInput()->label(false); ?>
-            <?= $form->field($model, 'sort')->hiddenInput()->label(false); ?>
 
 <div class="row">
     <div class="col-md-12">
@@ -27,12 +26,13 @@ use \dosamigos\datepicker\DatePicker;
     </div>
 </div>
         <div class="row" align="center">
-            <?= Html::button($model->isNewRecord ? 'Создать' : 'Сохранить',
+            <?= Html::button($model->isNewRecord ? \Yii::t('app', 'Создать')
+                                                        : \Yii::t('app', 'Сохранить'),
                 [
                    'id' => 'btn_' . $model->menu_id . '_updateForm',
                    'class' => 'btn btn-primary',
             ]); ?>
-            <?= Html::button( 'Отмена',
+            <?= Html::button( \Yii::t('app', 'Отмена'),
                 ['class' =>  'btn btn-danger',
                     'onclick' => '$("#main-modal-md").modal("hide");'
                 ]) ?>

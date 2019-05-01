@@ -23,7 +23,7 @@ class UserFilter extends Model
         $roles = \Yii::$app->authManager->getRoles();
        // $permission = \Yii::$app->authManager->getPermissions();
       //  $i=1;
-        $this->roleDict['0'] = 'Не визначено';
+        $this->roleDict['0'] = \Yii::t('app', 'Не определено');
         foreach ($roles as $role){
             $this->roleDict[$role->name] = $role->name;
         }
@@ -36,6 +36,9 @@ class UserFilter extends Model
         return [
             [['id',  ], 'integer'],
             [['first_name', 'middle_name', 'last_name', 'role'], 'string', 'max' => 50],
+            [['first_name', 'middle_name', 'last_name'],  'match', 'pattern' => UserM::USER_NAME_PATTERN,
+                'message' => \Yii::t('app', UserM::USER_NAME_ERROR_MESSAGE)],
+
         ];
     }
 
@@ -46,13 +49,13 @@ class UserFilter extends Model
     {
         return [
             'id' => 'ID',
-            'username' => 'Логін',
-            'first_name' => 'Імя',
-            'middle_name' => 'По батькові',
-            'last_name' => 'Прізвище',
+            'username' => \Yii::t('app', 'Логин'),
+            'first_name' => \Yii::t('app', 'Имя'),
+            'middle_name' => \Yii::t('app', 'Отчество'),
+            'last_name' => \Yii::t('app', 'Фамилия'),
             'email' => 'Email',
-            'status' => 'Status',
-            'role' => 'Роль користувача',
+            'status' => \Yii::t('app', 'Статус'),
+            'role' => \Yii::t('app', 'Роль'),
 
         ];
     }

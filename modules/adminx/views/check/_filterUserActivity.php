@@ -29,8 +29,8 @@ use \yii\helpers\Url;
     </div>
     <div class="row">
         <div class="form-group" align="center" style="padding: 20px">
-            <?= Html::submitButton('Искать', ['class' => 'btn btn-primary', 'id' => 'subBtn']) ?>
-            <?= Html::button('Очистить фильтр', [
+            <?= Html::submitButton(\Yii::t('app', 'Фильтр'), ['class' => 'btn btn-primary', 'id' => 'subBtn']) ?>
+            <?= Html::button(\Yii::t('app', 'Очистить фильтр'), [
                 'class' => 'btn btn-danger',
                 'id' => 'cleanBtn',
                 'onclick' => 'cleanFilter();',

@@ -55,12 +55,12 @@ class MenuX extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Идентификатор',
-            'parent_id' => 'Parent ID',
-            'sort' => 'Код черговості',
-            'name' => 'Найменування',
-            'route' => 'Маршрут',
-            'role' => 'Роль',
+            'id' => 'ID',
+            'parent_id' => \Yii::t('app','Предок'),
+            'sort' => \Yii::t('app','Сортировка'),
+            'name' => \Yii::t('app','Название'),
+            'route' => \Yii::t('app','Маршрут'),
+            'role' => \Yii::t('app','Роль'),
         ];
     }
 
@@ -84,7 +84,7 @@ class MenuX extends \yii\db\ActiveRecord
                 'id' => $child->id,
                 'parent_id' => $child->parent_id,
                 'sort' => $child->sort,
-                'name' => $child->name,
+                'name' => \Yii::t('app', $child->name),
                 'hasChildren'   => (count($child->children) > 0),
             ];
         }
@@ -97,7 +97,7 @@ class MenuX extends \yii\db\ActiveRecord
             'id' => $this->id,
             'parent_id' => $this->parent_id,
             'sort' => $this->sort,
-            'name' => $this->name,
+            'name' => \Yii::t('app', $this->name),
             'hasChildren'   => (count($this->children) > 0),
         ];
         return $this->_nodeInfo;

@@ -5,7 +5,7 @@ use \yii\helpers\Html;
 //\app\components\widgets\menuUpdate\MenuUpdateAssets::register($this);
 \app\modules\adminx\assets\AdminxMenuAsset::register($this);
 
-$this->title = 'Редактор меню';
+$this->title = \Yii::t('app', 'Редактор меню');
 
 ?>
 <div class="container-fluid">

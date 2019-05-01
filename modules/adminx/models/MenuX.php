@@ -12,6 +12,15 @@ class MenuX extends \yii\db\ActiveRecord
      * @return mixed
      */
     //-- $query->createCommand()->getSql()
+    const NAME_PATTERN = '/^[А-ЯІЇЄҐа-яіїєґA-Za-z -]+$/u'; //--маска для нимени
+
+    //  const USER_NAME_PATTERN           = '/^[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+([-]?[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+)?$/u'; //--маска для нимени
+    const NAME_ERROR_MESSAGE     = 'Используйте буквы и -'; //--сообщение об ошибке
+    const ROUTE_PATTERN       = '/^[a-z0-9 - . /]+$/ui'; //--маска для пароля
+    const ROUTE_ERROR_MESSAGE = 'Используйте маленькие латинские буквы, цифры -, ., /'; //--сообщение об ошибке
+    const ROLE_PATTERN       = '/^[a-zA-Z0-9]+$/ui'; //--маска для пароля
+    const ROLE_ERROR_MESSAGE = 'Используйте латинские буквы, цифры'; //--сообщение об ошибке
+
 
     public $node1 = 0;
     public $node2 = 0;
@@ -44,6 +53,11 @@ class MenuX extends \yii\db\ActiveRecord
             [['parent_id', 'sort', ], 'integer'],
 
             [['node1' , 'node2' , 'nodeAction', 'menu_id'], 'safe'],
+
+            [['name',], 'match', 'pattern' => self::NAME_PATTERN],
+            [['route',], 'match', 'pattern' => self::ROUTE_PATTERN],
+            [['role',], 'match', 'pattern' => self::ROLE_PATTERN],
+
         ];
     }
 
@@ -53,12 +67,12 @@ class MenuX extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Идентификатор',
-            'parent_id' => 'Parent ID',
-            'sort' => 'Код черговості',
-            'name' => 'Найменування',
-            'route' => 'Маршрут',
-            'role' => 'Роль',
+            'id' => 'ID',
+            'parent_id' => \Yii::t('app','Предок'),
+            'sort' => \Yii::t('app','Сортировка'),
+            'name' => \Yii::t('app','Название'),
+            'route' => \Yii::t('app','Маршрут'),
+            'role' => \Yii::t('app','Роль'),
         ];
     }
 
@@ -82,7 +96,7 @@ class MenuX extends \yii\db\ActiveRecord
                 'id' => $child->id,
                 'parent_id' => $child->parent_id,
                 'sort' => $child->sort,
-                'name' => $child->name,
+                'name' => \Yii::t('app', $child->name),
                 'hasChildren'   => (count($child->children) > 0),
             ];
         }
@@ -95,7 +109,7 @@ class MenuX extends \yii\db\ActiveRecord
             'id' => $this->id,
             'parent_id' => $this->parent_id,
             'sort' => $this->sort,
-            'name' => $this->name,
+            'name' => \Yii::t('app', $this->name),
             'hasChildren'   => (count($this->children) > 0),
         ];
         return $this->_nodeInfo;

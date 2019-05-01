@@ -20,9 +20,9 @@ class UserActivityFilter extends Model
             [['activityInterval', ], 'integer'],
             [['username', 'first_name'], 'string', 'min' => 3, 'max' => 32],
             [['username'], 'match', 'pattern' => UserM::USER_PASSWORD_PATTERN,
-                'message' => UserM::USER_PASSWORD_ERROR_MESSAGE],
+                'message' => \Yii::t('app', UserM::USER_PASSWORD_ERROR_MESSAGE)],
             [['userFam'],  'match', 'pattern' => UserM::USER_NAME_PATTERN,
-                'message' => UserM::USER_NAME_ERROR_MESSAGE],
+                'message' => \Yii::t('app', UserM::USER_NAME_ERROR_MESSAGE)],
 
         ];
     }
@@ -33,9 +33,9 @@ class UserActivityFilter extends Model
     public function attributeLabels()
     {
         return [
-            'activityInterval' => 'Змінити інтервал',
-            'username' => 'Логін',
-            'userFam' => 'Прізвище',
+            'activityInterval' => \Yii::t('app', 'Изменить интервал'),
+            'username' => \Yii::t('app', 'Логин'),
+            'userFam' => \Yii::t('app', 'Фамилия'),
         ];
     }
 

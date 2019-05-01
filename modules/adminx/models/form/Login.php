@@ -11,8 +11,6 @@ use Yii;
  */
 class Login extends UserM
 {
-    const USER_PASSWORD_PATTERN       = '/^[a-zA-Z0-9_]+$/ui'; //--маска для пароля
-    const USER_PASSWORD_ERROR_MESSAGE = 'Припустимі символи - латиниця, цифри, _'; //--сообщение об ошибке
 
     public $username;
     public $password;
@@ -27,8 +25,8 @@ class Login extends UserM
     {
         return [
             [['username', 'password'], 'required'],
-            [['username', 'password'], 'match', 'pattern' => UserM::USER_PASSWORD_PATTERN,
-                'message' => UserM::USER_PASSWORD_ERROR_MESSAGE],
+            [['username', 'password'], 'match', 'pattern' => self::USER_PASSWORD_PATTERN,
+                'message' => \Yii::t('app', self::USER_PASSWORD_ERROR_MESSAGE)],
 
             ['username',  'string', 'min' => 3, 'max' => 50],
             ['password',  'string', 'min' => 3, 'max' => 50],
@@ -50,9 +48,6 @@ class Login extends UserM
         $r=1;
         if ($this->validate()) {
             $ret = Yii::$app->getUser()->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-            //-- запись в сессию корневых подразделений, доступных пользователю и их потомков с предварительной их очисткой
-          //  AccessHelper::saveUserPermissionsToSession();
-         //   AccessHelper::saveUserDepartmentsToSession(true);
             return $ret;
         } else {
             return false;

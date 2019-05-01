@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 
-$this->title = 'Зміна паролю';
+$this->title = \Yii::t('app', 'Смена пароля');
 ?>
 <div class="site-signup">
     <h3><?= Html::encode($this->title) ?></h3>
@@ -17,7 +17,7 @@ $this->title = 'Зміна паролю';
             <?= $form->field($model, 'newPassword')->passwordInput() ?>
             <?= $form->field($model, 'retypePassword')->passwordInput() ?>
                 <div class="form-group">
-                    <?= Html::submitButton('Изменить пароль', ['class' => 'btn btn-primary', 'name' => 'change-button']) ?>
+                    <?= Html::submitButton(\Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary', 'name' => 'change-button']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
         </div>

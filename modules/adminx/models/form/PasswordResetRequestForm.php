@@ -22,7 +22,6 @@ class PasswordResetRequestForm extends Model
             ['email', 'exist',
                 'targetClass' => '\app\modules\adminx\models\User',
                 'filter' => ['status' => User::STATUS_ACTIVE],
-                'message' => 'Емейл не найден.'
             ],
         ];
     }
@@ -53,28 +52,6 @@ class PasswordResetRequestForm extends Model
         $_from = Yii::$app->params['adminEmail'];
         $_to = $this->email;
         $_mailer = Yii::$app->smtpXleMailer;
-/*
-        $message     = '<p> Ваш новый пароль: ' . $user->password_reset_token . '</p>';
-
-        $ret = $_mailer->compose()
-            ->setFrom($_from)
-            ->setTo($_to)
-            ->setSubject('Тема сообщения')
-            ->setTextBody('Текст сообщения')
-            ->setHtmlBody('<b>текст сообщения в формате HTML</b>')
-            ->send();
-        return $ret;
-
-        $ret = $_mailer->compose()
-            ->setFrom($_from)
-            ->setTo($_to)
-            ->setSubject('Новый пароль')
-            ->setHtmlBody($message)
-            ->send();
-        return $ret;
-
-
-*/
         $ret = $_mailer
             ->compose(
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],

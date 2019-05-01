@@ -41,7 +41,7 @@ class AuthItemController extends MainController
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
-                \yii::$app->getSession()->addFlash("warning","Действие запрещено.");
+                \yii::$app->getSession()->addFlash("warning",\Yii::t('app', "Действие запрещено"));
                 return $this->redirect(\Yii::$app->request->referrer);
 
             }
@@ -137,21 +137,6 @@ class AuthItemController extends MainController
             $this->result['data'] = $e->getMessage();
         }
         return $this->asJson($this->result);
-
-        $name    = \Yii::$app->getRequest()->post('name');
-        $type    = \Yii::$app->getRequest()->post('type');
-        $items = \Yii::$app->getRequest()->post('items', []);
-        $auth = \Yii::$app->getAuthManager();
-        $parent = $type == Item::TYPE_ROLE ? $auth->getRole($name) : $auth->getPermission($name);
-        foreach ($items as $itemName){
-            if (($item = $auth->getPermission($itemName)) == null){
-                $item = $auth->getRole($itemName);
-            }
-            $success = $auth->addChild($parent, $item);
-        }
-        \Yii::$app->getResponse()->format = 'json';
-        $assigments = AuthItemX::getItemsXle($type, $name);
-        return $assigments;
     }
 
     /**
@@ -184,22 +169,6 @@ class AuthItemController extends MainController
             $this->result['data'] = $e->getMessage();
         }
         return $this->asJson($this->result);
-
-
-        $name    = \Yii::$app->getRequest()->post('name');
-        $type    = \Yii::$app->getRequest()->post('type');
-        $items = \Yii::$app->getRequest()->post('items', []);
-        $auth = \Yii::$app->getAuthManager();
-        $parent = $type == Item::TYPE_ROLE ? $auth->getRole($name) : $auth->getPermission($name);
-        foreach ($items as $itemName){
-            if (($item = $auth->getPermission($itemName)) == null){
-                $item = $auth->getRole($itemName);
-            }
-            $success = $auth->removeChild($parent, $item);
-        }
-        \Yii::$app->getResponse()->format = 'json';
-        $assigments = AuthItemX::getItemsXle($type, $name);
-        return $assigments;
     }
 
 

@@ -28,9 +28,9 @@ class UControlFilter extends Model
             [['user_id'], 'integer'],
             [['remote_ip', 'username'], 'string', 'max' => 32],
             [['remote_ip',],  'match', 'pattern' => self::IP_PATTERN,
-                'message' => self::IP_ERROR_MESSAGE],
+                'message' => \Yii::t('app', \Yii::t('app', self::IP_ERROR_MESSAGE))],
             [['username', ], 'match', 'pattern' => UserM::USER_PASSWORD_PATTERN,
-                'message' => UserM::USER_PASSWORD_ERROR_MESSAGE],
+                'message' => \Yii::t('app', UserM::USER_PASSWORD_ERROR_MESSAGE)],
 
         ];
     }
@@ -44,7 +44,7 @@ class UControlFilter extends Model
 
             'user_id' => 'User ID',
             'remote_ip' => 'IP',
-            'username' => 'Логин',
+            'username' => 'Login',
         ];
     }
 

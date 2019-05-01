@@ -43,7 +43,7 @@ class Xlegrid extends GridView
                      };
                 ',
                 */
-                'title' => 'Редагувати',
+                'title' => \Yii::t('app', 'Фильтр'),
                 'onclick' => 'buttonFilterShow(this);',
             ]);
             $filterBody ='

@@ -3,6 +3,7 @@
 namespace app\modules\adminx\controllers;
 
 use app\components\conservation\ActiveDataProviderConserve;
+use app\components\conservation\models\Conservation;
 use app\controllers\MainController;
 use app\models\User;
 use app\modules\adminx\components\AccessControl;
@@ -43,7 +44,7 @@ class UserController extends MainController
                 [
                     'allow'      => true,
                     'actions'    => [
-                        'index', 'php-info', 'test'
+                        'index', 'php-info', 'test' , 'conservation'
                     ],
                     'roles'      => ['adminView','adminCRUD' ],
                 ],
@@ -56,7 +57,7 @@ class UserController extends MainController
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
-                \yii::$app->getSession()->addFlash("warning","Действие запрещено");
+                \yii::$app->getSession()->addFlash("warning",\Yii::t('app', "Действие запрещено"));
                 return $this->redirect(\Yii::$app->request->referrer);
 
         }
@@ -82,7 +83,6 @@ class UserController extends MainController
     public function actionIndex() {
         $dataProvider = new ActiveDataProviderConserve([
             'filterModelClass' => UserFilter::class,
-            //  'baseModel' => Dictionary::find(),
             'conserveName' => 'userAdminGrid',
             'pageSize' => 15,
             'sort' => ['attributes' => [
@@ -128,16 +128,12 @@ class UserController extends MainController
     public function actionSignupByAdmin()
     {
         $model = new Signup();
-        //  $model = new User();
-        //  $model->scenario = User::SCENARIO_REGISTRATION;
-        //  if ($model->load(Yii::$app->getRequest()->post())) {
         if (\Yii::$app->getRequest()->isPost) {
             $data = \Yii::$app->getRequest()->post('Signup');
             $model->setAttributes($data);
             $model->first_name = $data['first_name'];
             $model->middle_name =  $data['middle_name'];
             $model->last_name =  $data['last_name'];
-
             if ($model->signup(false)) {
                 return $this->redirect(['/site/index']);
             }
@@ -163,10 +159,10 @@ class UserController extends MainController
             $model->last_name =  $data['last_name'];
 
             if ($user = $model->signup(true)) {
-                \Yii::$app->session->setFlash('success', 'Check your email to confirm the registration.');
+                \Yii::$app->session->setFlash('success', \Yii::t('app', 'Check your email to confirm the registration'));
                 return $this->goHome();
             } else {
-                \Yii::$app->session->setFlash('error', 'Ошибка отправки токена');
+                \Yii::$app->session->setFlash('error', \Yii::t('app', 'Ошибка отправки токена'));
             }
         }
         return $this->render('signup', [
@@ -184,7 +180,7 @@ class UserController extends MainController
 
         try{
             $signupService->confirmation($token);
-            \Yii::$app->session->setFlash('success', 'You have successfully confirmed your registration.');
+            \Yii::$app->session->setFlash('success', \Yii::t('app', 'Регистрация успешно подтверждена'));
         } catch (\Exception $e){
             \Yii::$app->session->setFlash('error', $e->getMessage());
         }
@@ -225,13 +221,8 @@ class UserController extends MainController
     public function actionUpdate($id)
     {
         $model = UserM::findOne($id);
-        //  $model->scenario = User::SCENARIO_UPDATE;
-
         $ass = new Assignment($id);
         $assigments = $ass->getItemsXle();
-
-
-        //  if ($model->load(Yii::$app->getRequest()->post())) {
         if (\Yii::$app->getRequest()->isPost) {
             $data = \Yii::$app->getRequest()->post('UserM');
             $model->setAttributes($data);
@@ -258,7 +249,6 @@ class UserController extends MainController
         $id = \Yii::$app->user->getId();
         if (!empty($id)){
             $model = Update::findOne($id);
-            //  $model->scenario = User::SCENARIO_UPDATE;
             $model->first_name = $model->userDatas->first_name;
             $model->middle_name = $model->userDatas->middle_name;
             $model->last_name = $model->userDatas->last_name;
@@ -318,31 +308,6 @@ class UserController extends MainController
         ]);
     }
 
-    /**
-     * ----- Set new password
-     * @return string
-     */
-    public function actionForgetPassword()
-    {
-
-        $model = new ForgetPassword();
-
-        if ($model->load(\Yii::$app->getRequest()->post()) && $model->validate()) {// && $model->forgetPassword()
-            $res = $model->forgetPassword();
-
-            if(!$res){
-                \Yii::$app->getSession()->setFlash('warning', 'Ошибка');
-                return $this->goHome();
-            }elseif($res){
-                \Yii::$app->getSession()->setFlash('success', 'Новый пароль отправлен Вам электронной почтой');
-                return $this->goHome();
-            }
-        }
-
-        return $this->render('forgetPassword', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Запрос на смену пароля через Емейл
@@ -355,9 +320,10 @@ class UserController extends MainController
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                \Yii::$app->session->setFlash('success', 'Вам отправлено сообщение');
+                \Yii::$app->session->setFlash('success',
+                    \Yii::t('app', 'На Ваш електронный адрес отправлено письмо для изменения пароля'));
             } else {
-                \Yii::$app->session->setFlash('error', 'Не удалось сбросить пароль с помощью Email.');
+                \Yii::$app->session->setFlash('error', \Yii::t('app', 'Не удалось сбросить пароль с помощью Email'));
             }
             return $this->goHome();
         }
@@ -383,7 +349,7 @@ class UserController extends MainController
         }
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            \Yii::$app->session->setFlash('success', 'New password was saved.');
+            \Yii::$app->session->setFlash('success', \Yii::t('app', 'Новый пароль сохранен'));
             return $this->goHome();
         }
 
@@ -391,39 +357,35 @@ class UserController extends MainController
             'model' => $model,]);
       }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function actionPhpInfo()
     {
         return $this->render('phpinfo');
     }
 
 
-
-
-
-
     public function actionTest()
     {
         $menager = \Yii::$app->authManager;
-        $menager->invalidateCache();
+        $t = \Yii::$app->configs;
+        $t = \Yii::$app->configs->languages;
+        $r =  \Yii::t('app', 'An internal server error occurred.');
+        $t = 1;
+       // $menager->invalidateCache();
         return $this->render('test');
+    }
+
+    public function actionConservation()
+    {
+        $user_id = \Yii::$app->user->id;
+        $conserve = null;
+        if (!empty($user_id)){
+            $conservation = Conservation::find()
+                ->where(['user_id' => $user_id])
+                ->asArray()
+                ->all();
+        }
+        return $this->render('conservation' , ['conservation' => $conservation]);
+
     }
 
 }

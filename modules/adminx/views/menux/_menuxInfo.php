@@ -5,7 +5,14 @@ echo \yii\widgets\DetailView::widget([
         'id',
         'parent_id',
         'sort',
-        'name',
+        [
+            'label' => \Yii::t('app', 'Название'),
+            'value' => function () use ($model){
+                return \Yii::t('app', $model->name);
+            },
+            'format' => 'html',
+        ],
+
         'route',
         'role',
     ],

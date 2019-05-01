@@ -12,7 +12,7 @@
         <div class="row">
             <br>
             <br>
-            <h1>Вітаємо на сайті</h1>
+            <h1><?=$welcome;?></h1>
             <br>
             <br>
             <br>

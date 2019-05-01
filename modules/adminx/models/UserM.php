@@ -22,14 +22,14 @@ class UserM extends ActiveRecord
       self::STATUS_ACTIVE => 'Активный',
     ];
 
+    const USER_NAME_PATTERN = '/^[А-ЯІЇЄҐа-яіїєґA-Za-z -]+$/u'; //--маска для нимени
 
-    const USER_NAME_PATTERN           = '/^[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+([-]?[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+)?$/u'; //--маска для нимени
-    const USER_NAME_ERROR_MESSAGE     = 'Використовуйте українські літери, починаючи із великої. 
-                                         Апостроф - в англійській розкладці на букві є. Подвійні імена - через тире!'; //--сообщение об ошибке
+  //  const USER_NAME_PATTERN           = '/^[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+([-]?[А-ЯІЇЄҐ]{1}[а-яіїєґ\']+)?$/u'; //--маска для нимени
+    const USER_NAME_ERROR_MESSAGE     = 'Используйте буквы и -'; //--сообщение об ошибке
     const USER_PASSWORD_PATTERN       = '/^[a-zA-Z0-9_]+$/ui'; //--маска для пароля
-    const USER_PASSWORD_ERROR_MESSAGE = 'Припустимі символи - латиниця та цифри'; //--сообщение об ошибке
+    const USER_PASSWORD_ERROR_MESSAGE = 'Используйте латинские буквы и цифры'; //--сообщение об ошибке
     const USER_PHONE_PATTERN       = '/^[0-9, \-)(+]+$/ui'; //--маска для пароля
-    const USER_PHONE_ERROR_MESSAGE = 'Припустимі символи - латиниця та цифри'; //--сообщение об ошибке
+    const USER_PHONE_ERROR_MESSAGE = 'Используйте цифри'; //--сообщение об ошибке
 
 
     public $first_name;
@@ -80,16 +80,15 @@ class UserM extends ActiveRecord
                 'password_hash', 'password_reset_token', 'email', ], 'string', 'max' => 255],
 
             //------------------------------------------------------------------------ УНИКАЛЬНОСТЬ
-            ['username', 'unique', 'targetClass' => 'app\modules\adminx\models\UserM',
-                'message' => 'This username has already been taken.' ],
-            ['email', 'unique', 'targetClass' => 'app\modules\adminx\models\UserM',
-                 'message' => 'This email address has already been taken.'],
+            ['username', 'unique', 'targetClass' => 'app\modules\adminx\models\UserM',],
+            ['email', 'unique', 'targetClass' => 'app\modules\adminx\models\UserM'],
 
             //------------------------------------------------------------------------ МАСКИ ВВОДА
             [['username', 'password', 'oldPassword', 'retypePassword',  'newPassword' ], 'match', 'pattern' => self::USER_PASSWORD_PATTERN,
-                'message' => self::USER_PASSWORD_ERROR_MESSAGE],
+                'message' => \Yii::t('app', self::USER_PASSWORD_ERROR_MESSAGE)],
+
             [['first_name', 'middle_name', 'last_name'],  'match', 'pattern' => self::USER_NAME_PATTERN,
-                'message' => self::USER_NAME_ERROR_MESSAGE],
+                'message' => \Yii::t('app', self::USER_NAME_ERROR_MESSAGE)],
 
 
 
@@ -105,26 +104,24 @@ class UserM extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Логин',
-            'first_name' => 'Имя',
-            'middle_name' => 'Отчество',
-            'last_name' => 'Фамилия',
-            'auth_key' => 'Ключ авторизации',
-            'password' => 'Пароль',
-            'password_hash' => 'Пароль',
-            'oldPassword' => 'Старий пароль',
-            'retypePassword' => 'Подтверждение пароля',
-            'password_reset_token' => 'Токен зброса пароля',
+            'username' => \Yii::t('app', 'Логин'),
+            'first_name' => \Yii::t('app', 'Имя'),
+            'middle_name' => \Yii::t('app', 'Отчество'),
+            'last_name' => \Yii::t('app', 'Фамилия'),
+            'password' => \Yii::t('app', 'Пароль'),
+            'password_hash' => \Yii::t('app', 'Пароль'),
+            'oldPassword' => \Yii::t('app', 'Старый пароль'),
+            'retypePassword' => \Yii::t('app', 'Подтверждение пароля'),
             'email' => 'Email',
-            'status' => 'Status',
-            'created_at_str' => 'Создан',
-            'updated_at_str' => 'Изменен',
-            'lastRoutTime' => 'Последняя активность',
-            'lastRout' => 'Последний роут',
-            'nameFam' => 'Фамилия',
-            'nameNam' => 'Имя',
-            'nameFat' => 'Отчество',
-            'userRoles' => 'Роли',
+            'status' => \Yii::t('app', 'Статус'),
+            'created_at_str' => \Yii::t('app', 'Создано'),
+            'updated_at_str' => \Yii::t('app', 'Изменено'),
+            'lastRoutTime' => \Yii::t('app', 'Последняя активность'),
+            'lastRout' => \Yii::t('app', 'Последний роут'),
+            'nameFam' => \Yii::t('app', 'Фамилия'),
+            'nameNam' => \Yii::t('app', 'Имя'),
+            'nameFat' => \Yii::t('app', 'Отчество'),
+            'userRoles' => \Yii::t('app', 'Роли'),
         ];
     }
 
@@ -230,6 +227,16 @@ class UserM extends ActiveRecord
         return $this->_userRoles;
     }
 
+    public static function getStatusDict(){
+
+        return [
+            self::STATUS_INACTIVE => \Yii::t('app', 'Не активный'),
+            self::STATUS_WAIT => \Yii::t('app', 'Ожидает подтверждения'),
+            self::STATUS_ACTIVE => \Yii::t('app', 'Активный'),
+        ];
+
+    }
+
 
 
 
@@ -246,7 +253,7 @@ class UserM extends ActiveRecord
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Неверный логин или пароль');
+                $this->addError($attribute, \Yii::t('app', 'Неверный логин или пароль'));
             } elseif ($user->status != self::STATUS_ACTIVE) {
                 $this->addError($attribute, 'Ваш статус - ' . self::STATUS_DICT[$user->status]);
             }
@@ -258,7 +265,7 @@ class UserM extends ActiveRecord
         /* @var $user User */
         $user = Yii::$app->user->identity;
         if (!$user || !$user->validatePassword($this->oldPassword)) {
-            $this->addError('oldPassword', 'Incorrect old password.3');
+            $this->addError('oldPassword', \Yii::t('app', 'Неверный старый пароль'));
         }
     }
 

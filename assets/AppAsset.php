@@ -14,11 +14,14 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath = '@webroot/assets';
+    public $sourcePath = '@app/assets';
+
+    // public $basePath = '@webroot';
+  //  public $baseUrl = '@web';
  //   public $basePath = '@webroot/assets';
  //   public $sourcePath = '@app/assets';
-    public $publishOptions = ['forceCopy' => true];
+ //   public $publishOptions = ['forceCopy' => true];
     public $css = [
         'css/site.css',
         'css/xle.css',

@@ -5,7 +5,7 @@ use \yii\widgets\Pjax;
 use \app\components\widgets\xlegrid\Xlegrid;
 
 
-$this->title = 'Пользователи';
+$this->title = \Yii::t('app', 'Пользователи');
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -14,7 +14,7 @@ $this->title = 'Пользователи';
         </div>
         <div class="col-md-6" align="right" style="padding-top: 20px">
             <?php
-            echo Html::a('Новый пользователь', '/adminx/user/signup-by-admin', [
+            echo Html::a(\Yii::t('app', 'Создать'), '/adminx/user/signup-by-admin', [
                 'class' =>'btn btn-primary',
             ]);
             ?>
@@ -25,7 +25,7 @@ $this->title = 'Пользователи';
         <?php Pjax::begin(['id' => 'gridUsers']);
         echo Xlegrid::widget([
             'dataProvider' => $dataProvider,
-            'gridTitle' => 'Пользователи',
+            'gridTitle' => '',
             'additionalTitle' => 'qq',
             'filterView' => '@app/modules/adminx/views/user/_filterUser',
             //-------------------------------------------
@@ -43,9 +43,9 @@ $this->title = 'Пользователи';
                 'userRoles',
                 'email',
                 [
-                    'label'=>'Статус',
+                    'label'=> \Yii::t('app', 'Статус'),
                     'content'=>function($data){
-                        return \app\modules\adminx\models\UserM::STATUS_DICT[$data->status];
+                        return \Yii::t('app', \app\modules\adminx\models\UserM::STATUS_DICT[$data->status]);
                     },
                 ],
 
@@ -56,8 +56,8 @@ $this->title = 'Пользователи';
                         'delete'=>function($url, $data) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/adminx/user/delete', 'id' => $data['id'] ],
                                 [
-                                    'title' => 'Удалить',
-                                    'data-confirm' => 'Подтвердите удаление',
+                                    'title' => \Yii::t('app', 'Удалить'),
+                                    'data-confirm' => \Yii::t('app', 'Удалить'),
                                     'data-method' => 'post',
                                 ]);
 

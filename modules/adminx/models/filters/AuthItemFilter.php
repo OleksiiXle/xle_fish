@@ -29,10 +29,10 @@ class AuthItemFilter extends Model
     public function attributeLabels()
     {
         return [
-            'type' => 'Тип',
-            'name' => 'Название',
-            'rule_name' => 'Правило',
-            'description' => 'Описание',
+            'type' => \Yii::t('app', 'Тип'),
+            'name' => \Yii::t('app', 'Название'),
+            'rule_name' => \Yii::t('app', 'Правило'),
+            'description' => \Yii::t('app', 'Описание'),
         ];
     }
 
@@ -70,7 +70,7 @@ class AuthItemFilter extends Model
             $query->andWhere(['like', 'name', $this->name]);
         }
 
-        if (!empty($this->rule_name) && $this->rule_name != 'Без правила') {
+        if (!empty($this->rule_name) && $this->rule_name != \Yii::t('app', 'Без правила')) {
             $query->andWhere(['like', 'rule_name', $this->rule_name]);
         }
 

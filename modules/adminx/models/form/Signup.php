@@ -36,9 +36,9 @@ class Signup extends UserM
             [['first_name', 'middle_name', 'last_name',
                 'email', ], 'string', 'max' => 255],
             [['username', 'password', 'oldPassword', 'retypePassword',  'newPassword' ], 'match', 'pattern' => self::USER_PASSWORD_PATTERN,
-                'message' => self::USER_PASSWORD_ERROR_MESSAGE],
+                'message' => \Yii::t('app', self::USER_PASSWORD_ERROR_MESSAGE)],
             [['first_name', 'middle_name', 'last_name'],  'match', 'pattern' => self::USER_NAME_PATTERN,
-                'message' => self::USER_NAME_ERROR_MESSAGE],
+                'message' => \Yii::t('app', self::USER_NAME_ERROR_MESSAGE)],
 
             [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),
                 'secret' => '6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49-'],

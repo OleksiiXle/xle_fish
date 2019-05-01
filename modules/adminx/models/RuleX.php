@@ -40,18 +40,18 @@ class RuleX extends ActiveRecord
     public function classExists()
     {
         if (!class_exists($this->className)) {
-            $message = "Класс не определен ";
+            $message = \Yii::t('app', 'Класс не определен');
             $this->addError('className', $message);
             return;
         }
         if (!is_subclass_of($this->className, Rule::class)) {
-            $message ="Неверный класс - необходимо наследоваться от 'yii\rbac\Rule' ";
+            $message =\Yii::t('app', "Неверный класс - необходимо наследоваться от 'yii\rbac\Rule'");
             $this->addError('className', $message);
         }
         $class = $this->className;
         $rule = new $class();
         if (\Yii::$app->authManager->getRule($rule->name)){
-            $message ="Такое правило уже есть";
+            $message =\Yii::t('app', 'Такое правило уже есть');
             $this->addError('className', $message);
         }
 
@@ -64,8 +64,8 @@ class RuleX extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => 'Название',
-            'className' => 'Класс',
+            'name' => \Yii::t('app', 'Название'),
+            'className' => \Yii::t('app', 'Класс'),
         ];
     }
 

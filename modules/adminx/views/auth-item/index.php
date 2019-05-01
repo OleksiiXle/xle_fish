@@ -9,14 +9,8 @@ use \app\modules\adminx\models\AuthItemX;
 <?php
 
 \app\modules\adminx\assets\AdminxUpdateAuthItemAsset::register($this);
-//$_assigments = \yii\helpers\Json::htmlEncode($assigments);
-/*
-$this->registerJs("
-    var _assigments = {$_assigments};
-");
-*/
 
-$this->title = 'Разрешения';
+$this->title = \Yii::t('app', 'Разрешения');
 
 ?>
 <div class="container-fluid">
@@ -26,12 +20,12 @@ $this->title = 'Разрешения';
         </div>
         <div class="col-md-6" align="right" style="padding: 20px">
             <?php
-            echo Html::a('Новая роль', ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_ROLE],
+            echo Html::a(\Yii::t('app', 'Новая роль'), ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_ROLE],
                 [
                 'class' =>'btn btn-primary',
             ]);
             echo '  ';
-            echo Html::a('Новое разрешение', ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_PERMISSION], [
+            echo Html::a(\Yii::t('app', 'Новое разрешение'), ['/adminx/auth-item/create', 'type' => AuthItemX::TYPE_PERMISSION], [
                 'class' =>'btn btn-primary',
             ]);
             echo '  ';
@@ -43,7 +37,7 @@ $this->title = 'Разрешения';
         <?php Pjax::begin(['id' => 'gridPermission']);
         echo \app\components\widgets\xlegrid\Xlegrid::widget([
             'dataProvider' => $dataProvider,
-            'gridTitle' => 'Разрешения и роли',
+            'gridTitle' => '',
             'additionalTitle' => 'qq',
             'filterView' => '@app/modules/adminx/views/auth-item/_authItemFilter',
             //-------------------------------------------
@@ -59,10 +53,10 @@ $this->title = 'Разрешения';
                         $ret = '';
                         switch ($data->type){
                             case AuthItemX::TYPE_ROLE:
-                                $ret = 'Роль';
+                                $ret = \Yii::t('app', 'Роль');
                                 break;
                             case AuthItemX::TYPE_PERMISSION:
-                                $ret = 'Разрешение';
+                                $ret = \Yii::t('app', 'Разрешение');
                                 break;
                         }
                         return $ret;
@@ -70,14 +64,8 @@ $this->title = 'Разрешения';
                 ],
 
                 'name',
-                [
-                    'attribute'=>'description',
-                    'label'=>'Описание',
-                ],
-                [
-                    'attribute'=>'rule_name',
-                    'label'=>'Правило',
-                ],
+                'description',
+                'rule_name',
                 ['class' => 'yii\grid\ActionColumn',
                     'buttons'=>[
                         'update'=>function($url, $data) {
@@ -87,7 +75,7 @@ $this->title = 'Разрешения';
 
                                 ]  ),
                                 [
-                                    'title' => 'Видалити',
+                                    'title' => \Yii::t('app', 'Изменить'),
                                 ]);
 
                         },

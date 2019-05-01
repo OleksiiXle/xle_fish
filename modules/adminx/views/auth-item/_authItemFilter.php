@@ -18,8 +18,8 @@ use yii\bootstrap\ActiveForm;
         <div class="col-md-4">
             <?php
             echo $form->field($filter, 'type')
-                ->dropDownList(\app\modules\adminx\models\AuthItemX::$typeDict,
-                    ['options' => [ $filter->type => ['Selected' => true]],])->label('Тип');
+                ->dropDownList(\app\modules\adminx\models\AuthItemX::getTypeDict(),
+                    ['options' => [ $filter->type => ['Selected' => true]],]);
             ?>
         </div>
         <div class="col-md-4">
@@ -37,7 +37,7 @@ use yii\bootstrap\ActiveForm;
     </div>
     <div class="row">
         <div class="form-group" align="center">
-            <?= Html::submitButton('Переключиться', ['class' => 'btn btn-danger']) ?>
+            <?= Html::submitButton(\Yii::t('app', 'Фильтр'), ['class' => 'btn btn-danger']) ?>
 
         </div>
     </div>

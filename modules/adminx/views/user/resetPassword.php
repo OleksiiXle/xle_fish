@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Новый пароль';
+$this->title = \Yii::t('app', 'Новый пароль');
 ?>
 
 <div class="site-reset-password">
@@ -15,7 +15,7 @@ $this->title = 'Новый пароль';
             <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
             <?= $form->field($model, 'retypePassword')->passwordInput() ?>
             <div class="form-group">
-                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton(\Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary']) ?>
             </div>
             <?php ActiveForm::end(); ?>
 

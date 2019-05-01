@@ -6,7 +6,11 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        ],
+   // 'language' => 'ru-RU',
+    'language' => 'en-US',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -59,7 +63,6 @@ $config = [
             ],
             'useFileTransport' => false,
         ],
-
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -79,11 +82,31 @@ $config = [
         'conservation' => [
             'class' => 'app\components\conservation\ConservationComponent',
         ],
+        'configs' => [
+            'class' => 'app\components\configs\ConfigsComponent',
+        ],
         'reCaptcha' => [
             'name' => 'reCaptcha',
             'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
             'siteKey' => '6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp',
             'secret' => '6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49-',
+        ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                  //  'class' => 'yii\i18n\DbMessageSource',
+                    'class' => 'app\components\DbMessageSource',
+                 //   'class' => 'app\i18n\PhpMessageSource',
+                    //'basePath' => '@app/messages',
+                    'sourceLanguage' => 'ru-RU',
+                    /*
+                    'fileMap' => [
+                        'app'       => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                    */
+                ],
+            ],
         ],
     ],
     'modules' => [

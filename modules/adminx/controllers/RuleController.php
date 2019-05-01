@@ -40,7 +40,7 @@ class RuleController extends MainController
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
-                \yii::$app->getSession()->addFlash("warning","Действие запрещено.");
+                \yii::$app->getSession()->addFlash("warning",\Yii::t('app', "Действие запрещено"));
                 return $this->redirect(\Yii::$app->request->referrer);
 
             }
