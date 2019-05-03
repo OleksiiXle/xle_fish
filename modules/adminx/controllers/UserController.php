@@ -365,12 +365,7 @@ class UserController extends MainController
 
     public function actionTest()
     {
-        $menager = \Yii::$app->authManager;
-        $t = \Yii::$app->configs;
-        $t = \Yii::$app->configs->languages;
-        $r =  \Yii::t('app', 'An internal server error occurred.');
         $t = 1;
-       // $menager->invalidateCache();
         return $this->render('test');
     }
 

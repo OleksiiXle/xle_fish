@@ -3,11 +3,12 @@
 namespace app\components\widgets\controllers;
 
 use app\components\widgets\menuUpdate\models\MenuX;
+use app\controllers\MainController;
 use app\modules\adminx\models\Route;
 use yii\web\Controller;
 
 
-class WidgetController extends Controller
+class WidgetController extends MainController
 {
     /**
      * Ответ, который будет возвращаться на AJAX-запросы

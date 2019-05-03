@@ -8,7 +8,8 @@ use yii\web\Controller;
 
 class MainController extends Controller
 {
-    public $layout = '@app/views/layouts/commonLayout.php';
+  //  public $layout = '@app/views/layouts/commonLayout.php';
+    public $layout = '@app/views/layouts/commonLayoutHM.php';
     public $user;
     public $language;
 
@@ -25,6 +26,14 @@ class MainController extends Controller
     {
         $i=1;
         $this->user = \Yii::$app->user;
+        switch (\Yii::$app->params['menuType']){
+            case 'horizontal':
+                $this->layout =  '@app/views/layouts/commonLayoutHM.php';
+                break;
+            case 'vertical':
+                $this->layout =  '@app/views/layouts/commonLayout.php';
+                break;
+        }
 
         $this->getLanguage();
 

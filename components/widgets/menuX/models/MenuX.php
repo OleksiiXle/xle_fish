@@ -159,31 +159,26 @@ class MenuX extends \yii\db\ActiveRecord{
         $html = '';
         foreach ($tree as $row) {
             if ($row['parent_id'] == $pid) {
-                if ($pid > 0){
-                    $hasChildren = self::find()->where(['parent_id' => $row['id']])->count();
-                    if ($hasChildren){
-                        $content = '<a class="node" '
-                            . ' onclick="clickAction(this);"'
-                            . '> ' . \Yii::t('app', $row['name'])
-                            . '</a>';
-                    } else {
-                        $content = Html::a(\Yii::t('app', $row['name']), Url::to($row['route'], true),
-                            [
-                                'class' => 'route',
-                            ]);
-                    }
-                    $html .= '<li>'
-                        . $content
-                        . self::getTree($tree, $row['id'])
-                        . '</li>';
-
-                } else{
-                    $html .= self::getTree($tree, $row['id']);
-
+                $hasChildren = self::find()->where(['parent_id' => $row['id']])->count();
+                if ($hasChildren){
+                    $content = '<a class="node" '
+                        . ' onclick="clickAction(this);"'
+                        . '> ' . \Yii::t('app', $row['name'])
+                        . '</a>';
+                } else {
+                    $content = Html::a(\Yii::t('app', $row['name']), Url::to($row['route'], true),
+                        [
+                            'class' => 'route',
+                        ]);
                 }
+                $html .= '<li>'
+                    . $content
+                    . self::getTree($tree, $row['id'])
+                    . '</li>';
             }
         }
-        return $html ? '<ul class="ulMenuX" style="padding-left: 15px">' . $html . '</ul>' : '';
+        $uStyle = ($pid > 0) ? 'submenu' : '';
+        return $html ? '<ul class="ulMenuX ' . $uStyle . '" style="padding-left: 15px">' . $html . '</ul>' : '';
     }
 
     /**

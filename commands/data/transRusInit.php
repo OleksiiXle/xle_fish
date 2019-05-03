@@ -531,4 +531,9 @@ return [
       'uk-UK'=> 'Видалити разом із нащадками',
       'en-US'=> 'Delete with descendants',
     ],
+    [
+      'ru-RU'=> 'Авторизация',
+      'uk-UK'=> 'Авторизація',
+      'en-US'=> 'Autorization',
+    ],
 ];

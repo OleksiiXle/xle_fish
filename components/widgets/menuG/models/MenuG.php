@@ -210,27 +210,70 @@ class MenuG extends \yii\db\ActiveRecord{
      * @param $pid - корень
      * @return string
      */
-    public static function getTree($tree, $pid){
+    public static function getTree($tree, $pid, $gpid=7){
         $html = '';
         foreach ($tree as $row) {
             if ($row['parent_id'] == $pid) {
-                if ($pid > 0){
-                    $hasChildren = self::find()->where(['parent_id' => $row['id']])->count();
-                    if ($hasChildren){
-                        $content = '<a class="node" '
-                            . ' onclick="clickAction(this);"'
-                            . '> ' . $row['name']
-                            . '</a>';
-                    } else {
-                        $content = Html::a($row['name'], Url::to($row['route'], true),
-                            [
-                                'class' => 'route',
-                            ]);
-                    }
-                    $html .= '<li>'
+                $hasChildren = self::find()->where(['parent_id' => $row['id']])->count();
+                if ($hasChildren){
+                    $content = '<a class="node" >' . \Yii::t('app', $row['name'])  . '</a>';
+                } else {
+                    $content = '<a class="route" href="'. $row['route'] . '">' . \Yii::t('app', $row['name']) . '</a>';
+                }
+                if ($pid == 0){
+                    $html .= '<li class="menu-tops menu-item" data-id="' . $row['id'] . '" data-mode="close">'
                         . $content
-                        . self::getTree($tree, $row['id'])
+                        . self::getTree($tree, $row['id'], $row['parent_id'])
                         . '</li>';
+
+                } else {
+                    $html .= '<li class="menu-item" data-id="' . $row['id'] . '" data-mode="close">'
+                        . $content
+                        . self::getTree($tree, $row['id'], $row['parent_id'])
+                        . '</li>';
+                }
+            }
+        }
+        $ulClass = ($pid > 0) ? 'submenu' : '';
+        $ulClass .= ($gpid == 0) ? ' firstLevelChildren' : '';
+        $ulClass .= ($pid > 0) ? " childrenNoActive" : '';
+        return $html ? '<ul class=" ' . $ulClass . '" style="padding-left: 15px " >' . $html . '</ul>' : '';
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public static function getTree___($tree, $pid){
+        $html = '';
+        foreach ($tree as $row) {
+            if ($row['parent_id'] == $pid) {
+                if ($pid > -1){
+                    $hasChildren = self::find()->where(['parent_id' => $row['id']])->count();
+                    $parent = self::find()->where(['id' => $row['parent_id']])->asArray()->one();
+                    if ($hasChildren){
+                        $content = '<a class="node" >' . $row['name'] . '</a>';
+                    } else {
+                        $content = '<a class="route" href="'. $row['route'] . '">' . $row['name'] . '</a>';
+                    }
+                    if ($parent['id'] == 0){
+                        $html .= '<li class="menu-tops menu-item" data-id="' . $row['id'] . '" data-mode="close">'
+                            . $content
+                            . self::getTree($tree, $row['id'])
+                            . '</li>';
+
+                    } else {
+                        $html .= '<li class="menu-item" data-id="' . $row['id'] . '" data-mode="close">'
+                            . $content
+                            . self::getTree($tree, $row['id'])
+                            . '</li>';
+                    }
 
                 } else{
                     $html .= self::getTree($tree, $row['id']);
@@ -238,7 +281,8 @@ class MenuG extends \yii\db\ActiveRecord{
                 }
             }
         }
-        return $html ? '<ul class="ulMenuX" style="padding-left: 15px">' . $html . '</ul>' : '';
+        $ulClass = ($pid > 0) ? 'submenu' : '';
+        return $html ? '<ul class="' . $ulClass . '" data-parent_id="' . $pid . '" >' . $html . '</ul>' : '';
     }
 
     /**

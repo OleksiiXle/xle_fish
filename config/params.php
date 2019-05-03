@@ -8,4 +8,6 @@ return [
 
     'userControl' => false,
     'guestControl' => false,
+    'menuType' => 'horizontal',
+   // 'menuType' => 'vertical',
 ];

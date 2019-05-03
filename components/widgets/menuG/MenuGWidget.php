@@ -37,10 +37,6 @@ class MenuGWidget extends InputWidget
             ->asArray()
             ->all();
         $html = MenuG::getTree($tree,0);
-
-        $tree = MenuG::getHorizontalMenu();
-       // MenuG::getIds(0, $tree);
-
         return $this->render('menuG',
             [
                 'html' => $html,

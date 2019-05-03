@@ -9,3 +9,6 @@ recapcha
 6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp  ключ сайта
 
 6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49- секретный ключ
+
+6. Инициализация словаря
+php yii translate/init

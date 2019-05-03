@@ -1,26 +1,43 @@
 //*****************************************
 $(document).ready ( function(){
-    /*
-    $(".ulMenuX").each(function (index, el){
-        if ($(el).parents('ul').length > 1){
-            $(el).hide();
-        }
-    });
-    */
-    console.log(_tree['135']['children']['0']);
-    console.log(_tree['135'].children);
-    console.log(_tree['135'].item);
-
 });
 
-//--действия по клику
-function clickAction(item) {
-    ///  console.log(icon);
-    var ul = $(item).siblings('ul');
-    //   console.log(ul);
-    if (ul.css('display') == 'block'){
-        ul.hide();
-    } else {
-        ul.show();
+
+$('.menu-item').hover(
+    function(){
+      //  $(this).children('ul').show();
+        $(this).children('ul').each(function () {
+            $(this).removeClass('childrenNoActive').addClass('childrenActive');
+        });
+    },
+    function(){
+     //   $(this).find('ul').hide();
+        $(this).find('ul').each(function () {
+            $(this).removeClass('childrenActive').addClass('childrenNoActive');
+        });
+
+
+    });
+
+/*
+$(".menu-item").on('click', function (event) {
+    event.stopPropagation();
+    var otherUls = $(".menu-tops" + "[data-id!='" + this.dataset.id + "']");
+    if ($(this).hasClass("menu-tops")){
+        $(otherUls).find('ul').hide();
+        $(otherUls).each(function () {
+            this.dataset.mode = 'close';
+        })
     }
-}
+    switch (this.dataset.mode){
+        case 'close':
+            $(this).children('ul').show();
+            this.dataset.mode = 'open';
+            break;
+        case 'open':
+            $(this).find('ul').hide();
+            this.dataset.mode = 'close';
+            break;
+    }
+});
+*/

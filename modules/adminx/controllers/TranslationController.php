@@ -62,7 +62,7 @@ class TranslationController extends MainController
             ->where(['language' => \Yii::$app->configs->language])
             ,
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 50,
             ],
         ]);
         return $this->render('index',[
