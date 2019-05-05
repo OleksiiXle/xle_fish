@@ -15,6 +15,8 @@ $this->title = \Yii::t('app', 'Настройки');
         <div class="col-md-12">
             <?php $form = ActiveForm::begin([
                 'id' => 'form-update',
+                'layout'=>'horizontal',
+
             ]); ?>
             <?= Html::errorSummary($model)?>
             <?php

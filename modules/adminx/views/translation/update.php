@@ -13,7 +13,7 @@ $this->title = 'Перевод';
     <div class="row">
         <div class="col-md-12">
             <?php $form = ActiveForm::begin([
-                'id' => 'form-update',
+                'layout'=>'horizontal',
             ]); ?>
             <?= Html::errorSummary($model)?>
             <?php
