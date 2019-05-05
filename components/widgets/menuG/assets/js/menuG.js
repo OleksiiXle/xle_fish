@@ -5,16 +5,20 @@ $(document).ready ( function(){
 
 $('.menu-item').hover(
     function(){
-      //  $(this).children('ul').show();
+        $(this).children('ul').show(500);
+        /*
         $(this).children('ul').each(function () {
             $(this).removeClass('childrenNoActive').addClass('childrenActive');
         });
+        */
     },
     function(){
-     //   $(this).find('ul').hide();
+        $(this).find('ul').hide(500);
+        /*
         $(this).find('ul').each(function () {
             $(this).removeClass('childrenActive').addClass('childrenNoActive');
         });
+        */
 
 
     });

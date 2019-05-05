@@ -1,116 +1,119 @@
 <?php
-return [
-    'menu1' => [
-        'name' => 'Пункты администратора',
-        'permission' => 'menuAdmin',
+$t = [
+    [
+        'name' => 'Администрирование',
+        'route' => '',
+        'role' => 'menuAdmin',
         'children' => [
-          'name' => 'Администрирование',
-          'permission' => 'menuAdmin',
-          'children' => [
-              'child0' => [
-                'name'       => 'Пользователи',
-                'route'      => '/adminx/user',
-                'permission' => 'menuAdmin'
-              ],
-              'child1' => [
-                'name'       => 'Разрешения',
-                'route'      => '/adminx/auth-item',
-                'permission' => 'menuAdmin'
-              ],
-              'child3' => [
-                'name'       => 'Правила',
-                'route'      => '/adminx/rule',
-                'permission' => 'menuAdmin'
-              ],
-              'child5' => [
-                  'name'       => 'Редактор меню',
-                  'route'      => '/adminx/menux/menu',
-                  'permission' => 'menuAdmin'
-              ],
-              'child6' => [
-                  'name'       => 'PHP-info',
-                  'route'      => 'adminx/user/php-info',
-                  'permission' => 'menuAdmin'
-              ],
-          ]
-      ]
+            [
+                'name' => 'Разрешения, роли, пользователи',
+                'route' => '',
+                'role' => 'menuAdmin',
+                'children' => [
+                    [
+                        'name'       => 'Правила',
+                        'route'      => '/adminx/rule',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                    [
+                        'name'       => 'Разрешения',
+                        'route'      => '/adminx/auth-item',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                    [
+                        'name'       => 'Пользователи',
+                        'route'      => '/adminx/user',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                    [
+                        'name'       => 'Активность пользователей',
+                        'route'      => '/adminx/check/user-control',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                    [
+                        'name'       => 'Активность гостей',
+                        'route'      => '/adminx/check/guest-control',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                ]
+            ],
+            [
+                'name' => 'Настройки',
+                'route' => '',
+                'role' => 'menuAdmin',
+                'children' => [
+                    [
+                        'name'       => 'Редактор меню',
+                        'route'      => '/adminx/menux/menu',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                    [
+                        'name'       => 'Системные настройки',
+                        'route'      => '/adminx/configs/update',
+                        'role' => 'menuAdmin',
+                        'children' => []
+                    ],
+                    [
+                        'name'       => 'PHP-info',
+                        'route'      => 'adminx/user/php-info',
+                        'role' => 'menuAdmin',
+                        'children' => [],
+                    ],
+                    [
+                        'name'       => 'Переводы',
+                        'route'      => 'adminx/translation',
+                        'role' => 'menuAdmin',
+                        'children' => [],
+                    ],
+                ],
+            ]
+
+        ]
     ],
-    'menu5' => [
-        'name' => 'Общие пункты',
-        'permission' => 'menuAll',
+    [
+        'name' => 'Кабинет',
+        'route' => '',
+        'role' => 'menuAll',
         'children' => [
-          'name' => 'Кабинет',
-          'permission' => 'menuAll',
-          'children' => [
-              'child0' => [
+            [
+                'name'       => 'Профиль',
+                'route'      => '/adminx/user/update-profile',
+                'role' => 'menuAll',
+                'children' => [],
+            ],
+            [
                 'name'       => 'Смена пароля',
                 'route'      => '/adminx/user/change-password',
-                'permission' => 'menuAll'
-              ],
-          ]
-      ]
+                'role' => 'menuAll',
+                'children' => [],
+            ],
+
+        ]
     ],
-    'menu_guest' => [
-        'name' => 'menu_guest',
-        'permission' => '',
-        'children' => [
-              'child0' => [
-                'name'       => 'Восстановление пароля',
-                'route'      => '/adminx/user/forget-password',
-                'permission' => ''
-              ],
-              'child1' => [
-                'name'       => 'Вход',
-                'route'      => '/adminx/user/login',
-                'permission' => ''
-              ],
-          ]
+    [
+        'name'       => 'Восстановление пароля',
+        'route'      => '/adminx/user/request-password-reset',
+        'role' => '',
+        'children' => [],
     ],
-        /*
-    'menu7' => [
-        'name' => 'Освіта-робота СТАРАЯ',
-        'permission' => 'menuOsvitaWork',
-        'children' => [
-          'name' => 'Освіта СТАРАЯ',
-          'permission' => 'menuOsvitaWork',
-          'children' => [
-              'child0' => [
-                'name'       => 'Особовий склад',
-                'route'      => '/education/main/personal-main-grid',
-                'permission' => 'menuOsvitaWork'
-              ],
-              'child1' => [
-                'name'       => 'Підрозділи',
-                'route'      => '/education/main/tree',
-                'permission' => 'menuOsvitaWork'
-              ],
-          ]
-      ]
+    [
+        'name'       => 'Вход',
+        'route'      => '/adminx/user/login',
+        'role' => '',
+        'children' => [],
     ],
-    'menu8' => [
-        'name' => 'Освіта-повна СТАРАЯ',
-        'permission' => 'menuOsvitaMain',
-        'children' => [
-          'name' => 'Освіта -повна СТАРАЯ',
-          'permission' => 'menuOsvitaMain',
-          'children' => [
-              'child0' => [
-                'name'       => 'Особовий склад',
-                'route'      => '/education/main/personal-main-grid',
-                'permission' => 'menuOsvitaMain'
-              ],
-              'child1' => [
-                'name'       => 'Підрозділи',
-                'route'      => '/education/main/tree',
-                'permission' => 'menuOsvitaMain'
-              ],
-              'child2' => [
-                'name'       => 'Словники',
-                'route'      => '/structure/dictionary/dictionary-edit',
-                'permission' => 'menuOsvitaMain'
-              ],
-          ]
-      ]
-    ],
-    */
+    [
+        'name'       => 'Регистрация',
+        'route'      => '/adminx/user/signup',
+        'role' => '',
+        'children' => [],
+    ]
 ];
+
+return $t;

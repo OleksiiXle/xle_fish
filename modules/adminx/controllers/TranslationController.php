@@ -59,7 +59,7 @@ class TranslationController extends MainController
         $r = \Yii::t('app', 'Перевод');
         $dataProvider = new ActiveDataProvider([
             'query' => Translation::find()
-            ->where(['language' => \Yii::$app->configs->language])
+            ->where(['language' => \Yii::$app->language])
             ,
             'pagination' => [
                 'pageSize' => 50,

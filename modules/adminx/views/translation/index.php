@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use \yii\widgets\Pjax;
 
 
-$this->title = Yii::t('app', 'Перевод');
+$this->title = Yii::t('app', 'Переводы');
 ?>
 <div class="container-fluid">
     <div class="row">

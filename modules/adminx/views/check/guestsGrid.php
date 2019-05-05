@@ -28,12 +28,13 @@ $this->title = \Yii::t('app', 'Посетители');
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'user_id',
+                'username',
                 'remote_ip',
                 'referrer',
                 'remote_host',
                 'absolute_url',
                 'url',
-                'created_at',
+                'created_at_str',
                 /*
                 [
                     'label'=>'Статус',

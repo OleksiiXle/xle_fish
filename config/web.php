@@ -10,8 +10,8 @@ $config = [
     'bootstrap' => [
         'log',
         ],
-   // 'language' => 'ru-RU',
-    'language' => 'en-US',
+    'language' => 'ru-RU',
+   // 'language' => 'en-US',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -84,7 +84,7 @@ $config = [
             'class' => 'app\components\conservation\ConservationComponent',
         ],
         'configs' => [
-            'class' => 'app\components\configs\ConfigsComponent',
+            'class' => 'app\components\ConfigsComponent',
         ],
         'reCaptcha' => [
             'name' => 'reCaptcha',

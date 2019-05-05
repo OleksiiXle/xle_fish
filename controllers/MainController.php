@@ -24,9 +24,9 @@ class MainController extends Controller
 
     public function beforeAction($action)
     {
-        $i=1;
+        $configs = \Yii::$app->configs;
         $this->user = \Yii::$app->user;
-        switch (\Yii::$app->params['menuType']){
+        switch (\Yii::$app->configs->menuType){
             case 'horizontal':
                 $this->layout =  '@app/views/layouts/commonLayoutHM.php';
                 break;
@@ -41,11 +41,11 @@ class MainController extends Controller
             \Yii::$app->getAssetManager()->forceCopy = true;
         }
 
-        if (\Yii::$app->params['userControl'] || \Yii::$app->params['guestControl']){
+        if (\Yii::$app->configs->userControl || \Yii::$app->configs->guestControl){
             $request = \Yii::$app->getRequest();
             $userId = \Yii::$app->user->getId();
             if (!$request->isAjax){
-                if (\Yii::$app->params['guestControl']){
+                if (\Yii::$app->configs->userControl){
                     $params = [
                         'user_id' => (!empty($userId)) ? $userId : 0,
                         'remote_ip' => $request->getRemoteIP() ,
@@ -57,7 +57,7 @@ class MainController extends Controller
                     ];
                     $ret = UControl::guestControl($params);
                 }
-                if (\Yii::$app->params['userControl']){
+                if (\Yii::$app->configs->guestControl){
                     if (!empty($userId)){
                         $ret = UControl::userControl($userId,$request->getUrl() );
                     }

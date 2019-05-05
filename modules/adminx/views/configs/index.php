@@ -13,7 +13,7 @@ $this->title = \Yii::t('app', 'Настройки');
         </div>
         <div class="col-md-6" align="right" style="padding-top: 20px">
             <?php
-            echo Html::a(\Yii::t('app', 'Создать'), '/adminx/configs/create', [
+            echo Html::a(\Yii::t('app', 'Изменить'), '/adminx/configs/update', [
                 'class' =>'btn btn-primary',
             ]);
             ?>
@@ -31,10 +31,11 @@ $this->title = \Yii::t('app', 'Настройки');
             //-------------------------------------------
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'typeTxt',
-                'ownerTxt',
+               // 'typeTxt',
+                'owner',
                 'name',
                 'content',
+                /*
                 ['class' => 'yii\grid\ActionColumn',
                     'buttons'=>[
                         ''=>function($url, $data) {
@@ -58,8 +59,10 @@ $this->title = \Yii::t('app', 'Настройки');
 
 
                 ],
+                */
                 //------------------------------
             ],
+
 
         ]);
         Pjax::end() ?>

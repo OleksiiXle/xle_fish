@@ -32,6 +32,10 @@ $config = [
             ],
         ],
         'db' => $db,
+        'configs' => [
+            'class' => 'app\components\ConfigsComponent',
+        ],
+
     ],
     'params' => $params,
     /*

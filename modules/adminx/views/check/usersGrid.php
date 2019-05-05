@@ -62,6 +62,10 @@ $timeFix = time() - $interval;
                     'attribute' => 'last_rout',
                     'headerOptions' => ['style' => 'width:4%'],
                 ],
+                [
+                    'attribute' => 'lastRoutTime',
+                    'headerOptions' => ['style' => 'width:4%'],
+                ],
             ],
 
         ]);

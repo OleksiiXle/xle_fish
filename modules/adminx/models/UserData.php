@@ -19,13 +19,13 @@ use Yii;
 class UserData extends \yii\db\ActiveRecord
 {
     public static $activityIntervalArray=[
-        3600 => '1 година',
-        7200 => '2 години',
-        10800 => '3 години',
-        86400 => '1 доби',
-        172800 => '2 доби',
-        259200 => '3 доби',
-        345600 => '4 доби',
+        3600 => '1 час',
+        7200 => '2 часа',
+        10800 => '3 часа',
+        86400 => '1 день',
+        172800 => '2 дня',
+        259200 => '3 дня',
+        345600 => '4 дня',
     ];
 
     private $_userLogin;
@@ -71,6 +71,7 @@ class UserData extends \yii\db\ActiveRecord
             'last_name' => \Yii::t('app', 'Фамилия'),
             'last_rout' => \Yii::t('app', 'Последний роут'),
             'last_rout_time' => \Yii::t('app', 'Последняя активность'),
+            'lastRoutTime' => \Yii::t('app', 'Последняя активность'),
             'userLogin' => \Yii::t('app', 'Логин'),
             'userFio' => \Yii::t('app', 'Ф.И.О.'),
         ];
@@ -103,7 +104,6 @@ class UserData extends \yii\db\ActiveRecord
         $this->_userLogin = $this->user->username;
         return $this->_userLogin;
     }
-
 
     public function getLastRoutTime()
     {

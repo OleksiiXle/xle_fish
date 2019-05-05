@@ -35,7 +35,7 @@ if (Yii::$app->session->getAllFlashes()){
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<div class="wrap" id="mainContainer">
         <?php
         NavBar::begin([
             'brandLabel' => Yii::$app->name,

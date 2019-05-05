@@ -2,12 +2,18 @@
 
 return [
     'mode' => 'dev',
-    'adminEmail' => 'oleksii.xle.fish@gmail.com',
     'supportEmail' => 'robot@devreadwrite.com',
-    'user.passwordResetTokenExpire' => 3600,
+    'user.passwordResetTokenExpire' => '3600',
 
-    'userControl' => false,
-    'guestControl' => false,
-    'menuType' => 'horizontal',
-   // 'menuType' => 'vertical',
+  //  'menuType' => 'horizontal',
+    'menuType' => 'vertical',
+    'adminEmail' => 'oleksii.xle.fish@gmail.com',
+    'userControl' => '1',
+    'guestControl' => '1',
+    'guestControlDuration' => '3600',
+    'permCacheKey' => 'perm',
+    'permCacheKeyDuration' => '180',
+    'passwordResetTokenExpire' => '3600',
+    'userDefaultRole' => 'user',
+
 ];

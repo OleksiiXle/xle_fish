@@ -260,7 +260,7 @@ class UserController extends MainController
                 $model->middle_name =  $data['middle_name'];
                 $model->last_name =  $data['last_name'];
 
-                if ($user = $model->updateUser()) {
+                if ($model->updateUser()) {
                     return $this->goHome();
                 }
             }
@@ -284,7 +284,7 @@ class UserController extends MainController
     public function actionDelete($id)
     {
         if (\Yii::$app->request->isPost){
-            $userDel = UserM::deleteAll($id);
+            $userDel = UserM::findOne($id)->delete();
             if ($userDel === 0){
                 \yii::$app->getSession()->addFlash("warning","Ошибка при удалении.");
             }
@@ -342,11 +342,7 @@ class UserController extends MainController
      */
     public function actionResetPassword($token)
     {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
+        $model = new ResetPasswordForm($token);
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
             \Yii::$app->session->setFlash('success', \Yii::t('app', 'Новый пароль сохранен'));

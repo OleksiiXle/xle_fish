@@ -127,6 +127,8 @@ class RbacController extends Controller
     }
 
     public function actionUserInit(){
+        echo 'ДЕФОЛТНЫЕ ПОЛЬЗОВАТЕЛИ *******************************' .PHP_EOL;
+
         $users = require(__DIR__ . '/data/rbacDefaultUsers.php');
         $auth = Yii::$app->authManager;
         foreach ($users as $user){
@@ -163,6 +165,59 @@ class RbacController extends Controller
     }
 
     public function actionMenuInit() {
+        echo 'ДЕФОЛТНЫЕ МЕНЮ *******************************' .PHP_EOL;
+        $delCnt = MenuX::deleteAll();
+        echo 'Удалено ' . $delCnt . ' пунктов меню ' .PHP_EOL;
+
+        $menus = require(__DIR__ . '/data/menuInit.php');
+        $sort1 = $sort2 = $sort3 = 1;
+        foreach ($menus as $menu1){
+            echo $menu1['name'] . PHP_EOL;
+            $m1 = new MenuX();
+            $m1->parent_id = 0;
+            $m1->sort = $sort1++;
+            $m1->name = $menu1['name'];
+            $m1->route = $menu1['route'];
+            $m1->role = $menu1['role'];
+            if (!$m1->save()){
+                echo var_dump($m1->getErrors()) . PHP_EOL;
+                return true;
+            }
+            foreach ($menu1['children'] as $menu2){
+                echo ' --- ' . $menu2['name'] . PHP_EOL;
+                $m2 = new MenuX();
+                $m2->parent_id = $m1->id;
+                $m2->sort = $sort2++;
+                $m2->name = $menu2['name'];
+                $m2->route = $menu2['route'];
+                $m2->role = $menu2['role'];
+                if (!$m2->save()){
+                    echo var_dump($m2->getErrors()) . PHP_EOL;
+                    return true;
+                }
+                foreach ($menu2['children'] as $menu3){
+                    echo ' --- --- ' . $menu3['name'] . PHP_EOL;
+                    $m3 = new MenuX();
+                    $m3->parent_id = $m2->id;
+                    $m3->sort = $sort3++;
+                    $m3->name = $menu3['name'];
+                    $m3->route = $menu3['route'];
+                    $m3->role = $menu3['role'];
+                    if (!$m3->save()){
+                        echo var_dump($m3->getErrors()) . PHP_EOL;
+                        return true;
+                    }
+                }
+                $sort3 = 1;
+            }
+            $sort2 = 1;
+        }
+        return true;
+    }
+
+    public function actionMenuInitCopy() {
+        echo 'ДЕФОЛТНЫЕ МЕНЮ *******************************' .PHP_EOL;
+
         $menus = require(__DIR__ . '/data/menuInit.php');
         $sort1 = $sort2 = 1;
         foreach ($menus as $menu){

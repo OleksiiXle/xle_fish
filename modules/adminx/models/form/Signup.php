@@ -139,7 +139,7 @@ class Signup extends UserM
         $user->status = UserM::STATUS_ACTIVE;
 
         $auth = \Yii::$app->authManager;
-        $userRole = $auth->getRole(User::DEFAULT_ROLE);
+        $userRole = $auth->getRole(\Yii::$app->configs->userDefaultRole);
         if (!empty($userRole)){
             \Yii::$app->authManager->assign($userRole, $user->id);
         }

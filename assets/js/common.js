@@ -16,11 +16,10 @@ function errorHandler(jqXHR, error, errorThrown){
     console.log(error);
     console.log(errorThrown);
     console.log(jqXHR);
-    /*
     if (jqXHR['status']==403){
         //   alert('accessDeny');
         var flashMessage = '';
-        flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Дія заборонена' +'</div>';
+        flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Access denied' +'</div>';
         $("#flashMessage").show('slow');
         $("#flashMessage").html(flashMessage);
         setTimeout(function() {
@@ -29,7 +28,6 @@ function errorHandler(jqXHR, error, errorThrown){
         $("#main-modal-lg").modal("hide");
         $("#main-modal-md").modal("hide");
     }
-    */
 }
 
 //-- обработка ошибок после аякс запроса
@@ -41,10 +39,10 @@ function errorHandlerModal(xhrStatus, xhr, status){
             return true;
             break;
         case 403:
-            flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Дія заборонена' +'</div>';
+            flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Access denied' +'</div>';
             break;
         default:
-            flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'Системна помилка ' + xhrStatus +  status +'</div>';
+            flashMessage += '<div class="alert alert-danger alert-dismissible">' + 'System error ' + xhrStatus +  status +'</div>';
             break;
     }
     $("#flashMessage").show();

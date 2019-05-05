@@ -19,7 +19,6 @@ class m190430_055550_tbl_config extends Migration
         $this->createTable(self::TABLE_, [
             'id' => $this->primaryKey(),
             'owner' => $this->string(255)->notNull(),
-            'type' => $this->integer(1)->notNull(),
             'name' => $this->string(250)->notNull()->unique(),
             'content' => $this->text()->defaultValue(null),
         ], $tableOptions);
