@@ -18,6 +18,7 @@ $this->registerJs("
 */
 
 AppAsset::register($this);
+//\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
 //$this->registerJs($this->render('@app/assets/js/commonFunctions.js'),\yii\web\View::POS_HEAD);
 
 if (Yii::$app->session->getAllFlashes()){
@@ -56,45 +57,69 @@ if (Yii::$app->session->getAllFlashes()){
     <div class="container-fluid" id="mainContainer">
 
         <div class="menuX menuXleActive">
-            <div class ="img-rounded">
-                <img  src="<?=\yii\helpers\Url::to('@web/images/np_logo.png');?>" height="50px" width="50px;">
-            </div>
-            <div>
-                <?php
-                $us = $this->context->user->id;
-                echo Html::dropDownList('lang', $this->context->language, \app\models\Translation::LIST_LANGUAGES, [
-                     'class' => 'selectLanguage',
-                 //   'onchange' => 'console.log(this);'
-                   'onchange' => "setLanguage(this.value);"
-                ]);
-                ?>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class ="img-rounded">
+                        <img  src="<?=\yii\helpers\Url::to('@web/images/np_logo.png');?>" height="50px" width="50px;">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div>
+                        <?php
+                        $us = $this->context->user->id;
+                        echo \macgyer\yii2materializecss\widgets\form\Select::widget([
+                            'name' => 'ddg',
+                            'items' => \app\models\Translation::LIST_LANGUAGES,
+                            'options' => [
+                                'placeholder' => false,
+                                'onchange' => "setLanguage(this.value);",
+                                'options' => [
+                                    $this->context->language => ['Selected' => true],
 
+                                ],
+                            ]
+                        ]);
+                        /*
+                        echo Html::dropDownList('lang', $this->context->language, \app\models\Translation::LIST_LANGUAGES, [
+                            //'class' => 'selectLanguage',
+                            //   'onchange' => 'console.log(this);'
+                            'onchange' => "setLanguage(this.value);"
+                        ]);
+                        */
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button id="menu-switch-btn" class="btn"
+                            style="height: 55px; width: 55px; padding: 2px; background-color: #D0D5D8; outline:none;">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="menuTree">
+                    <?=\app\components\widgets\menuX\MenuXWidget::widget([
+                        'model' => '',
+                        'attribute' => 'kjgh',
+                        'name' => '',
+                    ]) ;?>
+                </div>
+                <div>
+                    <?php
+                    if (!$this->context->user->isGuest){
+                        $icon = \yii\helpers\Url::to('@web/images/Gnome-Application-Exit-64.png');
+                        echo Html::beginForm(['/adminx/user/logout'], 'post');
+                        echo Html::submitButton(
+                            ' <img  src="' . $icon . '" height="30px" width="30px;" >',
+                            ['class' => 'btn btn-link logout']
+                        );
+                        echo Html::endForm();
+                    }
+                    ?>
+                </div>
             </div>
 
-            <button id="menu-switch-btn" class="btn"
-                        style="height: 55px; width: 55px; padding: 2px; background-color: #D0D5D8; outline:none;">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-            </button>
-            <div class="menuTree">
-               <?=\app\components\widgets\menuX\MenuXWidget::widget([
-                   'model' => '',
-                   'attribute' => 'kjgh',
-                   'name' => '',
-               ]) ;?>
-            </div>
-            <div>
-                <?php
-                if (!$this->context->user->isGuest){
-                    $icon = \yii\helpers\Url::to('@web/images/Gnome-Application-Exit-64.png');
-                    echo Html::beginForm(['/adminx/user/logout'], 'post');
-                    echo Html::submitButton(
-                        ' <img  src="' . $icon . '" height="30px" width="30px;" >',
-                        ['class' => 'btn btn-link logout']
-                    );
-                    echo Html::endForm();
-                }
-                ?>
-            </div>
+
         </div>
         <div class="dataX contentXle">
             <div id="flashMessage" style="display: none">

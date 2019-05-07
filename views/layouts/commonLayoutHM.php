@@ -9,8 +9,10 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-
 AppAsset::register($this);
+//\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
+
+
 if (Yii::$app->session->getAllFlashes()){
     $fms = Yii::$app->session->getAllFlashes();
     $_fms = \yii\helpers\Json::htmlEncode($fms);
