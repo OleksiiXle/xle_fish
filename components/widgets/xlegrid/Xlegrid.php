@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 
-class Xlegrid extends GridView
+class Xlegrid extends \macgyer\yii2materializecss\widgets\grid\GridView
 {
     public $filterPosition = self::FILTER_POS_HEADER;
     public $filterView;// = '@app/views/dictionary/_search';

@@ -389,7 +389,13 @@ sort: 2
                             that.clickItem(new_item);
                             break;
                     }
-                    $("#main-modal-md").modal("hide");
+                    var modalId = "main-modal-md";
+                    var modalInstance = document.getElementById(modalId).M_Modal;
+                    if (modalInstance) {
+                        modalInstance.close();
+                    }
+
+                    //$("#main-modal-md").modal("hide");
                 } else {
                     console.log(response);
                     objDump(response['data']);
