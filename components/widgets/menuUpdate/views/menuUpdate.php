@@ -29,7 +29,8 @@ $this->registerJs("
             echo Html::button('<span class="glyphicon glyphicon-plus"></span>', [
                 'title' => \Yii::t('app', 'Добавить потомка'),
                 'id' => 'btn_' . $menu_id . '_appendChild',
-                'class' => 'actionBtn ',
+                'class' => 'actionBtn',
+              //  'target' => 'main-modal-md',
             ]);
             echo Html::button('<span class="glyphicon glyphicon-download-alt"></span>', [
                 'title' => \Yii::t('app', 'Добавить брата вниз'),
@@ -71,12 +72,38 @@ $this->registerJs("
         <?php //***********************************  заготовки под модальные окна
         yii\bootstrap\Modal::begin([
             'headerOptions' => ['id' => 'modalHeader_md','class'=>'text-center'],
-            'id' => 'main-modal-md',
+            'id' => 'main-modal-md1',
             'size' => 'modal-md',
             'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE],
         ]);?>
         <div id='modalContent_md'></div>
         <?php yii\bootstrap\Modal::end();?>
+
+        <?php \macgyer\yii2materializecss\widgets\Modal::begin(
+                [
+                    'id' => 'main-modal-md',
+                    'closeButtonPosition' => \macgyer\yii2materializecss\widgets\Modal::CLOSE_BUTTON_POSITION_BEFORE_FOOTER,
+                    'closeButton' => [
+                        'tag' => 'div',
+                        'label' => 'x',
+                        'class' => 'light-grey btn btn-flat blue lighten-4'
+                    ],
+                    'toggleButton' => false,
+                 //   'modalType' => \macgyer\yii2materializecss\widgets\Modal::TYPE_LEAN,
+                    'modalType' => \macgyer\yii2materializecss\widgets\Modal::TYPE_FIXED_FOOTER,
+                  //  'modalType' => \macgyer\yii2materializecss\widgets\Modal::TYPE_BOTTOM_SHEET,
+                    /*
+                    'footer' => \macgyer\yii2materializecss\widgets\Button::widget([
+                        'type' => \macgyer\yii2materializecss\widgets\Button::TYPE_FLAT,
+                        'label' => 'Get some beer!'
+                    ]),
+                    */
+
+                ]
+    ) ?>
+        <h1>Modal headline</h1>
+        <p>This is some arbitrary Modal content.</p>
+        <?php \macgyer\yii2materializecss\widgets\Modal::end() ?>
 
 
     <?php endif;?>

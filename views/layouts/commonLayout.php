@@ -18,7 +18,7 @@ $this->registerJs("
 */
 
 AppAsset::register($this);
-//\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
+\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
 //$this->registerJs($this->render('@app/assets/js/commonFunctions.js'),\yii\web\View::POS_HEAD);
 
 if (Yii::$app->session->getAllFlashes()){

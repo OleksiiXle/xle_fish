@@ -34,7 +34,15 @@ use \dosamigos\datepicker\DatePicker;
             ]); ?>
             <?= Html::button( \Yii::t('app', 'Отмена'),
                 ['class' =>  'btn btn-danger',
-                    'onclick' => '$("#main-modal-md").modal("hide");'
+                  // 'onclick' => '$("#main-modal-md").modal("hide");'
+                    'onclick' => '
+                         var modalId = "main-modal-md";
+                         var modalInstance = document.getElementById(modalId).M_Modal;
+                         if (modalInstance) {
+                            modalInstance.close();
+                         }
+
+                    ;'
                 ]) ?>
 
         </div>
