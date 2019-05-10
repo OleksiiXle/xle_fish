@@ -3,14 +3,11 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use \yii\helpers\Url;
 use app\assets\AppAsset;
 AppAsset::register($this);
-//\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
+\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
 
 
 if (Yii::$app->session->getAllFlashes()){
@@ -34,56 +31,80 @@ if (Yii::$app->session->getAllFlashes()){
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body id="mainContainer">
 <?php $this->beginBody() ?>
 
-<div class="wrap" id="mainContainer">
-        <?php
-        NavBar::begin([
-            'brandLabel' => Yii::$app->name,
-            'brandUrl' => Yii::$app->homeUrl,
-            'options' => [
-                'class' => 'navbar-fixed-top',
-                'style' => 'background: lightgrey;'
-            ],
-        ]);
-        echo \app\components\widgets\menuG\MenuGWidget::widget();
-        ?>
-    <div class="pull-right" >
-        <?php
-        echo Html::dropDownList('lang', $this->context->language, \app\models\Translation::LIST_LANGUAGES, [
-            'class' => 'selectLanguage',
-            //   'onchange' => 'console.log(this);'
-            'onchange' => "setLanguage(this.value);",
-        ]);
-        if (Yii::$app->user->isGuest){
-            echo Html::a(\Yii::t('app', "Вход"), '/adminx/user/login');
-        } else {
-            echo Html::a(\Yii::t('app', "Выход(" . Yii::$app->user->identity->username . ')'), '/adminx/user/logout',
-                [
-                    'data-method' => 'post',
-                    'style' => 'color: black',
-                ]);
-        }
-        ?>
-    </div>
-    <?php
-
-        NavBar::end();
-        ?>
-    <div style="padding-top: 80px; overflow: hidden;">
-        <div class="row">
-        </div>
-        <div class="row">
-            <div class="container contentXleHorizontalMenu" >
-                <div id="flashMessage" style="display: none">
+<header>
+    <div class="navbar-fixed">
+        <nav class="navbar topXleHorizontal">
+            <div class="nav-wrapper">
+                <div class="col-md-2">
+                    <a href="<?=Yii::$app->homeUrl;?>" class="appName" ><b><?=Yii::$app->name;?></b></a>
                 </div>
-
-                <?= $content ?>
+                <div class="col-md-7">
+                    <div style="height: 20px">
+                        <?= \app\components\widgets\menuG\MenuGWidget::widget();?>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div style="padding-top: 11px">
+                        <?php
+                        echo \macgyer\yii2materializecss\widgets\form\Select::widget([
+                            'name' => 'ddg',
+                            'items' => \app\models\Translation::LIST_LANGUAGES,
+                            'options' => [
+                                'placeholder' => false,
+                                'onchange' => "setLanguage(this.value);",
+                                'options' => [
+                                    $this->context->language => ['Selected' => true],
+                                ],
+                            ]
+                        ]);
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div >
+                        <?php
+                        if (Yii::$app->user->isGuest){
+                            echo \macgyer\yii2materializecss\lib\Html::a(\Yii::t('app', "Вход"), '/adminx/user/login');
+                        } else {
+                            echo \macgyer\yii2materializecss\lib\Html::img(Url::to('@web/images/no-avatar.png'), [
+                                'class' => 'circle',
+                                'height' => '35px',
+                                'width' => 'auto',
+                            ]);
+                            echo \macgyer\yii2materializecss\lib\Html::a(\Yii::t('app', "Выход"), '/adminx/user/logout',
+                                [
+                                    'data-method' => 'post',
+                                    'style' => 'color: black; padding-left: 10px',
+                                ]);
+                        }
+                        ?>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
+
     </div>
-</div>
+</header>
+
+<main>
+    <div class="container">
+        <div id="flashMessage" style="display: none">
+        </div>
+        <?= $content ?>
+        <div class="footer-copyright">
+        </div>
+
+    </div>
+</main>
+
+<footer class="page-footer" style="background: none">
+    <div class="container">
+        © 2019 Copyright Text
+    </div>
+</footer>
 
 
 <?php $this->endBody() ?>

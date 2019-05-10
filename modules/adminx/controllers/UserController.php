@@ -20,6 +20,7 @@ use app\modules\adminx\models\form\Update;
 use app\modules\adminx\models\UserM;
 use yii\base\InvalidParamException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 
 class UserController extends MainController
@@ -57,9 +58,13 @@ class UserController extends MainController
                 ],
             ],
             'denyCallback' => function ($rule, $action) {
+            if (\Yii::$app->user->isGuest){
+                $redirect = Url::to(\Yii::$app->user->loginUrl);
+                return $this->redirect( $redirect);
+            } else {
                 \yii::$app->getSession()->addFlash("warning",\Yii::t('app', "Действие запрещено"));
                 return $this->redirect(\Yii::$app->request->referrer);
-
+            }
         }
         ];
 

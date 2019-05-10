@@ -26,6 +26,7 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/xle.css',
         'css/common.css',
+        'css/admin-materialize.css',
     ];
     public $js = [
        // 'js/menux.js',

@@ -9,7 +9,7 @@ class MenuXAssets extends AssetBundle
     public $sourcePath = '@app/components/widgets/menuX/assets';
     public $publishOptions = ['forceCopy' => true];
     public $css = [
-        'css/menuX.css',
+       //'css/menuLeft.css',
 
     ];
     public $js = [

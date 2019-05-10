@@ -1,5 +1,4 @@
-<?php
-use \yii\helpers\Html;
-?>
-        <?=$html;?>
+<div class="container-fluid">
+    <?=$html;?>
+</div>
 

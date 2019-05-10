@@ -237,7 +237,8 @@ class MenuG extends \yii\db\ActiveRecord{
         $ulClass = ($pid > 0) ? 'submenu' : '';
         $ulClass .= ($gpid == 0) ? ' firstLevelChildren' : '';
         $ulClass .= ($pid > 0) ? " childrenNoActive" : '';
-        return $html ? '<ul class=" ' . $ulClass . '" style="padding-left: 15px " >' . $html . '</ul>' : '';
+        return $html ? '<ul class=" ' . $ulClass . '"  >' . $html . '</ul>' : '';
+    //    return $html ? '<ul class=" ' . $ulClass . '" style="padding-left: 15px " >' . $html . '</ul>' : '';
     }
 
 
