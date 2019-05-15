@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\modules\adminx\components\AccessControl;
 use app\modules\adminx\models\UControl;
 use yii\web\Controller;
 
 
 class MainController extends Controller
 {
+
   //  public $layout = '@app/views/layouts/commonLayout.php';
     public $layout = '@app/views/layouts/commonLayoutHM.php';
     public $user;

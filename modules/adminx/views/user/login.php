@@ -12,10 +12,14 @@ use yii\bootstrap\ActiveForm;
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
-            <?= $form->field($model, 'reCaptcha')->widget(
+            <?php
+            /*
+            echo $form->field($model, 'reCaptcha')->widget(
                 \himiklab\yii2\recaptcha\ReCaptcha::className(),
                 ['siteKey' => '6LfU-p8UAAAAAOSjC2aMujiIuD9K8zw7tP4IJQrp']
-            )->label(false) ?>
+            )->label(false);
+            */
+            ?>
                 <div class="form-group">
                     <?= Html::submitButton(\Yii::t('app', 'Вход'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>

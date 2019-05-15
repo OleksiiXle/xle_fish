@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "808595ca29ca3be7da57202567a748b6",
+    "content-hash": "98b2a55b2bc846f34095ac2c2edd3022",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -463,16 +463,16 @@
         },
         {
             "name": "himiklab/yii2-recaptcha-widget",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/himiklab/yii2-recaptcha-widget.git",
-                "reference": "be37ddccb2f67962944213504933725083bd6314"
+                "reference": "1a15b153c8191251c3c7eb2c621905a7d68c3564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/himiklab/yii2-recaptcha-widget/zipball/be37ddccb2f67962944213504933725083bd6314",
-                "reference": "be37ddccb2f67962944213504933725083bd6314",
+                "url": "https://api.github.com/repos/himiklab/yii2-recaptcha-widget/zipball/1a15b153c8191251c3c7eb2c621905a7d68c3564",
+                "reference": "1a15b153c8191251c3c7eb2c621905a7d68c3564",
                 "shasum": ""
             },
             "require": {
@@ -507,7 +507,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2019-04-15T07:18:47+00:00"
+            "time": "2019-05-12T12:26:01+00:00"
         },
         {
             "name": "macgyer/yii2-materializecss",

@@ -25,8 +25,8 @@ function errorHandler(jqXHR, error, errorThrown){
         setTimeout(function() {
             $("#flashMessage").hide('slow');
         }, 5000);
-        $("#main-modal-lg").modal("hide");
-        $("#main-modal-md").modal("hide");
+      //  $("#main-modal-lg").modal("hide");
+    //    $("#main-modal-md").modal("hide");
     }
 }
 

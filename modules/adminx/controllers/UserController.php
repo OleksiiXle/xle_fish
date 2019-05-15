@@ -57,6 +57,7 @@ class UserController extends MainController
                     'roles'      => ['adminCRUD' ],
                 ],
             ],
+            /*
             'denyCallback' => function ($rule, $action) {
             if (\Yii::$app->user->isGuest){
                 $redirect = Url::to(\Yii::$app->user->loginUrl);
@@ -66,6 +67,7 @@ class UserController extends MainController
                 return $this->redirect(\Yii::$app->request->referrer);
             }
         }
+            */
         ];
 
         $behaviors['verbs'] = [
