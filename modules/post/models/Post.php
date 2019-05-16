@@ -27,6 +27,8 @@ class Post extends MainModel
 
     private $_ownerLastName;
     private $_ownerUsername;
+    private $_mainImage;
+
 
     //-------------------------------------------------------------------- виртуальные атрибуты PostMedia
 
@@ -105,6 +107,16 @@ class Post extends MainModel
         return $this->hasMany(PostMedia::class, ['post_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getImages()
+    {
+        return $this->hasMany(PostMedia::class, ['post_id' => 'id'])
+            ->where(['type' => PostMedia::TYPE_IMAGE])
+            ->orderBy('id');
+    }
+
     //************************************************************************************************ ГЕТТЕРЫ, СЕТТЕРЫ
 
     /**
@@ -130,6 +142,23 @@ class Post extends MainModel
         }
         return $this->_ownerUsername;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMainImage()
+    {
+        $this->_mainImage = '';
+        $images = $this->images;
+        if (!empty($images)){
+            foreach ($images as $image){
+                $this->_mainImage = $image->urlToFile;
+                break;
+            }
+        }
+        return $this->_mainImage;
+    }
+
 
     //************************************************************************************************ ПЕРЕОПРЕДЕЛЕННЫЕ МЕТОДЫ
 

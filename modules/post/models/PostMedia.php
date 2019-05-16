@@ -4,7 +4,6 @@ namespace app\modules\post\models;
 
 use app\models\FileUpload;
 use app\models\MainModel;
-use app\models\UploadPreview;
 use Yii;
 
 /**
@@ -27,12 +26,14 @@ class PostMedia extends MainModel
     const TYPE_VIDEO = 2;
     const TYPE_AUDIO = 3;
     const TYPE_TEXT = 4;
+    const TYPE_LINK = 5;
 
     const TYPE_LIST = [
         self::TYPE_IMAGE => 'image',
         self::TYPE_VIDEO => 'video',
         self::TYPE_AUDIO => 'audio',
         self::TYPE_TEXT => 'text',
+        self::TYPE_LINK => 'link',
     ];
 
     private $_urlToFile;
@@ -103,6 +104,8 @@ class PostMedia extends MainModel
             self::TYPE_IMAGE => Yii::t('app', 'Изображение'),
             self::TYPE_VIDEO => Yii::t('app', 'Видео'),
             self::TYPE_AUDIO => Yii::t('app', 'Аудио'),
+            self::TYPE_TEXT => Yii::t('app', 'Документ'),
+            self::TYPE_LINK => Yii::t('app', 'Ссылка'),
         ];
 
         return $this->_listType;
@@ -143,12 +146,38 @@ class PostMedia extends MainModel
         return $this->_pathToFile;
     }
 
+
     public function deleteFile()
     {
-        $ret = unlink($this->pathToFile);
-        return $ret;
+        try{
+            $ret = unlink($this->pathToFile);
+            return $ret;
+        } catch (\Exception $e){
+            $this->addError('name', $e->getMessage());
+        }
+        return false;
+
     }
 
+    public function deletePostMedia()
+    {
+        try{
+            if ($this->type === self::TYPE_IMAGE
+                || self::TYPE_AUDIO
+                || self::TYPE_TEXT
+                || self::TYPE_VIDEO
+            ){
+                if ($this->deleteFile()){
+                    return $this->delete();
+                }
+            } else {
+                return $this->delete();
+            }
+        } catch (\Exception $e){
+            $this->addError('name', $e->getMessage());
+        }
+        return false;
+    }
 
 
 }

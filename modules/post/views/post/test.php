@@ -1,76 +1,59 @@
-<input type="file" multiple="multiple" accept=".txt,image/*">
-<a href="#" class="upload_files button">Загрузить файлы</a>
-<div class="ajax-reply"></div>
+
+<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+yii\jui\JuiAsset::register($this);
+\app\modules\post\assets\UpdadePostAsset::register($this);
+
+$this->registerJs("
+ var _id = 3;
+ var _cleanImage = 'xsdfsdf';
+     $( function() {
+        $( '#tabsl' ).tabs();
+    } );
+
+ ",\yii\web\View::POS_HEAD);
+
+?>
+<div class="container-fluid">
+    <div class="row">
+        <!--*************************************************************************** ЛЕВАЯ ПОЛОВИНА -->
+        <div class="col-md-6"  >
+            <div id="tabsl" style="height: 95vh; ">
+                <!--*************************************************************************** МЕНЮ -->
+                <ul>
+                    <li><a href="#tabsl-1">Дерево діючої структури</a></li>
+                    <li><a href="#tabsl-2">Пропозиції до наказів</a></li>
+                </ul>
+                <div id="tabsl-1" style="padding: 0; margin: 0">
+                    <b>xfgzfg</b>
+                </div>
+                <div id="tabsl-2" style="padding: 0; margin: 0">
+                    <b>xfgzfg</b>
+                </div>
+            </div>
+        </div>
+        <!--*************************************************************************** ПРАВАЯ ПОЛОВИНА -->
+        <div class="col-md-6" >
+        </div>
+    </div>
+</div>
+
+
 
 <script>
-    var files; // переменная. будет содержать данные файлов
-    $('input[type=file]').on('change', function(){
-        files = this.files;
-       console.log(this.files);
-    //   alert('dfgdfg');
-    });
 
-    // обработка и отправка AJAX запроса при клике на кнопку upload_files
-    $('.upload_files').on( 'click', function( event ){
-        alert('upload_files');
-
-        event.stopPropagation(); // остановка всех текущих JS событий
-        event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
-
-        // ничего не делаем если files пустой
-        if( typeof files == 'undefined' ) return;
-
-        // создадим объект данных формы
-        var data = new FormData();
-
-        // заполняем объект данных файлами в подходящем для отправки формате
-        $.each( files, function( key, value ){
-            data.append( key, value );
-        });
-
-        // добавим переменную для идентификации запроса
-        data.append( 'my_file_upload', 1 );
-        console.log(data);
-
-        // AJAX запрос
-        $.ajax({
-            url         : '/post/post/get-media-preview',
-            type        : 'POST', // важно!
-            data        : data,
-            cache       : false,
-            dataType    : 'json',
-            // отключаем обработку передаваемых данных, пусть передаются как есть
-            processData : false,
-            // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-            contentType : false,
-            // функция успешного ответа сервера
-            success     : function( respond, status, jqXHR ){
-
-                // ОК - файлы загружены
-                if( typeof respond.error === 'undefined' ){
-                    // выведем пути загруженных файлов в блок '.ajax-reply'
-                    var files_path = respond.files;
-                    var html = '';
-                    $.each( files_path, function( key, val ){
-                        html += val +'<br>';
-                    } );
-
-                    $('.ajax-reply').html( html );
-                }
-                // ошибка
-                else {
-                    console.log('ОШИБКА: ' + respond.error );
-                }
-            },
-            // функция ошибки ответа сервера
-            error: function( jqXHR, status, errorThrown ){
-                console.log( 'ОШИБКА AJAX запроса: ' + status, jqXHR );
-            }
-
-        });
-
-    });
+    //$( "#tabsl" ).tabs();
     $(document).ready ( function(){
+        /*
+        $( function() {
+            $( "#tabsl" ).tabs();
+            //  $( "#tabsr" ).tabs();
+        } );
+        */
     });
+
+
 
 </script>

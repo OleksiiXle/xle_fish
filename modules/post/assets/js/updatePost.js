@@ -13,6 +13,10 @@ $(document).ready ( function(){
         $("#listPostMediaArea").hide('slow');
     });
 
+    $("#resetMediaBtn").click('on', function () {
+        resetNewMedia();
+    });
+
     //--  загрузка и вывод превью
     $('input[type=file]').on('change', function(){
         // ничего не делаем если files пустой
@@ -60,8 +64,9 @@ $(document).ready ( function(){
         event.stopPropagation(); // остановка всех текущих JS событий
         event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
         createPostMedia();
-
     });
+
+
 });
 
 function refreshPostMediaList() {
@@ -110,12 +115,7 @@ function createPostMedia() {
             console.log(response);
             if (response['status']){
                 refreshPostMediaList();
-                $("#newPostMedia").hide('slow');
-                $("#listPostMediaArea").show('slow');
-                $("#previewImage").attr("src",('?'));
-                $("#postmedia-file_name").val('');
-
-
+                resetNewMedia();
             } else {
                 objDump(response['data']);
             }
@@ -127,6 +127,47 @@ function createPostMedia() {
         }
     })
 
+}
+
+function deletePostMedia(id) {
+    if (confirm('Подтвердите удаление')){
+        $.ajax({
+            url: '/post/post/delete-post-media',
+            type: "POST",
+            data: {'postMediaId':id},
+            dataType: 'json',
+            beforeSend: function() {
+                preloader('show', 'mainContainer', 0);
+            },
+            complete: function(){
+                preloader('hide', 'mainContainer', 0);
+            },
+            success: function(response){
+                console.log(response);
+                if (response['status']){
+                    refreshPostMediaList();
+                } else {
+                    objDump(response['data']);
+                }
+            },
+            error: function (jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                errorHandler(jqXHR, error, errorThrown);
+
+            }
+        })
+
+    }
+    return false;
+}
+
+function resetNewMedia() {
+    $("#previewImage").attr("src",(_cleanImage));
+    $("#postmedia-file_name").val('');
+    $("#postmedia-name").val('');
+    $('input[type=file]').val(null);
+    $("#newPostMedia").hide('slow');
+    $("#listPostMediaArea").show('slow');
 }
 
 

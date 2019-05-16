@@ -1,13 +1,18 @@
 <?php
 use yii\helpers\Html;
-use \yii\widgets\Pjax;
-use \yii\widgets\ActiveForm;
+//use \yii\widgets\ActiveForm;
 //use yii\bootstrap\ActiveForm;
-//use \macgyer\yii2materializecss\widgets\form\ActiveForm;
+use \macgyer\yii2materializecss\widgets\form\ActiveForm;
 
 
 \app\modules\post\assets\UpdadePostAsset::register($this);
-$this->registerJs(" var _id = {$model->id};",\yii\web\View::POS_HEAD);
+
+$cleanImage = \Yii::getAlias('@web'). \Yii::$app->params['pathToFiles'] . '/image/clean.png';
+
+$this->registerJs("
+ var _id = {$model->id};
+ var _cleanImage = '{$cleanImage}';
+ ",\yii\web\View::POS_HEAD);
 
 
 $this->title = \Yii::t('app', 'Пост');
@@ -71,7 +76,7 @@ $this->title = \Yii::t('app', 'Пост');
                     echo $formMedia->field($modelMedia, 'name');
                     ?>
                     <div align="center">
-                        <?= Html::img(\Yii::getAlias('@web'). \Yii::$app->params['pathToFiles'] . '/image/clean.png', [
+                        <?= Html::img($cleanImage, [
                             'id' => 'previewImage',
                             'alt'=> '?',
                             'class' => '',

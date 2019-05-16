@@ -5,16 +5,12 @@ namespace app\modules\post\controllers;
 use app\components\conservation\ActiveDataProviderConserve;
 use app\controllers\MainController;
 use app\models\FileUpload;
-use app\models\Functions;
-use app\models\Upload;
-use app\models\UploadPreview;
 use app\modules\adminx\components\AccessControl;
 use app\modules\post\models\filters\PostFilter;
 use app\modules\post\models\Post;
 use app\modules\post\models\PostMedia;
 use yii\data\ActiveDataProvider;
 use \yii\helpers\Url;
-use yii\web\UploadedFile;
 
 class PostController extends MainController
 {
@@ -28,7 +24,7 @@ class PostController extends MainController
                 [
                     'allow' => true,
                     'actions' => ['index', 'create', 'update', 'delete', 'get-media-preview', 'get-post-media',
-                        'create-post-media'],
+                        'create-post-media', 'delete-post-media'],
                     'roles' => ['@'],
                 ],
             ],
@@ -52,6 +48,7 @@ class PostController extends MainController
      * @return string
      */
     public function actionIndex() {
+      //  return $this->render('test');
         $dataProvider = new ActiveDataProviderConserve([
             'filterModelClass' => PostFilter::class,
             'conserveName' => 'postGrid',
@@ -145,6 +142,30 @@ class PostController extends MainController
     }
 
     /**
+     * AJAX Удалить пост
+     * @return string
+     */
+    public function actionDeletePostMedia()
+    {
+        $r=1;
+        if ($id = \Yii::$app->request->post('postMediaId')) {
+            $model = PostMedia::findOne($id);
+            if (isset($model)){
+                if ($model->deletePostMedia()){
+                    $this->result=[
+                        'status' => true,
+                        'data' => 'ok',
+                        ];
+                } else {
+                    $this->result['data'] = $model->getErrors();
+                }
+            }
+        }
+        return $this->asJson($this->result);
+
+    }
+
+    /**
      * AJAX загрузка превью изображения при редактировании
      * @return string
      */
@@ -208,6 +229,7 @@ class PostController extends MainController
         }
         return $this->asJson($this->result);
     }
+
 
 
 
