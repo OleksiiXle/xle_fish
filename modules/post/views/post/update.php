@@ -1,10 +1,11 @@
 <?php
 use yii\helpers\Html;
 //use \yii\widgets\ActiveForm;
-//use yii\bootstrap\ActiveForm;
-use \macgyer\yii2materializecss\widgets\form\ActiveForm;
+use yii\bootstrap\ActiveForm;
+//use \macgyer\yii2materializecss\widgets\form\ActiveForm;
 
 
+yii\jui\JuiAsset::register($this);
 \app\modules\post\assets\UpdadePostAsset::register($this);
 
 $cleanImage = \Yii::getAlias('@web'). \Yii::$app->params['pathToFiles'] . '/image/clean.png';
@@ -14,26 +15,36 @@ $this->registerJs("
  var _cleanImage = '{$cleanImage}';
  ",\yii\web\View::POS_HEAD);
 
+$this->registerJs("
+$( function() {
+    $( '#tabs' ).tabs();
+  } );
+  ",\yii\web\View::POS_HEAD);
+
 
 $this->title = \Yii::t('app', 'Пост');
+
 ?>
 
 <div class="container-fluid">
-
-    <h3><?= Html::encode($this->title) ?></h3>
-    <div class="row">
-        <div class="col-md-6">
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1"><?=\Yii::t('app', 'Пост');?></a></li>
+            <li><a href="#tabs-2"><?=\Yii::t('app', 'Медиа');?></a></li>
+        </ul>
+        <div id="tabs-1">
+            <!--*************************************************************************** ИЗМЕНЕНИЕ ПОСТА  -->
             <?= Html::errorSummary($model)?>
             <?php
             $form = ActiveForm::begin([
                 'id' => 'post-update-id',
                 'options' => [
-                        'enctype' => 'multipart/form-data',
+                    'enctype' => 'multipart/form-data',
                     'name' => 'post-update-form',
 
                 ]
             ]);
-         //   echo $form->field($model, 'targetFile');
+            //   echo $form->field($model, 'targetFile');
             echo $form->field($model, 'name');
             echo $form->field($model, 'type')->dropDownList(\app\modules\post\models\Post::getListType(),
                 ['options' => [ $model->type => ['Selected' => true]]]);
@@ -47,20 +58,25 @@ $this->title = \Yii::t('app', 'Пост');
                             'allowedContent' => true,
                             // 'width' => "300px",
                         ]])->label(false);
+
             echo $form->field($model, 'user_id')->hiddenInput()->label(false);
             echo Html::submitButton(\Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary', 'name' => 'signup-button']);
             echo Html::submitButton(\Yii::t('app', 'Отмена'), ['class' => 'btn btn-danger', 'name' => 'reset-button']);
             ActiveForm::end();
             ?>
         </div>
-        <div class="col-md-6" style="background-color: aliceblue">
-            <!--*************************************************************************** ПРАВАЯ ПОЛОВИНА  -->
+        <div id="tabs-2">
+            <!--*************************************************************************** КРУД МЕДИА  -->
             <?php if (!$model->isNewRecord):?>
                 <div id="listPostMediaArea">
                     <?php
                     echo Html::button(\Yii::t('app', 'Добавить изображение'), [
-                        'class' => 'btn btn-primary',
-                        'id' => 'newMediaBtn',
+                        'class' => 'btn btn-primary newMediaBtn',
+                        'data-type' => 'image',
+                    ]);
+                    echo Html::button(\Yii::t('app', 'Добавить ссылку'), [
+                        'class' => 'btn btn-primary newMediaBtn',
+                        'data-type' => 'link',
                     ])
                     ?>
 
@@ -68,35 +84,40 @@ $this->title = \Yii::t('app', 'Пост');
                     </div>
                 </div>
                 <div id="newPostMedia" style="display: none" >
+                    <H4 id="mediaTitle">fghfgh</H4>
                     <?php
-                    $formMedia = ActiveForm::begin([
+                    $formImage = ActiveForm::begin([
                         'id' => 'post-media-create',
                         'options' => ['enctype' => 'multipart/form-data']
                     ]);
-                    echo $formMedia->field($modelMedia, 'name');
                     ?>
-                    <div align="center">
-                        <?= Html::img($cleanImage, [
-                            'id' => 'previewImage',
-                            'alt'=> '?',
-                            'class' => '',
-                            'height' => '200px',
-                            'width' => 'auto',
-                            'hspace' => '20px',
-                            'vspace' => '20px',
-                            'align' => 'center',
+                    <?= $formImage->field($modelMedia, 'name');?>
+                    <div id="imagePreview">
+                        <div align="center">
+                            <?= Html::img($cleanImage, [
+                                'id' => 'previewImage',
+                                'alt'=> '?',
+                                'class' => '',
+                                'height' => '200px',
+                                'width' => 'auto',
+                                'hspace' => '20px',
+                                'vspace' => '20px',
+                                'align' => 'center',
 
-                        ])?>
-                        <?=$formMedia->field($modelMedia, 'mediaFile')->fileInput()->label(false)?>
+                            ])?>
+                            <?=$formImage->field($modelMedia, 'mediaFile')->fileInput()->label(false)?>
+                        </div>
                     </div>
-                    <?php
-                    echo $formMedia->field($modelMedia, 'file_name')->hiddenInput()->label(false);
-                    echo $formMedia->field($modelMedia, 'post_id')->hiddenInput()->label(false);
-                    echo $formMedia->field($modelMedia, 'type')->hiddenInput()->label(false);
-                    echo Html::button(\Yii::t('app', 'Сохранить'), ['class' => 'btn btn-primary', 'id' => 'saveMediaBtn']);
-                    echo Html::button(\Yii::t('app', 'Отмена'), ['class' => 'btn btn-danger', 'id' => 'resetMediaBtn']);
-                    ActiveForm::end();
-                    ?>
+                    <?= $formImage->field($modelMedia, 'file_name');?>
+                    <?= $formImage->field($modelMedia, 'type');?>
+                    <?= $formImage->field($modelMedia, 'post_id')->hiddenInput()->label(false);?>
+                    <?= Html::button(\Yii::t('app', 'Сохранить'), [
+                        'class' => 'btn btn-primary saveMediaBtn',
+                        'data-type' => 'image',
+                    ]);?>
+                    <?= Html::button(\Yii::t('app', 'Отмена'), ['class' => 'btn btn-danger', 'id' => 'resetMediaBtn']);?>
+
+                    <?php ActiveForm::end();?>
                 </div>
 
             <?php endif;?>

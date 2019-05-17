@@ -25,16 +25,23 @@ class PostMedia extends MainModel
     const TYPE_IMAGE = 1;
     const TYPE_VIDEO = 2;
     const TYPE_AUDIO = 3;
-    const TYPE_TEXT = 4;
+    const TYPE_DOC = 4;
     const TYPE_LINK = 5;
 
     const TYPE_LIST = [
         self::TYPE_IMAGE => 'image',
         self::TYPE_VIDEO => 'video',
         self::TYPE_AUDIO => 'audio',
-        self::TYPE_TEXT => 'text',
+        self::TYPE_DOC => 'doc',
         self::TYPE_LINK => 'link',
     ];
+
+    const SCENARIO_IMAGE  = 'image';
+    const SCENARIO_VIDEO  = 'video';
+    const SCENARIO_AUDIO  = 'audio';
+    const SCENARIO_DOC  = 'doc';
+    const SCENARIO_LINK  = 'link';
+
 
     private $_urlToFile;
     private $_pathToFile;
@@ -44,6 +51,32 @@ class PostMedia extends MainModel
  //   public $videoFile;
   //  public $audioFile;
   //  public $textFile;
+
+    public function scenarios()
+    {
+        $ret = parent::scenarios();
+        $ret[self::SCENARIO_IMAGE] = [
+            'post_id', 'name', 'created_at', 'updated_at',
+            'type', 'file_name'
+        ];
+        $ret[self::SCENARIO_VIDEO] = [
+            'post_id', 'name', 'created_at', 'updated_at',
+            'type', 'file_name'
+        ];
+        $ret[self::SCENARIO_AUDIO] = [
+            'post_id', 'name', 'created_at', 'updated_at',
+            'type', 'file_name'
+        ];
+        $ret[self::SCENARIO_DOC] = [
+            'post_id', 'name', 'created_at', 'updated_at',
+            'type', 'file_name'
+        ];
+        $ret[self::SCENARIO_LINK] = [
+            'post_id', 'name', 'created_at', 'updated_at',
+            'type', 'file_name'
+        ];
+        return $ret ;
+    }
 
 
     /**
@@ -64,6 +97,8 @@ class PostMedia extends MainModel
             [['post_id', 'type', 'created_at', 'updated_at'], 'integer'],
             [['name', 'file_name'], 'string', 'max' => 250],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Post::className(), 'targetAttribute' => ['post_id' => 'id']],
+
+            ['file_name', 'url', 'defaultScheme' => 'http', 'on' => self::SCENARIO_LINK],
 
             //--------------------------------------------------------------------------- виртуальные атрибуты
          //   [['mediaFile',], 'file'],
@@ -104,7 +139,7 @@ class PostMedia extends MainModel
             self::TYPE_IMAGE => Yii::t('app', 'Изображение'),
             self::TYPE_VIDEO => Yii::t('app', 'Видео'),
             self::TYPE_AUDIO => Yii::t('app', 'Аудио'),
-            self::TYPE_TEXT => Yii::t('app', 'Документ'),
+            self::TYPE_DOC => Yii::t('app', 'Документ'),
             self::TYPE_LINK => Yii::t('app', 'Ссылка'),
         ];
 
@@ -114,15 +149,24 @@ class PostMedia extends MainModel
     public function savePostMedia($userId)
     {
         $t=1;
-        if ($this->validate()){
-            $ret = FileUpload::saveMediaFromTmp($userId, $this->file_name, self::TYPE_LIST[$this->type]);
-            if ($ret['status']){
-                $this->file_name = str_replace('tmp_', '', $this->file_name);
-                return $this->save(false);
-            } else {
-                $this->addError('file_name', $ret['data']);
-            }
+        if (empty($this->type)){
+            $this->addError('type', "Не указан тип");
+            return false;
         }
+        $this->scenario = self::TYPE_LIST[$this->type];
+        if ($this->validate()){
+            if ($this->type !=  self::TYPE_LINK){
+                $ret = FileUpload::saveMediaFromTmp($userId, $this->file_name, self::TYPE_LIST[$this->type]);
+                if ($ret['status']){
+                    $this->file_name = str_replace('tmp_', '', $this->file_name);
+                    return $this->save(false);
+                } else {
+                    $this->addError('file_name', $ret['data']);
+                }
+            } else {
+                return $this->save(false);
+            }
+        } ///4731 2191 1733 4825
         return false;
     }
 
@@ -164,7 +208,7 @@ class PostMedia extends MainModel
         try{
             if ($this->type === self::TYPE_IMAGE
                 || self::TYPE_AUDIO
-                || self::TYPE_TEXT
+                || self::TYPE_DOC
                 || self::TYPE_VIDEO
             ){
                 if ($this->deleteFile()){

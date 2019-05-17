@@ -10,6 +10,7 @@ use yii\base\Widget;
  */
 class SelectXleWidget extends Widget
 {
+    public $selectId;
     /**
      * Массив $ключ => $текст, например
      *      Array(
@@ -52,11 +53,22 @@ class SelectXleWidget extends Widget
      */
     public $userStyles;
 
+    public function init()
+    {
+        parent::init();
+        if (!isset($this->selectId)) {
+            $this->selectId = 'xleSelect_' . $this->getId();
+        }
+      //  ob_start();
+     //   ob_implicit_flush(false);
+    }
+
     public function run()
     {
         SelectXleAssets::register($this->getView());
         return $this->render('selectXle',
             [
+                'selectId' => $this->selectId,
                 'listData' => $this->listData,
                 'selectedItem' => $this->selectedItem,
                 'jsFunction' => $this->jsFunction,

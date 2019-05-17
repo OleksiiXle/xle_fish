@@ -24,7 +24,7 @@ class PostController extends MainController
                 [
                     'allow' => true,
                     'actions' => ['index', 'create', 'update', 'delete', 'get-media-preview', 'get-post-media',
-                        'create-post-media', 'delete-post-media'],
+                        'create-post-media', 'delete-post-media', 'test'],
                     'roles' => ['@'],
                 ],
             ],
@@ -43,12 +43,16 @@ class PostController extends MainController
         return $behaviors;
     }
 
+    public function actionTest()
+    {
+        return $this->render('test');
+    }
+
     /**
      * Список постов
      * @return string
      */
     public function actionIndex() {
-        return $this->render('test');
         $dataProvider = new ActiveDataProviderConserve([
             'filterModelClass' => PostFilter::class,
             'conserveName' => 'postGrid',
@@ -209,7 +213,7 @@ class PostController extends MainController
 
 
     /**
-     * AJAX созранение нового изображения
+     * AJAX созранение нового медиа
      */
     public function actionCreatePostMedia()
     {

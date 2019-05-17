@@ -1,3 +1,9 @@
+const TYPE_IMAGE = '1';
+const TYPE_VIDEO = '2';
+const TYPE_AUDIO = '3';
+const TYPE_TEXT = '4';
+const TYPE_LINK = '5';
+
 var files; // переменная. будет содержать данные файлов
 var newMediaFileName;
 $(document).ready ( function(){
@@ -6,9 +12,23 @@ $(document).ready ( function(){
         refreshPostMediaList();
     }
 
+    $(".newMediaBtn").click('on', function () {
+        switch (this.dataset.type){
+            case 'image':
+                $("#mediaTitle").html("Новое изображение");
+                $("#postmedia-type").val(TYPE_IMAGE);
+                $("#imagePreview").show();
+                $("#post-media-create > div.form-group.field-postmedia-file_name").hide();
+                break;
+            case 'link':
+                $("#mediaTitle").html("Новая ссылка");
+                $("#postmedia-type").val(TYPE_LINK);
+                $("#imagePreview").hide();
+                $("#post-media-create > div.form-group.field-postmedia-file_name").show();
+                $("#post-media-create > div.form-group.field-postmedia-file_name > label").html("Ссылка");
 
-
-    $("#newMediaBtn").click('on', function () {
+                break;
+        }
         $("#newPostMedia").show('slow');
         $("#listPostMediaArea").hide('slow');
     });
@@ -60,10 +80,11 @@ $(document).ready ( function(){
     });
 
     //-- сохранение изображения и обновление таблицы медиа
-    $('#saveMediaBtn').on( 'click', function( event ){
+    $('.saveMediaBtn').on( 'click', function( event ){
         event.stopPropagation(); // остановка всех текущих JS событий
         event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
-        createPostMedia();
+
+        createPostMedia(this.dataset.type);
     });
 
 
@@ -96,9 +117,15 @@ function refreshPostMediaList() {
 
 }
 
-function createPostMedia() {
+function createPostMedia(type) {
     var formData = $("#post-media-create").serialize();
-    console.log(formData);
+    switch (type){
+        case 'image':
+            break;
+        case 'link':
+            break;
+    }
+  //  console.log(formData);
 
     $.ajax({
         url: '/post/post/create-post-media',
@@ -115,7 +142,7 @@ function createPostMedia() {
             console.log(response);
             if (response['status']){
                 refreshPostMediaList();
-                resetNewMedia();
+                resetNewMedia(type);
             } else {
                 objDump(response['data']);
             }
@@ -161,11 +188,15 @@ function deletePostMedia(id) {
     return false;
 }
 
-function resetNewMedia() {
-    $("#previewImage").attr("src",(_cleanImage));
+function resetNewMedia(type) {
+    switch (type){
+        case 'image':
+            $("#previewImage").attr("src",(_cleanImage));
+            $('input[type=file]').val(null);
+            break;
+    }
     $("#postmedia-file_name").val('');
     $("#postmedia-name").val('');
-    $('input[type=file]').val(null);
     $("#newPostMedia").hide('slow');
     $("#listPostMediaArea").show('slow');
 }
