@@ -48,7 +48,7 @@ class PostController extends MainController
      * @return string
      */
     public function actionIndex() {
-      //  return $this->render('test');
+        return $this->render('test');
         $dataProvider = new ActiveDataProviderConserve([
             'filterModelClass' => PostFilter::class,
             'conserveName' => 'postGrid',

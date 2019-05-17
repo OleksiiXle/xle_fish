@@ -6,16 +6,20 @@
 use yii\helpers\Html;
 use \yii\helpers\Url;
 use app\assets\AppAsset;
+use \macgyer\yii2materializecss\assets\MaterializeAsset;
+use \macgyer\yii2materializecss\lib\Html as HtmlMC;
+use \app\components\widgets\menuG\MenuGWidget;
+use \app\components\widgets\selectXle\SelectXleWidget;
+use \app\models\Translation;
+
 AppAsset::register($this);
-\macgyer\yii2materializecss\assets\MaterializeAsset::register($this);
+MaterializeAsset::register($this);
 
 
 if (Yii::$app->session->getAllFlashes()){
     $fms = Yii::$app->session->getAllFlashes();
     $_fms = \yii\helpers\Json::htmlEncode($fms);
-    $this->registerJs("
-    var _fms = {$_fms};
-",\yii\web\View::POS_HEAD);
+    $this->registerJs("var _fms = {$_fms};",\yii\web\View::POS_HEAD);
     $this->registerJs($this->render('showFlash.js'));
 }
 
@@ -43,12 +47,25 @@ if (Yii::$app->session->getAllFlashes()){
                 </div>
                 <div class="col-md-7">
                     <div style="height: 20px">
-                        <?= \app\components\widgets\menuG\MenuGWidget::widget();?>
+                        <?= MenuGWidget::widget();?>
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div style="padding-top: 11px">
+                    <div >
                         <?php
+                        echo SelectXleWidget::widget([
+                                'listData' => Translation::LIST_LANGUAGES,
+                                'selectedItem' => $this->context->language,
+                                'jsFunction' => "
+                                     function clickFunction(item) {
+                                      document.location.href = '/adminx/translation/change-language?language=' + item;
+                                     }
+                                ",
+                        ]);
+                        ?>
+
+                        <?php
+                        /*
                         echo \macgyer\yii2materializecss\widgets\form\Select::widget([
                             'name' => 'ddg',
                             'items' => \app\models\Translation::LIST_LANGUAGES,
@@ -60,6 +77,7 @@ if (Yii::$app->session->getAllFlashes()){
                                 ],
                             ]
                         ]);
+                        */
                         ?>
                     </div>
                 </div>
@@ -67,14 +85,14 @@ if (Yii::$app->session->getAllFlashes()){
                     <div >
                         <?php
                         if (Yii::$app->user->isGuest){
-                            echo \macgyer\yii2materializecss\lib\Html::a(\Yii::t('app', "Вход"), '/adminx/user/login');
+                            echo HtmlMC::a(\Yii::t('app', "Вход"), '/adminx/user/login');
                         } else {
-                            echo \macgyer\yii2materializecss\lib\Html::img(Url::to('@web/images/no-avatar.png'), [
+                            echo HtmlMC::img(Url::to('@web/images/no-avatar.png'), [
                                 'class' => 'circle',
                                 'height' => '35px',
                                 'width' => 'auto',
                             ]);
-                            echo \macgyer\yii2materializecss\lib\Html::a(\Yii::t('app', "Выход"), '/adminx/user/logout',
+                            echo HtmlMC::a(\Yii::t('app', "Выход"), '/adminx/user/logout',
                                 [
                                     'data-method' => 'post',
                                     'style' => 'color: black; padding-left: 10px',

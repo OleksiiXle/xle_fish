@@ -2,9 +2,13 @@
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use \macgyer\yii2materializecss\assets\MaterializeAsset;
-use yii\bootstrap\NavBar;
-use yii\bootstrap\Nav;
 use \yii\helpers\Url;
+
+use \macgyer\yii2materializecss\lib\Html as HtmlMC;
+use \app\components\widgets\menuX\MenuXWidget;
+use \app\components\widgets\selectXle\SelectXleWidget;
+use \app\models\Translation;
+
 
 
 AppAsset::register($this);
@@ -13,12 +17,11 @@ MaterializeAsset::register($this);
 if (Yii::$app->session->getAllFlashes()){
     $fms = Yii::$app->session->getAllFlashes();
     $_fms = \yii\helpers\Json::htmlEncode($fms);
-    $this->registerJs("
-    var _fms = {$_fms};
-",\yii\web\View::POS_HEAD);
+    $this->registerJs("var _fms = {$_fms};",\yii\web\View::POS_HEAD);
     $this->registerJs($this->render('showFlash.js'));
 }
-$this->title = \Yii::t('app', 'Главная');
+
+//$this->title = \Yii::t('app', 'Главная');
 ?>
 <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => \yii\helpers\Url::to(['/images/np_logo.png'])]);?>
 
@@ -56,9 +59,9 @@ $this->title = \Yii::t('app', 'Главная');
                 <div class="topItem">
                     <?php
                     if (Yii::$app->user->isGuest){
-                        echo \macgyer\yii2materializecss\lib\Html::a(\Yii::t('app', "Вход"), '/adminx/user/login');
+                        echo HtmlMC::a(\Yii::t('app', "Вход"), '/adminx/user/login');
                     } else {
-                        echo \macgyer\yii2materializecss\lib\Html::a(\Yii::t('app', "Выход(" . Yii::$app->user->identity->username . ')'), '/adminx/user/logout',
+                        echo HtmlMC::a(\Yii::t('app', "Выход(" . Yii::$app->user->identity->username . ')'), '/adminx/user/logout',
                             [
                                 'data-method' => 'post',
                                 'style' => 'color: black',
@@ -82,6 +85,28 @@ $this->title = \Yii::t('app', 'Главная');
                     <b><?=\Yii::t('app', 'Добро пожаловать');?></b>
                 <div class="row" align="right" style="padding-left: 60%; padding-right: 2%">
                     <?php
+                    echo SelectXleWidget::widget([
+                        'listData' => Translation::LIST_LANGUAGES,
+                        'selectedItem' => $this->context->language,
+                        'jsFunction' => "
+                                     function clickFunction(item) {
+                                      document.location.href = '/adminx/translation/change-language?language=' + item;
+                                     }
+                                ",
+                        'userStyles' => [
+                             'listItem' => [
+                                 'font-weight' => 300,
+                                 'font-size' => 'small',
+                                 'color' => 'blue',
+                             ],
+                             'itemsArea' => [
+                                 'background' => '#eeeeee',
+                                 'border' => '2px solid #bdbdbd',
+                             ],
+                        ],
+                    ]);
+
+                    /*
                     echo \macgyer\yii2materializecss\widgets\form\Select::widget([
                         'name' => 'ddg',
                         'items' => \app\models\Translation::LIST_LANGUAGES,
@@ -94,13 +119,14 @@ $this->title = \Yii::t('app', 'Главная');
                             ],
                         ]
                     ]);
+                    */
 
                     ?>
 
                 </div>
                 <div class="row">
                     <div class="menuTree">
-                        <?=\app\components\widgets\menuX\MenuXWidget::widget([
+                        <?=MenuXWidget::widget([
                             'model' => '',
                             'attribute' => 'kjgh',
                             'name' => '',
@@ -148,25 +174,19 @@ $this->title = \Yii::t('app', 'Главная');
             $('#topXle').removeClass("topXle");
             $('#topXle').addClass("topXleResize");
             $('#topXle').width("96%");
-// $('#menuXle').removeClass("menuXle");
-           // $('#menuXle').addClass("menuXleResize");
             $('#contentXle').removeClass("contentXle");
             $('#contentXle').addClass("contentXleResize");
             $('#contentXle').width("99%");
             this.innerHTML='<span class="glyphicon glyphicon-chevron-right"></span>';
         } else {
             $('#leftSide').show(1000);
-
             $('#topXle').removeClass("topXleResize");
             $('#topXle').addClass("topXle");
             $('#topXle').width("82%");
-//   $('#menuXle').removeClass("menuXleResize");
-         //   $('#menuXle').addClass("menuXle");
             $('#contentXle').removeClass("contentXleResize");
             $('#contentXle').addClass("contentXle");
             $('#contentXle').width("85%");
             this.innerHTML='<span class="glyphicon glyphicon-chevron-left"></span>';
         }
-      //  jQuery('body').toggleClass('left-side-active');
     });
 </script>
