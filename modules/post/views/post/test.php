@@ -1,4 +1,6 @@
-<!-- Colored FAB button -->
-<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-    <i class="material-icons">add</i>
-</button>
+<?php
+$file =  \Yii::getAlias('@web') . '/images/VID.mp4';
+?>
+<video class="responsive-video" controls>
+    <source src="<?=$file?>" type="video/mp4">
+</video>

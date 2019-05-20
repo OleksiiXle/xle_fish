@@ -27,10 +27,12 @@ class AppAsset extends AssetBundle
         'css/xle.css',
         'css/common.css',
         'css/admin-materialize.css',
+        'css/material.css',
     ];
     public $js = [
        // 'js/menux.js',
         'js/common.js',
+        'js/material.js',
 
     ];
     public $jsOptions = array(

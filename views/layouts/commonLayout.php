@@ -88,11 +88,7 @@ if (Yii::$app->session->getAllFlashes()){
                     echo SelectXleWidget::widget([
                         'listData' => Translation::LIST_LANGUAGES,
                         'selectedItem' => $this->context->language,
-                        'jsFunction' => "
-                                     function clickFunction(item) {
-                                      document.location.href = '/adminx/translation/change-language?language=' + item;
-                                     }
-                                ",
+                        'jsFunctionBody' => '{document.location.href = "/adminx/translation/change-language?language=" + item;}',
                         'userStyles' => [
                              'listItem' => [
                                  'font-weight' => 300,
