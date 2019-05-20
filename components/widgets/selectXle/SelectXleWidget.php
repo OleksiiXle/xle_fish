@@ -35,7 +35,7 @@ class SelectXleWidget extends Widget
      *            }
      * @var
      */
-    public $jsFunction='';
+    public $jsFunctionBody='{return true;}';
     /**
      * Пользовательские стили для елементов и фона селекта
      * например, 'userStyles' => [
@@ -66,12 +66,13 @@ class SelectXleWidget extends Widget
     public function run()
     {
         SelectXleAssets::register($this->getView());
+
         return $this->render('selectXle',
             [
                 'selectId' => $this->selectId,
                 'listData' => $this->listData,
                 'selectedItem' => $this->selectedItem,
-                'jsFunction' => $this->jsFunction,
+                'jsFunctionBody' => $this->jsFunctionBody,
                 'userStyles' => $this->userStyles,
             ]);
     }

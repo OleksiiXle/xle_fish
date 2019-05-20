@@ -21,16 +21,14 @@ $( function() {
         <li><a href="#tabs-3">Aenean lacinia</a></li>
     </ul>
     <div id="tabs-1">
-        <div class="row" align="right" style="padding-left: 60%; padding-right: 2%">
+        <div class="row" >
             <?php
+
+            //document.location.href = '/adminx/translation/change-language?language=' + item;
             echo SelectXleWidget::widget([
                 'listData' => Translation::LIST_LANGUAGES,
                 'selectedItem' => $this->context->language,
-                'jsFunction' => "
-                                     function clickFunction(item) {
-                                      document.location.href = '/adminx/translation/change-language?language=' + item;
-                                     }
-                                ",
+                'jsFunctionBody' => "{alert(item)}",
                 'userStyles' => [
                     'listItem' => [
                         'font-weight' => 300,

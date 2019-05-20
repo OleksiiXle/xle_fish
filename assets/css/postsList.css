@@ -1,32 +1,32 @@
 /*!important*/
-.listItem{
+.mediaItem{
     position: static;
     font-weight: bold;
    /* font-size: medium;*/
     font-size: small;
-    color: black!important;
+    color: black;
     cursor: pointer;
     display: inline-block;
 
 }
 
-.itemsArea{
+.mediasArea{
     position: absolute;
     display: block;
-    background: #eeeeee!important;
+    background: #eeeeee;
     border: 2px solid #bdbdbd; /* Параметры границы */
     opacity: 0.5;
     padding: 0;
 }
 
-.itemAreaActive, .itemArea{
+.mediaAreaActive, .itemArea{
     padding: 5px;
 
 }
-.itemAreaActive{
+.mediaAreaActive{
     background: grey;
 }
 
-.itemArea{
+.mediaArea{
     background: inherit;
 }

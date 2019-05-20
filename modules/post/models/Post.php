@@ -29,6 +29,35 @@ class Post extends MainModel
     private $_ownerUsername;
     private $_mainImage;
 
+    private $_listImages;
+
+    /**
+     * @return mixed
+     */
+    public function getListImages()
+    {
+        $this->_listImages = [];
+        foreach ($this->images as $item){
+            $this->_listImages [$item->urlToFile] = $item->name;
+        }
+        return $this->_listImages;
+    }
+
+    private $_listLinks;
+
+    /**
+     * @return mixed
+     */
+    public function getListLinks()
+    {
+        $this->_listLinks = [];
+        foreach ($this->links as $item){
+            $this->_listLinks [$item->file_name] = $item->name;
+        }
+        return $this->_listLinks;
+    }
+
+
 
     //-------------------------------------------------------------------- виртуальные атрибуты PostMedia
 
@@ -114,6 +143,16 @@ class Post extends MainModel
     {
         return $this->hasMany(PostMedia::class, ['post_id' => 'id'])
             ->where(['type' => PostMedia::TYPE_IMAGE])
+            ->orderBy('id');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLinks()
+    {
+        return $this->hasMany(PostMedia::class, ['post_id' => 'id'])
+            ->where(['type' => PostMedia::TYPE_LINK])
             ->orderBy('id');
     }
 

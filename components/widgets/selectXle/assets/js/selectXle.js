@@ -2,40 +2,51 @@
 $(document).ready ( function(){
 });
 */
+(function ($) {
+    $.fn.selectXle = function (selectId, _selectedItem, _selectedText, _clickFunctionBody) {
+      //  console.log(selectId);
+      //  console.log('#topItem_' + selectId);
+        var clickFunction = new Function('item', _clickFunctionBody );
 
-$('#topItem').hover(
-    function(){
-        $('#items').show(500);
-    },
-    function(){
-        $('#items').hide(500);
-    });
+        $('#topItem_' + selectId).hover(
+            function(){
+                $('#items_' + selectId).show(500);
+            },
+            function(){
+                $('#items_' + selectId).hide(500);
+            });
 
-$('.listItem').hover(
-    function(){
-        $('#itemArea_' + this.id).removeClass('itemArea').addClass('itemAreaActive');
-    },
-    function(){
-        $('#itemArea_' + this.id).removeClass('itemAreaActive').addClass('itemArea');
-    });
+        $('.listItem_' + selectId).hover(
+            function(){
+                console.log(this.id);
 
-$('.btnItem').on( 'click', function( event ){
-    event.stopPropagation(); // остановка всех текущих JS событий
-    event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
-    if (typeof clickFunction == 'function'){
-        var arr =[];
-        arr.push(clickFunction(this.id));
-        arr.push(changeSelectedItem());
-        collector.run(arr);
-    }
-});
+                $('#itemArea_'  + selectId + '_' + this.id).removeClass('itemArea').addClass('itemAreaActive');
+            },
+            function(){
+                $('#itemArea_'  + selectId + '_' + this.id).removeClass('itemAreaActive').addClass('itemArea');
+            });
 
-function changeSelectedItem() {
-    $('#itemArea_' + _selectedItem).show();
-    $('#itemArea_' + _selectedItem).children().show();
-    _selectedItem = this.id;
-    _selectedText = this.innerText;
-    $('#selectedItem').html(_selectedText);
-    $(this).hide();
+        $('.listItem_' + selectId).on( 'click', function( event ){
+            event.stopPropagation(); // остановка всех текущих JS событий
+            event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
+            if (typeof clickFunction == 'function'){
+                var arr =[];
+                arr.push(clickFunction(this.dataset.id));
+                arr.push(changeSelectedItem());
+                collector.run(arr);
+            }
+        });
 
-}
+        function changeSelectedItem() {
+            $('#itemArea_' + _selectedItem).show();
+            $('#itemArea_' + _selectedItem).children().show();
+            _selectedItem = this.id;
+            _selectedText = this.innerText;
+            $('#selectedItem').html(_selectedText);
+            $(this).hide();
+
+        }
+    };
+})(window.jQuery);
+
+
