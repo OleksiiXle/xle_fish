@@ -38,7 +38,7 @@ class Post extends MainModel
     {
         $this->_listImages = [];
         foreach ($this->images as $item){
-            $this->_listImages [$item->urlToFile] = $item->name;
+            $this->_listImages [$item->id] = $item->name;
         }
         return $this->_listImages;
     }
@@ -52,7 +52,7 @@ class Post extends MainModel
     {
         $this->_listLinks = [];
         foreach ($this->links as $item){
-            $this->_listLinks [$item->file_name] = $item->name;
+            $this->_listLinks [$item->id] = $item->name;
         }
         return $this->_listLinks;
     }

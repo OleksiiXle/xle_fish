@@ -60,6 +60,18 @@ if (Yii::$app->session->getAllFlashes()){
                                 'jsFunction' => "function clickFunction(item)
                                         {document.location.href = '/adminx/translation/change-language?language=' + item;}",*/
                                 'jsFunctionBody' => '{document.location.href = "/adminx/translation/change-language?language=" + item;}',
+                            'userStyles' => [
+                                'listItem' => [
+                                  //  'font-weight' => 300,
+                                 //   'font-size' => 'small',
+                                    'color' => 'blue',
+                                ],
+                                'itemsArea' => [
+                                    'background' => '#eeeeee',
+                                    'border' => '2px solid #bdbdbd',
+                                ],
+                            ],
+
                         ]);
                         ?>
 

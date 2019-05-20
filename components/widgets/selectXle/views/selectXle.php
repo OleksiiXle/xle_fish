@@ -1,11 +1,12 @@
+
 <?php if (!empty($userStyles)):?>
     <style>
-        .listItem{
+        .<?='listItem_' . $selectId?>{
             <?php foreach ($userStyles['listItem'] as $key => $value):?>
                 <?=$key . ': ' . $value . '!important;'?>
             <?php endforeach;?>
         }
-        .itemsArea{
+        .<?='itemsArea_' . $selectId?>{
             <?php foreach ($userStyles['itemsArea'] as $key => $value):?>
                 <?=$key . ': ' . $value . '!important;'?>
             <?php endforeach;?>
@@ -15,19 +16,16 @@
 
 
 <?php
-$jsFunctionName = "clickFunction_" . $selectId;
-
-//$this->registerJs(" function $jsFunctionName(item) $jsFunction",\yii\web\View::POS_HEAD);
-//$this->registerJs("jQuery('#$selectId').selectXle('$selectId', '$selectedItem', '{$listData[$selectedItem]}', '$jsFunction' );");
 $this->registerJs("jQuery('#$selectId').selectXle('$selectId', '$selectedItem', '$listData[$selectedItem]', '$jsFunctionBody');");
 
 ?>
 <div id="<?=$selectId?>">
     <div id="topItem_<?=$selectId?>" >
 
-        <div id="selectedItem_<?=$selectId?>" class="listItem listItem_<?=$selectId?>">
+        <a id="selectedItem_<?=$selectId?>" class="listItem listItem_<?=$selectId?>" data-id = "<?=$selectedItem?>"
+        >
             <?=$listData[$selectedItem]?>
-        </div>
+        </a>
 
         <div id="items_<?=$selectId?>" class="itemsArea itemsArea_<?=$selectId?> " style="display: none">
 

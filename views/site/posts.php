@@ -1,5 +1,8 @@
 <?php
 use yii\widgets\ListView;
+use \app\assets\PostsListAsset;
+
+PostsListAsset::register($this);
 ?>
 
 <div class="container">

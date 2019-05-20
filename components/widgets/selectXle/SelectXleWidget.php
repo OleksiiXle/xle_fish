@@ -2,6 +2,7 @@
 namespace app\components\widgets\selectXle;
 
 use yii\base\Widget;
+use yii\helpers\Json;
 
 /**
  * Class SelectXleWidget
@@ -51,7 +52,7 @@ class SelectXleWidget extends Widget
      *            ],
      * @var
      */
-    public $userStyles;
+    public $userStyles = [];
 
     public function init()
     {

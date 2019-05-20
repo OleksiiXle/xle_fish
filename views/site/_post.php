@@ -28,16 +28,16 @@ use \app\components\widgets\selectXle\SelectXleWidget;
                 echo SelectXleWidget::widget([
                     'listData' => $model->listImages,
                     'selectedItem' => $selectedItem,
-                    'jsFunctionBody' => "{alert(item)}",
+                    'jsFunctionBody' => "{showImage(item)}",
                     'userStyles' => [
-                        'listItem' => [
-                            'font-weight' => 300,
-                            'font-size' => 'small',
-                            'color' => 'red',
+                        "listItem" => [
+                            "font-weight" => 300,
+                            "font-size" => "small",
+                            "color" => "brown",
                         ],
-                        'itemsArea' => [
-                            'background' => '#eeeeee',
-                            'border' => '2px solid #bdbdbd',
+                        "itemsArea" => [
+                            "background" => "#eeeeee",
+                            "border" => "2px solid #bdbdbd",
                         ],
                     ],
                 ]);
