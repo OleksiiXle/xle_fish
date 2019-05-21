@@ -40,8 +40,7 @@ class Signup extends UserM
             [['first_name', 'middle_name', 'last_name'],  'match', 'pattern' => self::USER_NAME_PATTERN,
                 'message' => \Yii::t('app', self::USER_NAME_ERROR_MESSAGE)],
 
-            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(),
-                'secret' => '6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49-'],
+         //   [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(), 'secret' => '6LfU-p8UAAAAAJIytAMOw7CMnd8K5HmVaP0vT49-'],
 
         ];
 
