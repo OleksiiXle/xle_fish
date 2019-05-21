@@ -1,0 +1,22 @@
+.leftSideDropDown{
+    background: none;
+    border: none;
+}
+
+.leftSideHeader{
+   /* background: none;*/
+   /* width: auto!important;*/
+    border: none;
+    background-color: #e0e0e0!important;
+}
+
+.leftLogo{
+    height: 100px;
+    background-color: aliceblue;
+}
+
+.topXleHorizontalfooter{
+    background-color: lightgrey!important;
+    color: black!important;
+}
+

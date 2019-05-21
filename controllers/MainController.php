@@ -30,10 +30,12 @@ class MainController extends Controller
         $this->user = \Yii::$app->user;
         switch (\Yii::$app->configs->menuType){
             case 'horizontal':
-                $this->layout =  '@app/views/layouts/commonLayoutHM.php';
+              //  $this->layout =  '@app/views/layouts/commonLayoutHM.php';
+                $this->layout =  '@app/views/layouts/commonTopMDB.php';
                 break;
             case 'vertical':
-                $this->layout =  '@app/views/layouts/commonLayout.php';
+              //  $this->layout =  '@app/views/layouts/commonLayout.php';
+                $this->layout =  '@app/views/layouts/commonLeftMDB.php';
                 break;
         }
 

@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
  //   public $sourcePath = '@app/assets';
  //   public $publishOptions = ['forceCopy' => true];
     public $css = [
-        'css/site.css',
+       // 'css/site.css',
         'css/xle.css',
         'css/common.css',
         'css/material.css',

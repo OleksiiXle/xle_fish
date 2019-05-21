@@ -101,22 +101,6 @@ if (Yii::$app->session->getAllFlashes()){
                              ],
                         ],
                     ]);
-
-                    /*
-                    echo \macgyer\yii2materializecss\widgets\form\Select::widget([
-                        'name' => 'ddg',
-                        'items' => \app\models\Translation::LIST_LANGUAGES,
-                        'options' => [
-                            'placeholder' => false,
-                            'onchange' => "setLanguage(this.value);",
-                            'options' => [
-                                $this->context->language => ['Selected' => true],
-
-                            ],
-                        ]
-                    ]);
-                    */
-
                     ?>
 
                 </div>

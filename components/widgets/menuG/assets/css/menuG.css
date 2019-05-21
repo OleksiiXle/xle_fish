@@ -4,7 +4,7 @@
     font-weight: bold;
    /* font-size: medium;*/
     font-size: small;
-    color: black;
+    color: #757575;
     cursor: pointer;
     display: inline-block;
 
@@ -12,7 +12,7 @@
 
 .route {
     cursor: pointer;
-    color: black;
+    color: #757575;
     font-size: small;
 
     /*  font-size: medium;*/
@@ -23,6 +23,7 @@
     position: relative;
     float: left;
     display: inline-block;
+    padding-right: 30px;
 
 }
 
