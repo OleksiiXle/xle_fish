@@ -1,50 +1,129 @@
-/* Меню лайаута и контент */
-.menuXleActive{
+/* Меню лайаута (левое) и контент (при левом боковом меню */
+
+
+.headerXle{
+    position: fixed; /* absolute | fixed | relative | static | inherit */
+    background-color: #e0e0e0;
+    top: 0;
+    left: 0;
+    height: 7%;
+    width: 15%;
+    overflow: hidden  ; /* полосы прокруткиauto | hidden | scroll | visible | inherit*/
+    padding: 15px;
+    font-size: medium;
+    color: blue;
+    }
+.menuXle{
     position: fixed; /* absolute | fixed | relative | static | inherit */
     background-color: #D0D5D8;
+    top: 7%;
     left: 0;
-    top: 0;
+    height: 93%;
     width: 15%;
-    height: 100%;
     overflow: hidden  ; /* полосы прокруткиauto | hidden | scroll | visible | inherit*/
     padding: 5px;
+}
+
+.menuXleResize{
+    display: none;
+}
+
+.topXle, .topXleResize{
+    padding: 15px;
+    background: #bdbdbd ;
+    position: absolute; /* absolute | fixed | relative | static | inherit */
+    top: 0;
+    height: 7%;
+    width: 85%;
+    overflow: hidden  ; /* полосы прокруткиauto | hidden | scroll | visible | inherit*/
+}
+
+.topXle{
+    left: 15%;
+}
+
+.topXleResize{
+    left: 0;
+}
+
+.contentXle,.contentXleResize {
+    background: none;
+    position: absolute; /* absolute | fixed | relative | static | inherit */
+    top: 7%;
+    height: 88%;
+    width: 85%;
 }
 
 .contentXle{
-    /*  background-color: #E5E9EC;*/
-    background: none;
-    position: absolute; /* absolute | fixed | relative | static | inherit */
     left: 15%;
-    top: 0;
-    width: 85%;
-    height: 100%;
-    overflow: visible  ; /* полосы прокруткиauto | hidden | scroll | visible | inherit*/
 }
 
-.menuXle{
-    position: fixed; /* absolute | fixed | relative | static | inherit */
-    background-color: aliceblue;
+.contentXleResize{
     left: 0;
-    top: 0;
-    width: 3%;
-    height: 100%;
-    overflow: hidden  ; /* полосы прокруткиauto | hidden | scroll | visible | inherit*/
+}
+
+.selectLanguage{
+    background: grey!important;
+    color: black!important;
+    border: none;
+}
+
+.node{
+    font-weight: bold;
+    font-size: small;
+    color: black;
+    cursor: pointer;
+}
+
+.route {
+    cursor: pointer;
+    color: black;
+    font-size: small;
+
+}
+.submenu{
+    display: none;
+
+}
+
+.topItem{
+    float: left;
     padding: 5px;
-
 }
 
-.contentXleActive{
-    /* background-color: #E5E9EC;*/
-    background: none;
+/* Меню лайаута (верхнее) и контент (при верхнем меню) */
 
-    position: absolute; /* absolute | fixed | relative | static | inherit */
-    left: 3%;
-    top: 0;
-    width: 97%;
+.topXleHorizontal{
+    background: #bdbdbd!important; ;
+}
+
+.appName{
+    color: blue!important;
+    font-size: medium;
+    padding: 5px;
+}
+
+/* ------------------------------------------------ */
+
+
+
+
+
+
+
+
+
+.contentXleHorizontalMenu{
     height: 100%;
-    /* table-layout:  fixed;*/
-    overflow: visible  ; /* полосы прокруткиauto | hidden | scroll | visible | inherit*/
+    background: linear-gradient(to top left, lightblue, white, lightyellow) no-repeat;
+
 }
+
+.selectLanguage{
+    background: none;
+    border: none;
+}
+
 
 /* Прелоадер */
 

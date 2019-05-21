@@ -72,6 +72,33 @@ class Functions
         return $res;
     }
 
+    //*************************************************************************************** РАБОТА С ФАЙЛАМИ
+
+    public static function uploadToTmp($user, $pathTofiles, $item)
+    {
+        $i = is_dir($pathTofiles);
+        $result = [
+            'status' => false,
+            'data' => 'error',
+        ];
+        try {
+            if (!is_dir($pathTofiles)){
+                $result['data'] = $pathTofiles . '  не найден';
+            } else {
+                $file_name = $item['name'];
+                if (move_uploaded_file($item['tmp_name'], "$pathTofiles/$file_name")) {
+                    $result = [
+                        'status' => true,
+                        'data' => realpath("$pathTofiles/$file_name"),
+                    ];
+                }
+            }
+        } catch (\Exception $e){
+            $result['data'] = $e->getMessage();
+        }
+        return $result;
+    }
+
 
 
 

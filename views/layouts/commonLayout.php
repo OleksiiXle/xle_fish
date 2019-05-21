@@ -1,46 +1,34 @@
 <?php
-
-/* @var $this \yii\web\View */
-/* @var $content string */
-
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-/*
+use \macgyer\yii2materializecss\assets\MaterializeAsset;
+use \yii\helpers\Url;
 
-$user_id = (!Yii::$app->user->isGuest) ? Yii::$app->user->getId() : 0;
+use \macgyer\yii2materializecss\lib\Html as HtmlMC;
+use \app\components\widgets\menuX\MenuXWidget;
+use \app\components\widgets\selectXle\SelectXleWidget;
+use \app\models\Translation;
 
-$user_action = $this->context->id . '->' . $this->context->action->id;
-$this->registerJs("
-    var _user_id      =  {$user_id};
-    var _user_action  = '{$user_action}';
-",\yii\web\View::POS_HEAD);
-*/
+
 
 AppAsset::register($this);
-//$this->registerJs($this->render('@app/assets/js/commonFunctions.js'),\yii\web\View::POS_HEAD);
+MaterializeAsset::register($this);
 
 if (Yii::$app->session->getAllFlashes()){
     $fms = Yii::$app->session->getAllFlashes();
     $_fms = \yii\helpers\Json::htmlEncode($fms);
-    $this->registerJs("
-    var _fms = {$_fms};
-",\yii\web\View::POS_HEAD);
+    $this->registerJs("var _fms = {$_fms};",\yii\web\View::POS_HEAD);
     $this->registerJs($this->render('showFlash.js'));
 }
 
-
-
-
-
+//$this->title = \Yii::t('app', 'Главная');
 ?>
-<?php
-//$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => \yii\helpers\Url::to(['/images/np_logo.png'])]);?>
 <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => \yii\helpers\Url::to(['/images/np_logo.png'])]);?>
 
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
+
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,62 +37,120 @@ if (Yii::$app->session->getAllFlashes()){
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
+
 <body>
 <?php $this->beginBody() ?>
-
 <div class="wrap">
     <div class="container-fluid" id="mainContainer">
 
-        <div class="menuX menuXleActive">
-            <div class ="img-rounded">
-                <img  src="<?=\yii\helpers\Url::to('@web/images/np_logo.png');?>" height="50px" width="50px;">
+        <div id="topXle" class="topXle">
+            <div class="col-md-1">
+                <div id="menu-switch-btn" class="topItem">
+                    <a href="#!" ><span class="glyphicon glyphicon-chevron-left"></span></a>
+                </div>
             </div>
-            <div>
-                <?php
-                $us = $this->context->user->id;
-                echo Html::dropDownList('lang', $this->context->language, \app\models\Translation::LIST_LANGUAGES, [
-                     'class' => 'selectLanguage',
-                 //   'onchange' => 'console.log(this);'
-                   'onchange' => "setLanguage(this.value);"
-                ]);
-                ?>
+            <div class="col-md-7">
 
             </div>
+            <div class="col-md-2">
 
-            <button id="menu-switch-btn" class="btn"
-                        style="height: 55px; width: 55px; padding: 2px; background-color: #D0D5D8; outline:none;">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-            </button>
-            <div class="menuTree">
-               <?=\app\components\widgets\menuX\MenuXWidget::widget([
-                   'model' => '',
-                   'attribute' => 'kjgh',
-                   'name' => '',
-               ]) ;?>
             </div>
-            <div>
-                <?php
-                if (!$this->context->user->isGuest){
-                    $icon = \yii\helpers\Url::to('@web/images/Gnome-Application-Exit-64.png');
-                    echo Html::beginForm(['/adminx/user/logout'], 'post');
-                    echo Html::submitButton(
-                        ' <img  src="' . $icon . '" height="30px" width="30px;" >',
-                        ['class' => 'btn btn-link logout']
-                    );
-                    echo Html::endForm();
-                }
-                ?>
+            <div class="col-md-2">
+                <div class="topItem">
+                    <?php
+                    if (Yii::$app->user->isGuest){
+                        echo HtmlMC::a(\Yii::t('app', "Вход"), '/adminx/user/login');
+                    } else {
+                        echo HtmlMC::a(\Yii::t('app', "Выход(" . Yii::$app->user->identity->username . ')'), '/adminx/user/logout',
+                            [
+                                'data-method' => 'post',
+                                'style' => 'color: black',
+                            ]);
+                    }
+                    ?>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="leftSide">
+            <div id="headerXle" class="headerXle">
+                <a href="<?=Yii::$app->homeUrl;?>" class="appName" ><b><?=Yii::$app->name;?></b></a>
+
+
+            </div>
+            <div id="menuXle" class="menuXle">
+                    <img src="<?=Url::to('@web/images/no-avatar.png');?>"
+                         class="circle" height="7%" width="auto" alt="lorem" style="padding:10px;">
+                    <b><?=\Yii::t('app', 'Добро пожаловать');?></b>
+                <div class="row" align="right" style="padding-left: 60%; padding-right: 2%">
+                    <?php
+                    echo SelectXleWidget::widget([
+                        'listData' => Translation::LIST_LANGUAGES,
+                        'selectedItem' => $this->context->language,
+                        'jsFunctionBody' => '{document.location.href = "/adminx/translation/change-language?language=" + item;}',
+                        'userStyles' => [
+                             'listItem' => [
+                                 'font-weight' => 300,
+                                 'font-size' => 'small',
+                                 'color' => 'blue',
+                             ],
+                             'itemsArea' => [
+                                 'background' => '#eeeeee',
+                                 'border' => '2px solid #bdbdbd',
+                             ],
+                        ],
+                    ]);
+
+                    /*
+                    echo \macgyer\yii2materializecss\widgets\form\Select::widget([
+                        'name' => 'ddg',
+                        'items' => \app\models\Translation::LIST_LANGUAGES,
+                        'options' => [
+                            'placeholder' => false,
+                            'onchange' => "setLanguage(this.value);",
+                            'options' => [
+                                $this->context->language => ['Selected' => true],
+
+                            ],
+                        ]
+                    ]);
+                    */
+
+                    ?>
+
+                </div>
+                <div class="row">
+                    <div class="menuTree">
+                        <?=MenuXWidget::widget([
+                            'model' => '',
+                            'attribute' => 'kjgh',
+                            'name' => '',
+                        ]) ;?>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div class="dataX contentXle">
+
+
+        <div id="contentXle" class="contentXle">
             <div id="flashMessage" style="display: none">
             </div>
-            <div class="container-fluid">
-                <?= $content ?>
+            <?= $content ?>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2019 Copyright Text
+                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                </div>
             </div>
+
         </div>
+
     </div>
 </div>
+
+
 
 
 <?php $this->endBody() ?>
@@ -118,25 +164,25 @@ if (Yii::$app->session->getAllFlashes()){
 </div>
 
 <script>
-    //jQuery('#left-side-switch-button').click(toggleLeftSide);
     jQuery('#menu-switch-btn').click(function () {
-        if($('.menuX').hasClass("menuXleActive")){
-            $('.menuX').addClass("menuXle");
-            $('.menuX').removeClass("menuXleActive");
-            $('.dataX').removeClass("contentXle");
-            $('.dataX').addClass("contentXleActive");
+        if($('#topXle').hasClass("topXle")){
+            $('#leftSide').hide(1000);
+            $('#topXle').removeClass("topXle");
+            $('#topXle').addClass("topXleResize");
+            $('#topXle').width("96%");
+            $('#contentXle').removeClass("contentXle");
+            $('#contentXle').addClass("contentXleResize");
+            $('#contentXle').width("99%");
             this.innerHTML='<span class="glyphicon glyphicon-chevron-right"></span>';
-            $('.menuTree').hide();
         } else {
-            $('.menuX').addClass("menuXleActive");
-            $('.menuX').removeClass("menuXle");
-            $('.dataX').removeClass("contentXleActive");
-            $('.dataX').addClass("contentXle");
+            $('#leftSide').show(1000);
+            $('#topXle').removeClass("topXleResize");
+            $('#topXle').addClass("topXle");
+            $('#topXle').width("82%");
+            $('#contentXle').removeClass("contentXleResize");
+            $('#contentXle').addClass("contentXle");
+            $('#contentXle').width("85%");
             this.innerHTML='<span class="glyphicon glyphicon-chevron-left"></span>';
-            $('.menuTree').show();
-
-
         }
-      //  jQuery('body').toggleClass('left-side-active');
     });
 </script>
