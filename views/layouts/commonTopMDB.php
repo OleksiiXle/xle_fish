@@ -119,8 +119,3 @@ if (Yii::$app->session->getAllFlashes()){
 </html>
 <?php $this->endPage() ?>
 
-<div id="preloaderCommonLayout" style="display: none">
-    <div class="page-loader-circle"></div>
-    <div id="preloaderText"></div>
-</div>
-

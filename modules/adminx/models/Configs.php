@@ -201,8 +201,12 @@ class Configs extends \yii\db\ActiveRecord
             }
             $transaction->commit();
 
-            \Yii::$app->cache->delete($this->cacheKey);
+            $ret = \Yii::$app->cache->delete($this->cacheKey);
             $ret = \Yii::$app->cache->set($this->cacheKey, $dataToCache);
+            if (!$ret){
+                $this->addError('id', 'Ошибка записи настроек в кеш - возможно - нет прав');
+                return false;
+            }
             return $ret;
         } catch (\Exception $e) {
             if ($transaction->isActive) {

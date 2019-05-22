@@ -24,23 +24,25 @@ use \app\components\widgets\selectXle\SelectXleWidget;
             <div class="col-md-6">
                 <b>Изображения</b>
                 <?php
-                $selectedItem = array_keys($model->listImages)[0];
-                echo SelectXleWidget::widget([
-                    'listData' => $model->listImages,
-                    'selectedItem' => $selectedItem,
-                    'jsFunctionBody' => "{showImage(item)}",
-                    'userStyles' => [
-                        "listItem" => [
-                            "font-weight" => 300,
-                            "font-size" => "small",
-                            "color" => "brown",
+                if (!empty($model->listImages)){
+                    $selectedItem = array_keys($model->listImages)[0];
+                    echo SelectXleWidget::widget([
+                        'listData' => $model->listImages,
+                        'selectedItem' => $selectedItem,
+                        'jsFunctionBody' => "{showImage(item)}",
+                        'userStyles' => [
+                            "listItem" => [
+                                "font-weight" => 300,
+                                "font-size" => "small",
+                                "color" => "brown",
+                            ],
+                            "itemsArea" => [
+                                "background" => "#eeeeee",
+                                "border" => "2px solid #bdbdbd",
+                            ],
                         ],
-                        "itemsArea" => [
-                            "background" => "#eeeeee",
-                            "border" => "2px solid #bdbdbd",
-                        ],
-                    ],
-                ]);
+                    ]);
+                }
 
 
 

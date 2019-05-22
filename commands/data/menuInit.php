@@ -103,7 +103,7 @@ $t = [
         'children' => [
             [
                 'name'       => 'Список постов',
-                'route'      => '/post',
+                'route'      => '/post/post',
                 'role' => 'menuAll',
                 'children' => [],
             ],

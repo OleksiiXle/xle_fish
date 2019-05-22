@@ -187,13 +187,15 @@ class Post extends MainModel
      */
     public function getMainImage()
     {
-        $this->_mainImage = '';
         $images = $this->images;
         if (!empty($images)){
             foreach ($images as $image){
                 $this->_mainImage = $image->urlToFile;
                 break;
             }
+        } else {
+            $cleanImage = \Yii::getAlias('@web'). \Yii::$app->params['pathToFiles'] . '/image/clean.png';
+            $this->_mainImage = $cleanImage;
         }
         return $this->_mainImage;
     }

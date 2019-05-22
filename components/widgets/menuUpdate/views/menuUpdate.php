@@ -68,16 +68,9 @@ $this->registerJs("
             ]);
             ?>
         </div>
-        <?php //***********************************  заготовки под модальные окна
-        yii\bootstrap\Modal::begin([
-            'headerOptions' => ['id' => 'modalHeader_md','class'=>'text-center'],
-            'id' => 'main-modal-md',
-            'size' => 'modal-md',
-            'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE],
-        ]);?>
-        <div id='modalContent_md'></div>
-        <?php yii\bootstrap\Modal::end();?>
-
+        <div id="dialog">
+            <div id="dialogContent"></div>
+        </div>
 
     <?php endif;?>
 </div>

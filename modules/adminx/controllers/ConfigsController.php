@@ -97,10 +97,11 @@ class ConfigsController extends MainController
         $model->getConfigs();
 
         if (\Yii::$app->getRequest()->isPost) {
-            $data = \Yii::$app->getRequest()->post('Configs');
-            if (isset($data['reset-button'])){
+            $_post = \Yii::$app->request->post();
+            if (isset($_post['reset-button'])){
                 return $this->goBack();
             }
+            $data = $_post['Configs'];
             $model->setAttributes($data);
             if ($model->setConfigs()) {
                 return $this->goBack();

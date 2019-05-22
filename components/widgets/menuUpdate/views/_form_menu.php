@@ -32,10 +32,5 @@ use \dosamigos\datepicker\DatePicker;
                    'id' => 'btn_' . $model->menu_id . '_updateForm',
                    'class' => 'btn btn-primary',
             ]); ?>
-            <?= Html::button( \Yii::t('app', 'Отмена'),
-                ['class' =>  'btn btn-danger',
-                    'onclick' => '$("#main-modal-md").modal("hide");'
-                ]) ?>
-
         </div>
  <?php ActiveForm::end(); ?>

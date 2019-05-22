@@ -6,6 +6,22 @@ const UL_CSS = 'ul_css';
 const ICON_OPEN  =  '<span class="glyphicon glyphicon-folder-open"></span>';
 const ICON_CLOSE = '<span class="glyphicon glyphicon-folder-close"></span>';
 
+$( function() {
+    $( '#dialog' ).dialog({
+        autoOpen: false,
+     //   show: { effect: "blind", duration: 800 },
+        modal: true,
+        top: '100px',
+
+        // title: '',
+        hight: 'auto',
+        width: 'auto',
+        draggable: true,
+        position: { my: "center", at: "center", of: ".xtree" }
+
+    });
+} );
+
 
 var MENU_TREE = {
     tree_id: null,
@@ -210,8 +226,6 @@ var MENU_TREE = {
     },
 
     clickItem: function (item) {
-      //  console.log(item);
-     //   alert('item ' + item.dataset.id);
         this.selectedIdChange(item.dataset.id);
     },
 
@@ -253,18 +267,33 @@ var MENU_TREE = {
     modalOpenMenuUpdate : function (nodeAction) {
     //    alert(this.tree_id + ' modalOpenMenuUpdate ' + this.selected_id);
         var that = this;
-        var url = '/wcontroller/menux-modal-open-menu-update?id=' + that.selected_id + '&menu_id=' + that.tree_id + '&nodeAction=' + nodeAction;
-        $('#main-modal-md').modal('show')
-            .find('#modalContent_md')
-            .load(url, function(response, status, xhr) {
-                errorHandlerModal(xhr['status'], xhr, status);
-            });
-        /*
-        $('#main-modal-md')
-            .on("click", "#btn_" + that.tree_id + '_updateForm', function () {
-                that.menuUpdate();
-            });
-            */
+
+        $.ajax({
+            url: '/wcontroller/menux-modal-open-menu-update',
+            type: "GET",
+            data: {
+                'id' :  that.selected_id,
+                'menu_id' :  that.tree_id,
+                'nodeAction': nodeAction
+            },
+            beforeSend: function() {
+                preloader('show', 'mainContainer', 0);
+            },
+            complete: function(){
+                preloader('hide', 'mainContainer', 0);
+            },
+            success: function(response){
+                var position = $( "#dialog" ).dialog( "option", "position" );
+                console.log(position);
+                $( "#dialog" ).dialog("open").find("#dialogContent").html(response);
+            },
+            error: function (jqXHR, error, errorThrown) {
+                console.log(error);
+                console.log(errorThrown);
+                console.log(jqXHR);
+                   errorHandler(jqXHR, error, errorThrown);
+            }
+        });
     },
 
     //-- редактирование, добавление потомка, добавление соседа снизу
@@ -350,7 +379,7 @@ sort: 2
                             that.clickItem(new_item);
                             break;
                     }
-                    $("#main-modal-md").modal("hide");
+                    $("#dialog").dialog("close").find("#dialogContent").html('');
                 } else {
                     console.log(response);
                     objDump(response['data']);

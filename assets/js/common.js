@@ -106,7 +106,8 @@ function displayFlashMessage(msg) {
 //-- показать/убрать прелоадер, parent- ид элемента после которого рисуется прелоадер, и который будет затухать
 //-- id -порядковый номер прелоадера - чтобы не былдо конфликтов
 function preloader(mode, parent, id) {
-    var parentDiv = $("#" + parent);
+  //  var parentDiv = $("#" + parent);
+    var parentDiv = $("body");
     var preloader_id = 'preloaderXle' + id;
     switch (mode) {
         case 'show':
