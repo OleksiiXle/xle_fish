@@ -39,11 +39,13 @@ class RuleController extends MainController
                     'roles'      => ['adminCRUD', ],
                 ],
             ],
+            /*
             'denyCallback' => function ($rule, $action) {
                 \yii::$app->getSession()->addFlash("warning",\Yii::t('app', "Действие запрещено"));
                 return $this->redirect(\Yii::$app->request->referrer);
 
             }
+            */
         ];
         return $behaviors;
     }

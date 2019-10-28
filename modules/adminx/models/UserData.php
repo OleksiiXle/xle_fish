@@ -3,6 +3,7 @@
 namespace app\modules\adminx\models;
 
 use app\models\Functions;
+use app\models\MainModel;
 use Yii;
 
 /**
@@ -16,7 +17,7 @@ use Yii;
  *
  * @property User $user
  */
-class UserData extends \yii\db\ActiveRecord
+class UserData extends MainModel
 {
     public static $activityIntervalArray=[
         3600 => '1 час',
@@ -113,19 +114,6 @@ class UserData extends \yii\db\ActiveRecord
 
 
 //*********************************************************************************************** ФУНКЦИИ
-
-    public function beforeSave($insert) {
-        if ($insert){
-            $this->created_at = time();
-          //  $this->creation_user = (isset(\Yii::$app->user->id)) ? \Yii::$app->user->id : 0;
-            $this->updated_at = time();
-          //  $this->update_user = (isset(\Yii::$app->user->id)) ? \Yii::$app->user->id : 0;
-
-        }
-        $this->updated_at = time();
-       // $this->update_user = (isset(\Yii::$app->user->id)) ? \Yii::$app->user->id : 0;
-        return parent::beforeSave($insert);
-    }
 
 
 }

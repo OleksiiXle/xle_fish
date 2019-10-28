@@ -3,12 +3,15 @@
 namespace app\controllers;
 
 use app\modules\adminx\components\AccessControl;
+use app\modules\post\models\Post;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\data\ActiveDataProvider;
+
 
 class SiteController extends MainController
 {
@@ -61,6 +64,20 @@ class SiteController extends MainController
      */
     public function actionIndex()
     {
+        if (1==1){
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find(),
+                'pagination' => [
+                    'pageSize' => 2,
+                ],
+            ]);
+            return $this->render('posts', [
+               'dataProvider'  => $dataProvider,
+            ]);
+        }
+
+
+
       //  $this->layout = '@app/views/layouts/commonLayout.php';
         $welcome = \Yii::t('app', 'Добро пожаловать');
         $r=1;

@@ -253,18 +253,57 @@ var MENU_TREE = {
     modalOpenMenuUpdate : function (nodeAction) {
     //    alert(this.tree_id + ' modalOpenMenuUpdate ' + this.selected_id);
         var that = this;
-        var url = '/wcontroller/menux-modal-open-menu-update?id=' + that.selected_id + '&menu_id=' + that.tree_id + '&nodeAction=' + nodeAction;
+        //var url = '/wcontroller/menux-modal-open-menu-update?id=' + that.selected_id + '&menu_id=' + that.tree_id + '&nodeAction=' + nodeAction;
+        var url = '/wcontroller/menux-modal-open-menu-update';
+        var data = {
+            'id' : that.selected_id,
+            'menu_id' : that.tree_id,
+            'nodeAction' : nodeAction
+        };
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: data,
+           // dataType: 'json',
+            beforeSend: function() {
+                preloader('show', 'mainContainer', 0);
+            },
+            complete: function(){
+                preloader('hide', 'mainContainer', 0);
+            },
+            success: function(response){
+                var modalId = "main-modal-md";
+                var modalInstance = document.getElementById(modalId).M_Modal;
+                if (modalInstance) {
+                    modalInstance.open();
+                }
+                $('#main-modal-md').find('.modal-content').html(response);
+
+
+            },
+            error: function (jqXHR, error, errorThrown) {
+                errorHandler(jqXHR, error, errorThrown)            }
+        });
+
+
+            //  $('#main-modal-md').open();
+        /*
         $('#main-modal-md').modal('show')
             .find('#modalContent_md')
             .load(url, function(response, status, xhr) {
                 errorHandlerModal(xhr['status'], xhr, status);
             });
+            */
         /*
         $('#main-modal-md')
             .on("click", "#btn_" + that.tree_id + '_updateForm', function () {
                 that.menuUpdate();
             });
             */
+
+        /*
+        <button type="button" class="modal-trigger btn" data-target="main-modal-md">Show</button>
+         */
     },
 
     //-- редактирование, добавление потомка, добавление соседа снизу
@@ -350,7 +389,13 @@ sort: 2
                             that.clickItem(new_item);
                             break;
                     }
-                    $("#main-modal-md").modal("hide");
+                    var modalId = "main-modal-md";
+                    var modalInstance = document.getElementById(modalId).M_Modal;
+                    if (modalInstance) {
+                        modalInstance.close();
+                    }
+
+                    //$("#main-modal-md").modal("hide");
                 } else {
                     console.log(response);
                     objDump(response['data']);
@@ -546,6 +591,8 @@ sort: 2
 
 
 };
+
+
 /*
 $(document).ready ( function(){
     var tree1 = Object.create(MENU_TREE);

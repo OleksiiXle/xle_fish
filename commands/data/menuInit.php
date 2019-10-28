@@ -97,6 +97,19 @@ $t = [
         ]
     ],
     [
+        'name' => 'Посты',
+        'route' => '',
+        'role' => 'menuAll',
+        'children' => [
+            [
+                'name'       => 'Список постов',
+                'route'      => '/post',
+                'role' => 'menuAll',
+                'children' => [],
+            ],
+        ]
+    ],
+    [
         'name'       => 'Восстановление пароля',
         'route'      => '/adminx/user/request-password-reset',
         'role' => '',

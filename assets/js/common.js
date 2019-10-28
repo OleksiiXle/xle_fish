@@ -1,14 +1,11 @@
+/*
 $(document).ready ( function(){
-    /*
     jQuery(".selectLanguage").change(function () {
         alert(_language);
         alert(_userId);
     })
-    */
-   // var ww=1;
-
-
 });
+*/
 
 
 function errorHandler(jqXHR, error, errorThrown){
@@ -25,8 +22,8 @@ function errorHandler(jqXHR, error, errorThrown){
         setTimeout(function() {
             $("#flashMessage").hide('slow');
         }, 5000);
-        $("#main-modal-lg").modal("hide");
-        $("#main-modal-md").modal("hide");
+      //  $("#main-modal-lg").modal("hide");
+    //    $("#main-modal-md").modal("hide");
     }
 }
 
@@ -159,39 +156,7 @@ function showValidationErrors(formModel_id, errorsArray) {
 }
 
 function setLanguage(language) {
-  //  alert('lokoko');
-   // alert(language);
-   // alert(userId);
      document.location.href = '/adminx/translation/change-language?language=' + language;
-/*
-    $.ajax({
-        url: '/adminx/translation/change-language',
-        type: "POST",
-        dataType: "json",
-        data: {
-            'language' : language
-        },
-        beforeSend: function() {
-             preloader('show', 'mainContainer', 0);
-            //  preloader('show', 'mainContainer', 0);
-        },
-        complete: function(){
-             $("#preloader" + _id).hide();
-            //  preloader('hide', 'mainContainer', 0);
-        },
-        success: function(response){
-            $("#menuInfo").html(response);
-        },
-        error: function (jqXHR, error, errorThrown) {
-            console.log(error);
-            console.log(errorThrown);
-            console.log(jqXHR);
-            //   errorHandler(jqXHR, error, errorThrown);
-        }
-    });
-    */
-
-
 }
 
 

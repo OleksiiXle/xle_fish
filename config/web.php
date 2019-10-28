@@ -5,8 +5,10 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'NB',
+    'name' => 'Aplication fish',
+    'homeUrl' => '/site/index',
     'basePath' => dirname(__DIR__),
+    'timeZone' => 'Europe/Kiev',
     'bootstrap' => [
         'log',
         ],
@@ -113,6 +115,9 @@ $config = [
     'modules' => [
         'adminx' => [
             'class' => 'app\modules\adminx\Adminx',
+        ],
+        'post' => [
+            'class' => 'app\modules\post\PostModule',
         ],
     ],
 

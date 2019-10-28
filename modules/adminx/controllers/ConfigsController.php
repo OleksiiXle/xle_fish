@@ -25,11 +25,13 @@ class ConfigsController extends MainController
                     'roles'      => ['adminCRUD' ],
                 ],
             ],
+                /*
             'denyCallback' => function ($rule, $action) {
                 \yii::$app->getSession()->addFlash("warning",\Yii::t('app', "Действие запрещено"));
                 return $this->redirect(\Yii::$app->request->referrer);
 
         }
+        */
         ];
 
         $behaviors['verbs'] = [
@@ -48,7 +50,8 @@ class ConfigsController extends MainController
      * @return mixed
      */
     public function actionIndex() {
-       // $configs = new Configs();
+       //
+        // $configs = new Configs();
     //    $configs->getConfigs();
         $dataProvider = new ActiveDataProvider([
             'query' => Configs::find(),
