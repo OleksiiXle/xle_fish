@@ -365,7 +365,6 @@ class UserController extends MainController
         return $this->render('phpinfo');
     }
 
-
     public function actionTest()
     {
         $t = 1;
